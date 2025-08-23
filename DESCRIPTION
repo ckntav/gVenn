@@ -12,8 +12,7 @@ Description: Tools to compute and visualize overlaps between gene sets or
     supports GRanges and GRangesList inputs, and integrates with analysis
     workflows for ChIP-seq, ATAC-seq, and other genomic interval data.
     It generates clean, interpretable, and publication-ready figures.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

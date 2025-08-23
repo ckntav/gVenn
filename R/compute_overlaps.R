@@ -1,3 +1,30 @@
+#' Encode Overlap Patterns into Category Strings
+#'
+#' Internal helper that converts a logical or numeric matrix of presence/absence
+#' values into compact category codes. Each row of the matrix is collapsed into
+#' a character string (e.g., \code{"110"}, \code{"101"}), representing which sets
+#' are present (1) or absent (0) for that element.
+#'
+#' @param data A logical or numeric matrix where rows represent elements
+#'     (e.g., genomic regions or genes) and columns represent sets. Entries must
+#'     be interpretable as 0/1 (e.g., \code{TRUE}/\code{FALSE}, \code{1}/\code{0}).
+#'
+#' @return A character vector of category strings, one per row of \code{data}.
+#'
+#' @details This function is used internally by
+#'     \code{\link{compute_genomic_overlaps}} and
+#'     \code{\link{compute_set_overlaps}} to label elements with their overlap
+#'     pattern.
+#'
+#' @examples
+#' m <- matrix(c(TRUE, FALSE, TRUE,
+#'               TRUE, TRUE, FALSE),
+#'             nrow = 2, byrow = TRUE)
+#' define_categories(m)
+#' # Returns: c("101", "110")
+#'
+#' @keywords internal
+#' @noRd
 define_categories <- function(data) {
     categories <- apply(data, 1, function(row) {
         paste0(as.integer(row), collapse = "")
@@ -7,30 +34,55 @@ define_categories <- function(data) {
 
 #' Compute Genomic Overlaps Across GRanges Sets
 #'
-#' Internal engine used by \code{\link{compute_overlaps}} when the input
-#' consists of \code{GRanges} or a \code{GRangesList}. Not intended for direct
-#' user calls.
+#' This function computes overlaps across multiple genomic region sets provided
+#' as a `GRangesList` or a list of `GRanges` objects.
+#' It reduces all regions into a unified, non-redundant set and determines which
+#'  original sets each region overlaps.
+#' This facilitates the analysis and visualization of genomic intersection
+#' patterns (e.g., using Venn or UpSet plots).
 #'
-#' @param genomic_regions A \code{GRangesList} or a named list of \code{GRanges}
-#'     objects. Each element represents one genomic region set (e.g., ChIP-seq
-#'     peaks).
+#' @param genomic_regions A `GRangesList` or a named list of `GRanges` objects.
+#'   Each element should represent a genomic region set (e.g., ChIP-seq peaks,
+#'   annotated genes, etc.).
 #'
-#' @return An object of class \code{GenomicOverlapResult}, a list with:
+#' @return An object of class `GenomicOverlapsResult`, which is a list with the
+#' following components:
 #' \describe{
-#'   \item{reduced_regions}{\code{GRanges} of the merged intervals across all
-#'     sets, annotated with \code{intersect_category} (e.g., \code{"110"}).}
-#'   \item{overlap_matrix}{Logical matrix; rows are reduced regions, columns are
-#'     input sets.}
+#'   \item{reduced_regions}{A `GRanges` object containing the reduced (merged)
+#'   genomic intervals across all sets.
+#'   Each region is annotated with an `intersect_category` string representing
+#'   the overlap pattern (e.g., `"110"`).}
+#'   \item{overlap_matrix}{A logical matrix indicating which reduced regions
+#'   overlap with which input sets.
+#'   Rows correspond to reduced regions; columns correspond to the input sets.}
 #' }
 #'
-#' @details Uses \code{GenomicRanges::reduce()} to merge regions, then
-#' \code{IRanges::overlapsAny()} to build the overlap matrix. Prefer calling
-#' \code{\link{compute_overlaps}} instead.
+#' @details Internally, the function uses `GenomicRanges::reduce()` to merge
+#' overlapping or adjacent regions across all sets.
+#'   It then determines overlaps between each reduced region and the original
+#'   input sets using `IRanges::overlapsAny()`.
+#'   The resulting matrix can be used to generate set diagrams or for further
+#'   statistical analysis.
 #'
-#' @seealso \code{\link{compute_overlaps}}
+#' @seealso \code{\link[GenomicRanges]{GRangesList}},
+#' \code{\link[GenomicRanges]{reduce}}, \code{\link[IRanges]{overlapsAny}},
+#'   \code{\link{plotVenn}}, \code{\link{plotUpset}}
 #'
-#' @keywords internal
-#' @noRd
+#' @examples
+#' gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(100, 500),
+#'                               width = 100))
+#' gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(150, 700),
+#'                               width = 100))
+#' gr3 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(900),
+#'                               width = 100))
+#'
+#' peak_sets <- list(H3K27ac = gr1, MED1 = gr2, BRD4 = gr3)
+#' overlap_result <- compute_genomic_overlaps(peak_sets)
+#'
+#' head(overlap_result$overlap_matrix)
+#' GenomicRanges::mcols(overlap_result$reduced_regions)$intersect_category
+#'
+#' @export
 compute_genomic_overlaps <- function(genomic_regions) {
     if (inherits(genomic_regions, "list")) {
         genomic_regions <- GenomicRanges::GRangesList(genomic_regions)
@@ -39,17 +91,13 @@ compute_genomic_overlaps <- function(genomic_regions) {
     }
 
     reduced_regions <- GenomicRanges::reduce(unlist(genomic_regions))
-    overlap_matrix <- matrix(
-        FALSE,
-        nrow = length(reduced_regions),
-        ncol = length(genomic_regions)
-    )
+    overlap_matrix <- matrix(FALSE,
+                             nrow = length(reduced_regions),
+                             ncol = length(genomic_regions))
 
     for (i in seq_along(genomic_regions)) {
-        overlap_matrix[, i] <- IRanges::overlapsAny(
-            reduced_regions,
-            genomic_regions[[i]]
-        )
+        overlap_matrix[, i] <- IRanges::overlapsAny(reduced_regions,
+                                                    genomic_regions[[i]])
     }
 
     colnames(overlap_matrix) <- names(genomic_regions)
@@ -59,101 +107,141 @@ compute_genomic_overlaps <- function(genomic_regions) {
 
     res <- list(
         reduced_regions = reduced_regions,
-        overlap_matrix  = overlap_matrix
+        overlap_matrix = overlap_matrix
     )
     class(res) <- "GenomicOverlapResult"
     return(res)
 }
 
-#' Compute Overlaps Between Named Atomic Sets
+#' Compute Overlaps Between Named Sets
 #'
-#' Internal engine used by \code{\link{compute_overlaps}} when the input is a
-#' named list of atomic vectors (e.g., gene symbols). Not intended for direct
-#' user calls.
+#' This function computes overlaps across a list of character vectors (e.g., gene symbols, transcript IDs, region names),
+#' returning a binary matrix of presence/absence and overlap categories per element.
 #'
-#' @param named_sets A named list of atomic vectors (character, numeric, factor,
-#'     etc.). Each vector contains the members of one set.
+#' @param named_sets A named list of character vectors, where each vector contains identifiers (e.g., gene symbols) belonging to a set.
 #'
-#' @return An object of class \code{SetOverlapResult}, a list with:
+#' @return An object of class `SetOverlapsResult`, a list with the following components:
 #' \describe{
-#'   \item{unique_elements}{Character vector of all unique elements.}
-#'   \item{overlap_matrix}{Logical matrix; rows are elements, columns are sets.}
-#'   \item{intersect_category}{Character vector encoding the overlap pattern per
-#'     element (e.g., \code{"110"}, \code{"101"}).}
+#'   \item{unique_elements}{A character vector of all unique elements across the input sets.}
+#'   \item{overlap_matrix}{A logical matrix indicating for each element (rows) whether it is present in each set (columns).}
+#'   \item{intersect_category}{A character vector encoding the pattern of overlaps per element (e.g., "110", "101").}
 #' }
 #'
-#' @details Elements are coerced to \code{character} before computing the
-#' presence/absence matrix. Prefer calling \code{\link{compute_overlaps}}
-#' instead.
+#' @examples
+#' gene_sets <- list(
+#'   TF1_targets = c("TP53", "BRCA1", "MYC"),
+#'   TF2_targets = c("MYC", "ESR1"),
+#'   TF3_targets = c("TP53", "GATA3")
+#' )
 #'
-#' @seealso \code{\link{compute_overlaps}}
+#' res <- compute_set_overlaps(gene_sets)
+#' head(res$overlap_matrix)
+#' table(res$intersect_category)
 #'
-#' @keywords internal
-#' @noRd
+#' # Can be passed to plotVenn() or plotUpset()
+#' plotVenn(res)
+#'
+#' @export
 compute_set_overlaps <- function(named_sets) {
-    stopifnot(
-        is.list(named_sets),
-        all(vapply(named_sets, is.atomic, logical(1))),
-        !is.null(names(named_sets)) || length(named_sets) == 0L
-    )
+    stopifnot(is.list(named_sets),
+              all(vapply(named_sets, is.character, logical(1))))
 
     all_elements <- unique(unlist(named_sets))
-    overlap_matrix <- matrix(
-        FALSE,
-        nrow = length(all_elements),
-        ncol = length(named_sets)
-    )
+    overlap_matrix <- matrix(FALSE,
+                             nrow = length(all_elements),
+                             ncol = length(named_sets))
     rownames(overlap_matrix) <- all_elements
     colnames(overlap_matrix) <- names(named_sets)
 
     for (i in seq_along(named_sets)) {
-        overlap_matrix[all_elements %in% as.character(named_sets[[i]]), i] <- TRUE
+        overlap_matrix[all_elements %in% named_sets[[i]], i] <- TRUE
     }
 
     intersect_category <- define_categories(overlap_matrix)
 
     res <- list(
-        unique_elements    = all_elements,
-        overlap_matrix     = overlap_matrix,
+        unique_elements = all_elements,
+        overlap_matrix = overlap_matrix,
         intersect_category = intersect_category
     )
     class(res) <- "SetOverlapResult"
     return(res)
 }
 
-#' Dispatch overlap computation based on input type
+#' Compute Overlaps Between Multiple Sets or Genomic Regions
 #'
-#' Wrapper that inspects the input and calls either
-#' \code{\link{compute_genomic_overlaps}} (for GRanges/GRangesList)
-#' or \code{\link{compute_set_overlaps}} (for atomic vectors).
+#' `compute_overlaps()` is the main entry point for overlap analysis. It accepts
+#' either genomic region objects (`GRanges`/`GRangesList`) or ordinary sets
+#' (character/numeric vectors) and computes a binary overlap matrix describing
+#' the presence or absence of each element across sets.
 #'
-#' @param x A \code{GRangesList}, a named list of \code{GRanges}, or a named
-#'     list of atomic vectors (e.g., gene symbols). All elements must be of the
-#'     same kind.
+#' - When provided with genomic regions, the function merges all intervals into
+#'   a non-redundant set (`reduce()`), then determines which original sets each
+#'   region overlaps.
+#' - When provided with ordinary sets (e.g., gene symbols), it collects all
+#'   unique elements and records which sets contain them.
 #'
-#' @return The object returned by the chosen backend:
-#'     \itemize{
-#'         \item \code{GenomicOverlapResult} from \code{compute_genomic_overlaps()}
-#'         \item \code{SetOverlapResult} from \code{compute_set_overlaps()}
-#'     }
+#' The resulting object encodes both the overlap matrix and compact category
+#' labels (e.g., `"110"`) representing the overlap pattern of each element.
+#' These results can be directly passed to visualization functions such as
+#' `plotVenn()` or `plotUpset()`.
+#'
+#' @param x Input sets. One of:
+#'   \itemize{
+#'     \item A `GRangesList` object.
+#'     \item A named list of `GRanges` objects.
+#'     \item A named list of atomic vectors (character, numeric, factor, etc.),
+#'       all of the same type.
+#'   }
+#'
+#' @return
+#' An S3 object encoding the overlap result whose class depends on the input type:
+#'
+#' \describe{
+#'   \item{GenomicOverlapResult}{Returned when the input is genomic
+#'       (`GRangesList` or list of `GRanges`). A list with:
+#'       \itemize{
+#'         \item \code{reduced_regions}: A `GRanges` object containing the
+#'             merged (non-redundant) intervals. Each region is annotated with
+#'             an \code{intersect_category} column.
+#'         \item \code{overlap_matrix}: A logical matrix indicating whether each
+#'             reduced region overlaps each input set (rows = regions,
+#'             columns = sets).
+#'       }}
+#'   \item{SetOverlapResult}{Returned when the input is a list of atomic
+#'       vectors. A list with:
+#'       \itemize{
+#'         \item \code{unique_elements}: Character vector of all unique elements
+#'             across the sets.
+#'         \item \code{overlap_matrix}: A logical matrix indicating whether each
+#'             element is present in each set (rows = elements, columns = sets).
+#'         \item \code{intersect_category}: Character vector of category codes
+#'             (e.g., `"110"`) for each element.
+#'       }}
+#' }
+#'
+#' @details
+#' Internally, `compute_overlaps()` dispatches to either
+#' `compute_genomic_overlaps()` (for genomic inputs) or
+#' `compute_set_overlaps()` (for ordinary sets). Users are encouraged to call
+#' only `compute_overlaps()`.
 #'
 #' @examples
-#' # Sets
+#' # Example with simple sets
 #' sets <- list(A = letters[1:4], B = letters[3:6])
 #' ov1 <- compute_overlaps(sets)
+#' head(ov1$overlap_matrix)
 #'
-#' # Genomic
+#' # Example with genomic regions
 #' if (requireNamespace("GenomicRanges", quietly = TRUE)) {
 #'     gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(1, 50), width = 20))
 #'     gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(15, 90), width = 20))
 #'     ov2 <- compute_overlaps(list(A = gr1, B = gr2))
+#'     head(ov2$overlap_matrix)
 #' }
 #'
-#' @seealso \code{\link[GenomicRanges]{GRangesList}},
-#'     \code{\link[GenomicRanges]{reduce}},
-#'     \code{\link[IRanges]{overlapsAny}},
-#'     \code{\link{plotVenn}},
-#'     \code{\link{plotUpset}}
+#' @seealso \code{\link{plotVenn}}, \code{\link{plotUpset}},
+#'     \code{\link[GenomicRanges]{GRangesList}}, \code{\link[GenomicRanges]{reduce}}
 #'
 #' @export
 compute_overlaps <- function(x) {
@@ -169,10 +257,8 @@ compute_overlaps <- function(x) {
 
     # ---- list inputs --------------------------------------------------------
     if (!is.list(x)) {
-        stop(
-            "'x' must be a GRangesList, a list of GRanges, or a list of atomic vectors.",
-            call. = FALSE
-        )
+        stop("'x' must be a GRangesList, a list of GRanges, or a list of atomic vectors.",
+             call. = FALSE)
     }
     if (length(x) == 0L) {
         stop("'x' is an empty list.", call. = FALSE)
@@ -197,9 +283,7 @@ compute_overlaps <- function(x) {
     # mixed or unsupported
     bad_idx <- which(!(is_gr | is_atomic_vec))[1]
     bad_cls <- paste(class(x[[bad_idx]]), collapse = "/")
-    stop(
-        "All elements of 'x' must be the same type: either all GRanges or all ",
-        "atomic vectors. Found unsupported element of class: ", bad_cls, ".",
-        call. = FALSE
-    )
+    stop("All elements of 'x' must be the same type: either all GRanges or all ",
+         "atomic vectors. Found unsupported element of class: ", bad_cls, ".",
+         call. = FALSE)
 }

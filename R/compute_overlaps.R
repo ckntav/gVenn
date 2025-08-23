@@ -170,7 +170,7 @@ compute_set_overlaps <- function(named_sets) {
 
 #' Compute Overlaps Between Multiple Sets or Genomic Regions
 #'
-#' `compute_overlaps()` is the main entry point for overlap analysis. It accepts
+#' `computeOverlaps()` is the main entry point for overlap analysis. It accepts
 #' either genomic region objects (`GRanges`/`GRangesList`) or ordinary sets
 #' (character/numeric vectors) and computes a binary overlap matrix describing
 #' the presence or absence of each element across sets.
@@ -221,22 +221,22 @@ compute_set_overlaps <- function(named_sets) {
 #' }
 #'
 #' @details
-#' Internally, `compute_overlaps()` dispatches to either
+#' Internally, `computeOverlaps()` dispatches to either
 #' `compute_genomic_overlaps()` (for genomic inputs) or
 #' `compute_set_overlaps()` (for ordinary sets). Users are encouraged to call
-#' only `compute_overlaps()`.
+#' only `computeOverlaps()`.
 #'
 #' @examples
 #' # Example with simple sets
 #' sets <- list(A = letters[1:4], B = letters[3:6])
-#' ov1 <- compute_overlaps(sets)
+#' ov1 <- computeOverlaps(sets)
 #' head(ov1$overlap_matrix)
 #'
 #' # Example with genomic regions
 #' if (requireNamespace("GenomicRanges", quietly = TRUE)) {
 #'     gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(1, 50), width = 20))
 #'     gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(15, 90), width = 20))
-#'     ov2 <- compute_overlaps(list(A = gr1, B = gr2))
+#'     ov2 <- computeOverlaps(list(A = gr1, B = gr2))
 #'     head(ov2$overlap_matrix)
 #' }
 #'
@@ -244,7 +244,7 @@ compute_set_overlaps <- function(named_sets) {
 #'     \code{\link[GenomicRanges]{GRangesList}}, \code{\link[GenomicRanges]{reduce}}
 #'
 #' @export
-compute_overlaps <- function(x) {
+computeOverlaps <- function(x) {
     if (missing(x) || is.null(x)) {
         stop("'x' must be provided.", call. = FALSE)
     }

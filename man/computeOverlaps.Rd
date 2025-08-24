@@ -59,11 +59,11 @@ unique elements and records which sets contain them.
 The resulting object encodes both the overlap matrix and compact category
 labels (e.g., \code{"110"}) representing the overlap pattern of each element.
 These results can be directly passed to visualization functions such as
-\code{plotVenn()} or \code{plotUpset()}.
+\code{plotVenn()} or \code{plotUpSet()}.
 
 Internally, \code{computeOverlaps()} dispatches to either
-\code{compute_genomic_overlaps()} (for genomic inputs) or
-\code{compute_set_overlaps()} (for ordinary sets). Users are encouraged to call
+\code{computeGenomicOverlaps()} (for genomic inputs) or
+\code{computeSetOverlaps()} (for ordinary sets). Users are encouraged to call
 only \code{computeOverlaps()}.
 }
 \examples{
@@ -82,6 +82,6 @@ if (requireNamespace("GenomicRanges", quietly = TRUE)) {
 
 }
 \seealso{
-\code{\link{plotVenn}}, \code{\link{plotUpset}},
+\code{\link{plotVenn}}, \code{\link{plotUpSet}},
 \code{\link[GenomicRanges]{GRangesList}}, \code{\link[GenomicRanges]{reduce}}
 }

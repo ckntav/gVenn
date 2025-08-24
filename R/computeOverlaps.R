@@ -20,12 +20,12 @@
 #' m <- matrix(c(TRUE, FALSE, TRUE,
 #'               TRUE, TRUE, FALSE),
 #'             nrow = 2, byrow = TRUE)
-#' define_categories(m)
+#' defineCategories(m)
 #' # Returns: c("101", "110")
 #'
 #' @keywords internal
 #' @noRd
-define_categories <- function(data) {
+defineCategories <- function(data) {
     categories <- apply(data, 1, function(row) {
         paste0(as.integer(row), collapse = "")
     })
@@ -82,7 +82,8 @@ define_categories <- function(data) {
 #' head(overlap_result$overlap_matrix)
 #' GenomicRanges::mcols(overlap_result$reduced_regions)$intersect_category
 #'
-#' @export
+#' @keywords internal
+#' @noRd
 computeGenomicOverlaps <- function(genomic_regions) {
     if (inherits(genomic_regions, "list")) {
         genomic_regions <- GenomicRanges::GRangesList(genomic_regions)
@@ -102,7 +103,7 @@ computeGenomicOverlaps <- function(genomic_regions) {
 
     colnames(overlap_matrix) <- names(genomic_regions)
 
-    intersect_category <- define_categories(overlap_matrix)
+    intersect_category <- defineCategories(overlap_matrix)
     GenomicRanges::mcols(reduced_regions)$intersect_category <- intersect_category
 
     res <- list(
@@ -141,7 +142,8 @@ computeGenomicOverlaps <- function(genomic_regions) {
 #' # Can be passed to plotVenn() or plotUpSet()
 #' plotVenn(res)
 #'
-#' @export
+#' @keywords internal
+#' @noRd
 computeSetOverlaps <- function(named_sets) {
     stopifnot(is.list(named_sets),
               all(vapply(named_sets, is.character, logical(1))))
@@ -157,7 +159,7 @@ computeSetOverlaps <- function(named_sets) {
         overlap_matrix[all_elements %in% named_sets[[i]], i] <- TRUE
     }
 
-    intersect_category <- define_categories(overlap_matrix)
+    intersect_category <- defineCategories(overlap_matrix)
 
     res <- list(
         unique_elements = all_elements,

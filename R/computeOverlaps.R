@@ -12,8 +12,8 @@
 #' @return A character vector of category strings, one per row of \code{data}.
 #'
 #' @details This function is used internally by
-#'     \code{\link{compute_genomic_overlaps}} and
-#'     \code{\link{compute_set_overlaps}} to label elements with their overlap
+#'     \code{\link{computeGenomicOverlaps}} and
+#'     \code{\link{computeSetOverlaps}} to label elements with their overlap
 #'     pattern.
 #'
 #' @examples
@@ -66,7 +66,7 @@ define_categories <- function(data) {
 #'
 #' @seealso \code{\link[GenomicRanges]{GRangesList}},
 #' \code{\link[GenomicRanges]{reduce}}, \code{\link[IRanges]{overlapsAny}},
-#'   \code{\link{plotVenn}}, \code{\link{plotUpset}}
+#'   \code{\link{plotVenn}}, \code{\link{plotUpSet}}
 #'
 #' @examples
 #' gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(100, 500),
@@ -77,13 +77,13 @@ define_categories <- function(data) {
 #'                               width = 100))
 #'
 #' peak_sets <- list(H3K27ac = gr1, MED1 = gr2, BRD4 = gr3)
-#' overlap_result <- compute_genomic_overlaps(peak_sets)
+#' overlap_result <- computeGenomicOverlaps(peak_sets)
 #'
 #' head(overlap_result$overlap_matrix)
 #' GenomicRanges::mcols(overlap_result$reduced_regions)$intersect_category
 #'
 #' @export
-compute_genomic_overlaps <- function(genomic_regions) {
+computeGenomicOverlaps <- function(genomic_regions) {
     if (inherits(genomic_regions, "list")) {
         genomic_regions <- GenomicRanges::GRangesList(genomic_regions)
     } else if (!inherits(genomic_regions, "GRangesList")) {
@@ -134,15 +134,15 @@ compute_genomic_overlaps <- function(genomic_regions) {
 #'   TF3_targets = c("TP53", "GATA3")
 #' )
 #'
-#' res <- compute_set_overlaps(gene_sets)
+#' res <- computeSetOverlaps(gene_sets)
 #' head(res$overlap_matrix)
 #' table(res$intersect_category)
 #'
-#' # Can be passed to plotVenn() or plotUpset()
+#' # Can be passed to plotVenn() or plotUpSet()
 #' plotVenn(res)
 #'
 #' @export
-compute_set_overlaps <- function(named_sets) {
+computeSetOverlaps <- function(named_sets) {
     stopifnot(is.list(named_sets),
               all(vapply(named_sets, is.character, logical(1))))
 
@@ -184,7 +184,7 @@ compute_set_overlaps <- function(named_sets) {
 #' The resulting object encodes both the overlap matrix and compact category
 #' labels (e.g., `"110"`) representing the overlap pattern of each element.
 #' These results can be directly passed to visualization functions such as
-#' `plotVenn()` or `plotUpset()`.
+#' `plotVenn()` or `plotUpSet()`.
 #'
 #' @param x Input sets. One of:
 #'   \itemize{
@@ -222,8 +222,8 @@ compute_set_overlaps <- function(named_sets) {
 #'
 #' @details
 #' Internally, `computeOverlaps()` dispatches to either
-#' `compute_genomic_overlaps()` (for genomic inputs) or
-#' `compute_set_overlaps()` (for ordinary sets). Users are encouraged to call
+#' `computeGenomicOverlaps()` (for genomic inputs) or
+#' `computeSetOverlaps()` (for ordinary sets). Users are encouraged to call
 #' only `computeOverlaps()`.
 #'
 #' @examples
@@ -240,7 +240,7 @@ compute_set_overlaps <- function(named_sets) {
 #'     head(ov2$overlap_matrix)
 #' }
 #'
-#' @seealso \code{\link{plotVenn}}, \code{\link{plotUpset}},
+#' @seealso \code{\link{plotVenn}}, \code{\link{plotUpSet}},
 #'     \code{\link[GenomicRanges]{GRangesList}}, \code{\link[GenomicRanges]{reduce}}
 #'
 #' @export
@@ -252,7 +252,7 @@ computeOverlaps <- function(x) {
     # ---- direct GRangesList -------------------------------------------------
     if (methods::is(x, "GRangesList")) {
         if (is.null(names(x))) names(x) <- paste0("set", seq_along(x))
-        return(compute_genomic_overlaps(x))
+        return(computeGenomicOverlaps(x))
     }
 
     # ---- list inputs --------------------------------------------------------
@@ -270,14 +270,14 @@ computeOverlaps <- function(x) {
     is_gr <- vapply(x, function(e) methods::is(e, "GRanges"), logical(1))
     if (all(is_gr)) {
         # list of GRanges -> genomic
-        return(compute_genomic_overlaps(x))
+        return(computeGenomicOverlaps(x))
     }
 
     # atomic vectors (genes/ids). Allow numeric/factor but coerce to character.
     is_atomic_vec <- vapply(x, function(e) is.atomic(e) && !is.list(e), logical(1))
     if (all(is_atomic_vec)) {
         x_chr <- lapply(x, function(e) as.character(e))
-        return(compute_set_overlaps(x_chr))
+        return(computeSetOverlaps(x_chr))
     }
 
     # mixed or unsupported

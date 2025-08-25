@@ -39,7 +39,13 @@ ov <- computeOverlaps(a549_chipseq_peaks)
 plotVenn(ov)
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+<img src="man/figures/README-example_venn-1.png" width="100%" />
+
+``` r
+plotUpSet(ov)
+```
+
+<img src="man/figures/README-example_upset-1.png" width="100%" />
 
 ## Citation
 

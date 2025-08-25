@@ -39,13 +39,17 @@ pak::pak("ckntav/gVenn")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+```{r example_venn}
 library(gVenn)
 
 data(a549_chipseq_peaks)
 
 ov <- computeOverlaps(a549_chipseq_peaks)
 plotVenn(ov)
+```
+
+```{r example_upset}
+plotUpSet(ov)
 ```
 
 ## Citation

@@ -25,14 +25,21 @@ You can install the development version of gVenn from
 pak::pak("ckntav/gVenn")
 ```
 
-## Example
+## Quick start
 
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(gVenn)
-## basic example code
+
+data(a549_chipseq_peaks)
+
+ov <- computeOverlaps(a549_chipseq_peaks)
+#> Loading required namespace: GenomicRanges
+plotVenn(ov)
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" />
 
 ## Citation
 

@@ -35,13 +35,17 @@ You can install the development version of gVenn from [GitHub](https://github.co
 pak::pak("ckntav/gVenn")
 ```
 
-## Example
+## Quick start
 
 This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
 library(gVenn)
-## basic example code
+
+data(a549_chipseq_peaks)
+
+ov <- computeOverlaps(a549_chipseq_peaks)
+plotVenn(ov)
 ```
 
 ## Citation

@@ -1,27 +1,3 @@
-#' Count the Number of "1"s in Strings
-#'
-#' This function counts how many times the character `"1"` appears
-#' in each element of a character vector. It is mainly used internally
-#' when working with binary category codes (e.g., `"101"`, `"110"`)
-#' that represent overlap patterns across sets.
-#'
-#' @param x A character vector where each element is a string
-#'   potentially containing `"1"` characters.
-#'
-#' @return An integer vector of the same length as `x`,
-#'   giving the count of `"1"` in each string.
-#'
-#' @examples
-#' countOnes(c("101", "110", "000", "111"))
-#' # Returns: 2 2 0 3
-#'
-#' @seealso [stringr::str_count()]
-#'
-#' @keywords internal
-countOnes <- function(x) {
-    stringr::str_count(x, "1")
-}
-
 #' Extract Overlap Groups from Genomic or Set Overlap Results
 #'
 #' This function extracts subsets of intersecting elements grouped by their overlap category (e.g., "110").
@@ -56,7 +32,7 @@ extractOverlaps <- function(overlap_object) {
     if (inherits(overlap_object, "GenomicOverlapResult")) {
         reduced_regions <- overlap_object[["reduced_regions"]]
         categories <- unique(reduced_regions$intersect_category)
-        sorted_categories <- categories[order(countOnes(categories))]
+        sorted_categories <- categories[order(stringr::str_count(categories, "1"))]
 
         intersect_regions_list <- GenomicRanges::GRangesList()
         for (category in sorted_categories) {
@@ -69,7 +45,7 @@ extractOverlaps <- function(overlap_object) {
         elements <- overlap_object[["unique_elements"]]
         categories <- overlap_object[["intersect_category"]]
         sorted_categories <- sort(unique(categories), decreasing = FALSE)
-        sorted_categories <- sorted_categories[order(countOnes(sorted_categories))]
+        sorted_categories <- sorted_categories[order(stringr::str_count(sorted_categories, "1"))]
 
         grouped <- split(elements, categories)
         grouped <- grouped[sorted_categories]  # reorder

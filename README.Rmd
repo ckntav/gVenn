@@ -39,7 +39,7 @@ pak::pak("ckntav/gVenn")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example_venn, fig.width=4, fig.height=3}
+```{r example_venn}
 library(gVenn)
 
 data(a549_chipseq_peaks)
@@ -48,7 +48,7 @@ ov <- computeOverlaps(a549_chipseq_peaks)
 plotVenn(ov)
 ```
 
-```{r example_upset, fig.width=4, fig.height=3}
+```{r example_upset, fig.width=5, fig.height=2.5}
 plotUpSet(ov)
 ```
 

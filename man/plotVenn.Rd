@@ -14,7 +14,7 @@ plotVenn(
 }
 \arguments{
 \item{overlap_object}{A \code{GenomicOverlapsResult} or \code{SetOverlapsResult} object returned by
-\code{\link{compute_genomic_overlaps}} or \code{\link{compute_set_overlaps}}.}
+\code{\link{computeOverlaps}}.}
 
 \item{labels}{Logical. Whether to show set labels on the diagram. Default is \code{FALSE}.}
 

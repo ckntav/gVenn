@@ -4,7 +4,7 @@
 #' across multiple sets (up to ~5). Supports both `GenomicOverlapsResult` and `SetOverlapsResult` objects.
 #'
 #' @param overlap_object A `GenomicOverlapsResult` or `SetOverlapsResult` object returned by
-#'   \code{\link{compute_genomic_overlaps}} or \code{\link{compute_set_overlaps}}.
+#'   \code{\link{computeOverlaps}}.
 #' @param labels Logical. Whether to show set labels on the diagram. Default is `FALSE`.
 #' @param legend Position of the legend ("right", "top", "bottom", etc.) or `FALSE` to disable.
 #' @param fill A character vector of fill colors for the sets.

@@ -37,3 +37,6 @@ Imports:
 biocViews: Software, Visualization, ChIPSeq, ATACSeq, Epigenetics,
     DataRepresentation, Sequencing
 VignetteBuilder: knitr
+Depends: 
+    R (>= 3.5)
+LazyData: false

@@ -25,6 +25,10 @@ Imports:
     ComplexHeatmap,
     eulerr,
     GenomicRanges,
+    ggplot2,
     IRanges,
     lubridate,
-    methods
+    methods,
+    stringr,
+    withr,
+    writexl

@@ -3,4 +3,5 @@
 export(computeOverlaps)
 export(plotUpSet)
 export(plotVenn)
+export(saveViz)
 export(today)

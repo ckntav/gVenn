@@ -1,6 +1,6 @@
 Package: gVenn
 Title: Proportional Venn and UpSet Diagrams for Gene Sets and Genomic Regions
-Version: 0.0.0.9000
+Version: 0.99.00
 Authors@R:
     person("Christophe", "Tav",
     email = "christophe.tav@gmail.com",
@@ -21,7 +21,9 @@ BugReports: https://github.com/ckntav/gVenn/issues
 Suggests: 
     testthat (>= 3.0.0),
     ggplot2,
-    withr
+    withr,
+    knitr,
+    rmarkdown
 Config/testthat/edition: 3
 Imports: 
     ComplexHeatmap,
@@ -32,3 +34,6 @@ Imports:
     methods,
     stringr,
     writexl
+biocViews: Software, Visualization, ChIPSeq, ATACSeq, Epigenetics,
+    DataRepresentation, Sequencing
+VignetteBuilder: knitr

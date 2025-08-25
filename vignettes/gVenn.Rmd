@@ -1,0 +1,87 @@
+---
+title: "gVenn"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{gVenn}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(gVenn)
+```
+
+# Introduction
+
+The gVenn package provides tools to compute overlaps between genomic region sets and visualize them as proportional Venn diagrams. It is especially useful in genomic analyses involving ChIP-seq, ATAC-seq, or other region-based datasets.
+
+# Example workflow
+
+## Create example GRanges
+
+We create three synthetic genomic regions on chromosome 1:
+
+```{r example-data}
+set.seed(42)
+
+gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(start = sample(1:1e6, 100), width = 200))
+gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(start = sample(1:1e6, 100), width = 200))
+gr3 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(start = sample(1:1e6, 100), width = 200))
+
+regions <- list(A = gr1, B = gr2, C = gr3)
+```
+
+## Compute Overlaps
+
+We compute the overlaps using `computeOverlaps()`
+
+```{r compute-overlaps}
+genomic_overlaps <- computeOverlaps(regions)
+```
+
+The result is a list containing:
+- A GRanges object with metadata describing overlaps.
+- A count matrix or data frame used for visualization.
+
+## Proportional Venn Diagram
+
+We use `plotVenn()` to visualize the overlaps:
+
+```{r plot-venn}
+plotVenn(genomic_overlaps)
+```
+
+## UpSet Plot (Optional)
+
+If overlaps are complex, `plotUpset()` may be preferable:
+
+```{r plot-upset}
+plotUpSet(genomic_overlaps)
+```
+
+## Export visualization
+
+You can export any plot using `saveViz()`:
+
+```{r save-plot, eval=FALSE}
+venn <- plotVenn(genomic_overlaps)
+saveViz(venn, filename = "venn_diagram", format = "pdf")
+```
+
+# Conclusion
+
+gVenn provides a user-friendly and accurate way to visualize and quantify overlaps between genomic datasets. It supports proportional areas for intuitive comparison and integrates smoothly into Bioconductor workflows.
+
+# Session info
+
+```{r session-info}
+sessionInfo()
+```

@@ -2,8 +2,8 @@
 #'
 #' Internal helper that converts a logical or numeric matrix of presence/absence
 #' values into compact category codes. Each row of the matrix is collapsed into
-#' a character string (e.g., \code{"110"}, \code{"101"}), representing which sets
-#' are present (1) or absent (0) for that element.
+#' a character string (e.g., \code{"110"}, \code{"101"}), representing which
+#' sets are present (1) or absent (0) for that element.
 #'
 #' @param data A logical or numeric matrix where rows represent elements
 #'     (e.g., genomic regions or genes) and columns represent sets. Entries must
@@ -145,8 +145,7 @@ computeGenomicOverlaps <- function(genomic_regions) {
 #' @keywords internal
 #' @noRd
 computeSetOverlaps <- function(named_sets) {
-    stopifnot(is.list(named_sets),
-              all(vapply(named_sets, is.character, logical(1))))
+    stopifnot(is.list(named_sets), all(vapply(named_sets, is.character, logical(1))))
 
     all_elements <- unique(unlist(named_sets))
     overlap_matrix <- matrix(FALSE,

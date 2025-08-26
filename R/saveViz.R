@@ -31,46 +31,27 @@
 #'
 #' @examples
 #' \dontrun{
-#'   # Example with ggplot2
-#'   library(ggplot2)
-#'   p <- ggplot(mtcars, aes(mpg, wt)) + geom_point()
-#'   saveViz(p, output_dir = "viz_example_genomicVenn", output_file = "scatter_plot")
+#'   # Example with a built-in set dataset
+#'   data(gene_list)
+#'   ov_sets <- computeOverlaps(gene_list)
+#'   venn_plot <- plotVenn(ov_sets)
+#'   saveViz(venn_plot, output_dir = "viz_examples", output_file = "venn_sets")
 #'
-#'   # Example with Venn plot using 3 ChIP-seq-like GRanges with 1000 peaks each
-#'   set.seed(123)
-#'   gr1 <- GenomicRanges::GRanges(
-#'     seqnames = sample(c("chr1", "chr2"), 1000, replace = TRUE),
-#'     ranges = IRanges::IRanges(start = sample(1:1e6, 1000), width = 150)
-#'   )
+#'   # Example with a built-in genomic dataset
+#'   data(a549_chipseq_peaks)
+#'   ov_genomic <- computeOverlaps(a549_chipseq_peaks)
+#'   upset_plot <- plotUpSet(ov_genomic)
+#'   saveViz(upset_plot, output_dir = "viz_examples", output_file = "upset_genomic")
 #'
-#'   gr2 <- GenomicRanges::GRanges(
-#'     seqnames = sample(c("chr1", "chr2"), 1000, replace = TRUE),
-#'     ranges = IRanges::IRanges(start = sample(1:1.5e6, 1000), width = 150)
-#'   )
+#'   # Save as PNG instead of PDF
+#'   saveViz(upset_plot, format = "png", output_file = "upset_png")
 #'
-#'   gr3 <- GenomicRanges::GRanges(
-#'     seqnames = sample(c("chr1", "chr2"), 1000, replace = TRUE),
-#'     ranges = IRanges::IRanges(start = sample(1:2e6, 1000), width = 150)
-#'   )
-#'
-#'   peaklist <- list(H3K27ac = gr1, ZNF768 = gr2, EP300 = gr3)
-#'   overlap <- computeOverlaps(peaklist)
-#'   venn_plot <- plotVenn(overlap)
-#'   saveViz(venn_plot, output_dir = "viz_example_genomicVenn", output_file = "venn_example")
-#'
-#'   # Example with UpSet plot
-#'   upset_plot <- plotUpSet(overlap)
-#'   saveViz(upset_plot, output_dir = "viz_example_genomicVenn", output_file = "upset_example")
-#'
-#'   # Save to PNG instead of PDF
-#'   saveViz(upset_plot, format = "png", output_file = "upset_example_png", height = 2.5)
-#'
-#'   # Save to SVG
-#'   saveViz(venn_plot, format = "svg", output_file = "venn_example_svg")
+#'   # Save as SVG
+#'   saveViz(venn_plot, format = "svg", output_file = "venn_svg")
 #' }
 saveViz <- function(viz,
                     output_dir = ".",
-                    output_file = "figure_genomicVenn",
+                    output_file = "figure_gVenn",
                     format = "pdf",
                     with_date = TRUE,
                     width = 5,

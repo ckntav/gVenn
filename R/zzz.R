@@ -6,6 +6,14 @@
 #'
 #' @format A character string (e.g., "20250624").
 #' @export
+#'
+#' @examples
+#' # Print the date stored at package load
+#' library(gVenn)
+#' today
+#'
+#' # Use it in a filename
+#' paste0("venn_plot_", today, ".pdf")
 today <- NULL
 
 get_today <- function() {

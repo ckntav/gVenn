@@ -69,18 +69,21 @@ defineCategories <- function(data) {
 #'   \code{\link{plotVenn}}, \code{\link{plotUpSet}}
 #'
 #' @examples
-#' gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(100, 500),
-#'                               width = 100))
-#' gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(150, 700),
-#'                               width = 100))
-#' gr3 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(900),
-#'                               width = 100))
+#' library(gVenn)
 #'
-#' peak_sets <- list(H3K27ac = gr1, MED1 = gr2, BRD4 = gr3)
-#' overlap_result <- computeGenomicOverlaps(peak_sets)
+#' # Example dataset of A549 ChIP-seq peaks (3 sets)
+#' data(a549_chipseq_peaks)
 #'
-#' head(overlap_result$overlap_matrix)
-#' GenomicRanges::mcols(overlap_result$reduced_regions)$intersect_category
+#' ov <- computeGenomicOverlaps(a549_chipseq_peaks)
+#'
+#' # Inspect the overlap matrix
+#' head(ov$overlap_matrix)
+#'
+#' # Check the intersection category assigned to each region
+#' GenomicRanges::mcols(ov$reduced_regions)$intersect_category
+#'
+#' # Visualize with a Venn diagram
+#' plotVenn(ov)
 #'
 #' @keywords internal
 #' @noRd
@@ -129,17 +132,20 @@ computeGenomicOverlaps <- function(genomic_regions) {
 #' }
 #'
 #' @examples
-#' gene_sets <- list(
-#'   TF1_targets = c("TP53", "BRCA1", "MYC"),
-#'   TF2_targets = c("MYC", "ESR1"),
-#'   TF3_targets = c("TP53", "GATA3")
-#' )
+#' library(gVenn)
 #'
-#' res <- computeSetOverlaps(gene_sets)
+#' # Example gene lists dataset (3 sets with overlaps)
+#' data(gene_list)
+#'
+#' res <- computeSetOverlaps(gene_list)
+#'
+#' # Inspect the overlap matrix
 #' head(res$overlap_matrix)
+#'
+#' # Summarize overlap categories
 #' table(res$intersect_category)
 #'
-#' # Can be passed to plotVenn() or plotUpSet()
+#' # Visualize with a Venn diagram
 #' plotVenn(res)
 #'
 #' @keywords internal
@@ -228,18 +234,17 @@ computeSetOverlaps <- function(named_sets) {
 #' only `computeOverlaps()`.
 #'
 #' @examples
-#' # Example with simple sets
-#' sets <- list(A = letters[1:4], B = letters[3:6])
-#' ov1 <- computeOverlaps(sets)
-#' head(ov1$overlap_matrix)
+#' # Example with gene sets (built-in dataset)
+#' data(gene_list)
+#' ov_sets <- computeOverlaps(gene_list)
+#' head(ov_sets$overlap_matrix)
+#' plotVenn(ov_sets)
 #'
-#' # Example with genomic regions
-#' if (requireNamespace("GenomicRanges", quietly = TRUE)) {
-#'     gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(1, 50), width = 20))
-#'     gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(15, 90), width = 20))
-#'     ov2 <- computeOverlaps(list(A = gr1, B = gr2))
-#'     head(ov2$overlap_matrix)
-#' }
+#' # Example with genomic regions (built-in dataset)
+#' data(a549_chipseq_peaks)
+#' ov_gr <- computeOverlaps(a549_chipseq_peaks)
+#' head(ov_gr$overlap_matrix)
+#' plotVenn(ov_gr)
 #'
 #' @seealso \code{\link{plotVenn}}, \code{\link{plotUpSet}},
 #'     \code{\link[GenomicRanges]{GRangesList}}, \code{\link[GenomicRanges]{reduce}}

@@ -64,7 +64,7 @@
 #' # Inspect the list
 #' str(gene_list)
 #'
-#' # Compute overlaps
+#' # Compute overlaps and plot
 #' ov <- computeOverlaps(gene_list)
 #' plotVenn(ov)
 "gene_list"

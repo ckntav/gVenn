@@ -15,4 +15,12 @@ This variable stores the current date (in "yyyymmdd" format) at the time the
 package is loaded. It is useful for reproducible filenames (e.g., in
 \code{saveViz()}), and is automatically set when the package is attached.
 }
+\examples{
+# Print the date stored at package load
+library(gVenn)
+today
+
+# Use it in a filename
+paste0("venn_plot_", today, ".pdf")
+}
 \keyword{datasets}

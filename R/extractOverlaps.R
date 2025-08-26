@@ -12,22 +12,17 @@
 #' @export
 #'
 #' @examples
-#' # For GenomicOverlapsResult
-#' gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(100, 500), width = 100))
-#' gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(150, 700), width = 100))
-#' gr3 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(900), width = 100))
-#' peak_sets <- list(H3K27ac = gr1, MED1 = gr2, BRD4 = gr3)
-#' res1 <- computeOverlaps(peak_sets)
-#' extractOverlaps(res1)
+#' # Example with gene sets (built-in dataset)
+#' data(gene_list)
+#' res_sets <- computeOverlaps(gene_list)
+#' group_gene <- extractOverlaps(res_sets)
+#' group_gene
 #'
-#' # For SetOverlapsResult
-#' gene_sets <- list(
-#'   TF1 = c("TP53", "BRCA1", "MYC", "GATA3", "FOXA1"),
-#'   TF2 = c("MYC", "ESR1", "GATA3", "FOXA1", "AR"),
-#'   TF3 = c("TP53", "GATA3", "AR", "NANOG", "SOX2")
-#' )
-#' res2 <- computeOverlaps(gene_sets)
-#' extractOverlaps(res2)
+#' # Example with genomic regions (built-in dataset)
+#' data(a549_chipseq_peaks)
+#' res_genomic <- computeOverlaps(a549_chipseq_peaks)
+#' group_genomic <- extractOverlaps(res_genomic)
+#' group_genomic
 extractOverlaps <- function(overlap_object) {
     if (inherits(overlap_object, "GenomicOverlapResult")) {
         reduced_regions <- overlap_object[["reduced_regions"]]

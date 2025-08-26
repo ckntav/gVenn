@@ -48,7 +48,6 @@ library(gVenn)
 
 # Example dataset of ChIP-seq peaks (A549 cell line, 3 genomic regions)
 data(a549_chipseq_peaks)
-a549_chipseq_peaks
 
 # Compute overlaps
 ov <- computeOverlaps(a549_chipseq_peaks)
@@ -68,7 +67,9 @@ plotUpSet(ov)
 ### Extract elements per overlap group
 ```{r, extractOverlaps_example}
 groups <- extractOverlaps(ov)
-groups
+
+# display the number of genomic regions per overlap group
+sapply(groups, length)
 ```
 
 ## Contributing

@@ -46,7 +46,7 @@ plotUpSet <- function(overlap_object, customSetOrder = NULL) {
             ComplexHeatmap::comb_size(combMat),
             border = FALSE,
             gp = grid::gpar(fill = "black"),
-            height = grid::unit(1.25, "cm")
+            height = grid::unit(2, "cm")
         ),
         "Size" = ComplexHeatmap::anno_text(
             ComplexHeatmap::comb_size(combMat),
@@ -63,7 +63,7 @@ plotUpSet <- function(overlap_object, customSetOrder = NULL) {
             ComplexHeatmap::set_size(combMat),
             border = FALSE,
             gp = grid::gpar(fill = "black"),
-            width = grid::unit(1.25, "cm")
+            width = grid::unit(2, "cm")
         ),
         "Size" = ComplexHeatmap::anno_text(ComplexHeatmap::set_size(combMat))
     )

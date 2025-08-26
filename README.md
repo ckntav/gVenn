@@ -11,12 +11,14 @@
 overlaps.**
 
 **gVenn** stands for **gene/genomic Venn**.  
-It provides tools to compute overlaps between sets of gene or genomic
-regions and visualize them as Venn diagrams with areas proportional to
-the number of overlapping elements. With seamless support for `GRanges`
-and `GRangesList` objects, **gVenn** integrates naturally into
-Bioconductor workflows such as ChIP-seq, ATAC-seq, or other
-interval-based analyses, and produces clean, publication-ready figures.
+It provides tools to compute overlaps between genomic regions or sets of
+genes and visualize them as Venn diagrams with areas proportional to the
+number of overlapping elements. With seamless support for `GRanges` and
+`GRangesList` objects, **gVenn** integrates naturally into Bioconductor
+workflows such as ChIP-seq, ATAC-seq, or other interval-based analyses,
+and produces clean, publication-ready figures.
+
+<img src="man/figures/20250826_graphical_abstract_v1.png" width="600"/>
 
 ## Installation
 

@@ -67,18 +67,17 @@ Internally, \code{computeOverlaps()} dispatches to either
 only \code{computeOverlaps()}.
 }
 \examples{
-# Example with simple sets
-sets <- list(A = letters[1:4], B = letters[3:6])
-ov1 <- computeOverlaps(sets)
-head(ov1$overlap_matrix)
+# Example with gene sets (built-in dataset)
+data(gene_list)
+ov_sets <- computeOverlaps(gene_list)
+head(ov_sets$overlap_matrix)
+plotVenn(ov_sets)
 
-# Example with genomic regions
-if (requireNamespace("GenomicRanges", quietly = TRUE)) {
-    gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(1, 50), width = 20))
-    gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(15, 90), width = 20))
-    ov2 <- computeOverlaps(list(A = gr1, B = gr2))
-    head(ov2$overlap_matrix)
-}
+# Example with genomic regions (built-in dataset)
+data(a549_chipseq_peaks)
+ov_gr <- computeOverlaps(a549_chipseq_peaks)
+head(ov_gr$overlap_matrix)
+plotVenn(ov_gr)
 
 }
 \seealso{

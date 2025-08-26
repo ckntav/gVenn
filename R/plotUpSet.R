@@ -20,7 +20,7 @@
 #' data(a549_chipseq_peaks)
 #' res_genomic <- computeOverlaps(a549_chipseq_peaks)
 #' plotUpSet(res_genomic)
-plotUpSet <- function(overlap_object) {
+plotUpSet <- function(overlap_object, customSetOrder = NULL) {
     if (!inherits(overlap_object, "GenomicOverlapResult") &&
         !inherits(overlap_object, "SetOverlapResult")) {
         stop("Input must be a GenomicOverlapResult or SetOverlapResult.")
@@ -56,11 +56,18 @@ plotUpSet <- function(overlap_object) {
         "Size" = ComplexHeatmap::anno_text(ComplexHeatmap::set_size(combMat))
     )
 
-    upset <- ComplexHeatmap::UpSet(
-        combMat,
-        top_annotation = annot_top,
-        right_annotation = annot_right
-    )
+    if (!is.null(customSetOrder)) {
+        upset <- ComplexHeatmap::UpSet(
+            combMat,
+            top_annotation = annot_top,
+            right_annotation = annot_right,
+            set_order = customSetOrder)
+    } else {
+        upset <- ComplexHeatmap::UpSet(
+            combMat,
+            top_annotation = annot_top,
+            right_annotation = annot_right)
+    }
 
     return(upset)
 }

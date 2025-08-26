@@ -4,7 +4,7 @@
 \alias{plotUpSet}
 \title{Plot an UpSet Diagram from Genomic or Set Overlap Results}
 \usage{
-plotUpSet(overlap_object)
+plotUpSet(overlap_object, customSetOrder = NULL)
 }
 \arguments{
 \item{overlap_object}{A \code{GenomicOverlapsResult} or \code{SetOverlapsResult} object
@@ -19,20 +19,13 @@ visualize intersections across multiple sets.
 Supports both \code{GenomicOverlapsResult} and \code{SetOverlapsResult} objects.
 }
 \examples{
-# Example with SetOverlapsResult
-gene_sets <- list(
-  TF1 = c("TP53", "BRCA1", "MYC", "GATA3", "FOXA1"),
-  TF2 = c("MYC", "ESR1", "GATA3", "FOXA1", "AR"),
-  TF3 = c("TP53", "GATA3", "AR", "NANOG", "SOX2")
-)
-res_sets <- computeOverlaps(gene_sets)
+# Example with gene sets (built-in dataset)
+data(gene_list)
+res_sets <- computeOverlaps(gene_list)
 plotUpSet(res_sets)
 
-# Example with GenomicOverlapsResult
-gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(100, 500, 900), width = 100))
-gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(150, 520, 1000), width = 100))
-gr3 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(300, 550, 1100), width = 100))
-peak_sets <- list(H3K27ac = gr1, MED1 = gr2, BRD4 = gr3)
-res_genomic <- computeOverlaps(peak_sets)
+# Example with genomic regions (built-in dataset)
+data(a549_chipseq_peaks)
+res_genomic <- computeOverlaps(a549_chipseq_peaks)
 plotUpSet(res_genomic)
 }

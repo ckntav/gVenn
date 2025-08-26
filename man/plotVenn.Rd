@@ -9,6 +9,7 @@ plotVenn(
   labels = FALSE,
   legend = "right",
   fill = c("#2B70AB", "#FFB027", "#3EA742", "#CD3301", "#9370DB"),
+  quantities = list(type = "counts"),
   ...
 )
 }
@@ -21,6 +22,20 @@ plotVenn(
 \item{legend}{Position of the legend ("right", "top", "bottom", etc.) or \code{FALSE} to disable.}
 
 \item{fill}{A character vector of fill colors for the sets.}
+
+\item{quantities}{How to display intersection quantities (passed to
+\code{\link[eulerr]{plot.euler}}). Can be:
+\itemize{
+\item \strong{logical}: \code{TRUE} shows default counts,
+\code{FALSE} hides them.
+\item \strong{vector}: custom text labels (defaults to original
+values from \code{euler()}).
+\item \strong{list}: advanced options (as in
+\code{grid::grid.text()}). Use \code{type} to control format,
+combining \code{"counts"} and/or \code{"percent"} (e.g.,
+\code{c("counts","percent")} prints counts followed by
+percentages in brackets). Default: \code{list(type = "counts")}.
+}}
 
 \item{...}{Additional arguments passed to \code{\link[eulerr]{plot.euler}}.}
 }

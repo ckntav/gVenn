@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
+**Proportional Venn and UpSet diagrams for genomic regions and gene set overlaps.**
+
 **gVenn** stands for **gene/genomic Venn**.  
 It provides tools to compute overlaps between sets of gene or genomic regions 
 and visualize them as Venn diagrams with areas proportional to the number of 
@@ -37,25 +39,38 @@ pak::pak("ckntav/gVenn")
 
 ## Quick start
 
-This is a basic example which shows you how to solve a common problem:
+This quick example demonstrates how to compute overlaps between ChIP-seq 
+peaks and visualize them with both a Venn diagram and an UpSet plot.
 
-```{r example_venn}
+### Load example ChIP-seq data and compute overlaps
+```{r, example_ov}
 library(gVenn)
 
+# Example dataset of ChIP-seq peaks (A549 cell line, 3 genomic regions)
 data(a549_chipseq_peaks)
+a549_chipseq_peaks
 
+# Compute overlaps
 ov <- computeOverlaps(a549_chipseq_peaks)
+```
+
+### Visualize
+```{r, example_venn}
+# Draw Venn diagram
 plotVenn(ov)
 ```
 
-```{r example_upset, fig.width=5, fig.height=2.5}
+```{r, example_upset, fig.width=5, fig.height=2.5}
+# Draw UpSet plot (useful for larger numbers of sets)
 plotUpSet(ov)
 ```
 
-## Citation
-
-If you use `gVenn` in your work, please cite it appropriately (coming soon).
+### Extract elements per overlap group
+```{r, extractOverlaps_example}
+groups <- extractOverlaps(ov)
+groups
+```
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you'd like to change.
+Pull requests are welcome.

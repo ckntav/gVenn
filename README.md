@@ -33,7 +33,7 @@ pak::pak("ckntav/gVenn")
 This quick example demonstrates how to compute overlaps between ChIP-seq
 peaks and visualize them with both a Venn diagram and an UpSet plot.
 
-### Load example ChIP-seq data and compute overlaps
+### 1. Load example ChIP-seq data and compute overlaps
 
 ``` r
 library(gVenn)
@@ -46,7 +46,7 @@ ov <- computeOverlaps(a549_chipseq_peaks)
 #> Loading required namespace: GenomicRanges
 ```
 
-### Visualize
+### 2. Visualize
 
 ``` r
 # Draw Venn diagram
@@ -62,7 +62,7 @@ plotUpSet(ov)
 
 <img src="man/figures/README-example_upset-1.png" width="100%" />
 
-### Extract elements per overlap group
+### 3. Extract elements per overlap group
 
 ``` r
 groups <- extractOverlaps(ov)

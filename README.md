@@ -76,7 +76,7 @@ groups <- extractOverlaps(ov)
 ```
 
 ``` r
-# display the number of genomic regions per overlap group
+# Display the number of genomic regions per overlap group
 sapply(groups, length)
 #> group_010 group_001 group_100 group_110 group_011 group_101 group_111 
 #>       267       125         4        48        46        16       243

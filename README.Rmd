@@ -75,7 +75,7 @@ plotUpSet(ov)
 groups <- extractOverlaps(ov)
 ```
 ```{r, extractOverlaps_example2}
-# display the number of genomic regions per overlap group
+# Display the number of genomic regions per overlap group
 sapply(groups, length)
 ```
 

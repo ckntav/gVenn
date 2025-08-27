@@ -110,8 +110,8 @@ to.
 
 Each overlap group can be accessed directly by name for downstream
 analyses, including motif enrichment, transcription factor (TF)
-enrichment, annotation of  
-peaks to nearby genes, functional enrichment or visualization.
+enrichment, annotation of peaks to nearby genes, functional enrichment
+or visualization.
 
 For example, to extract all elements that are present in **A ∩ B ∩ C**:
 

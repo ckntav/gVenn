@@ -101,7 +101,7 @@ labeled with a binary code that indicates which sets the element belongs to.
 
 #### Extract one particular group
 Each overlap group can be accessed directly by name for downstream analyses,
-including motif enrichment, transcription factor (TF) enrichment, annotation of  
+including motif enrichment, transcription factor (TF) enrichment, annotation of
 peaks to nearby genes, functional enrichment or visualization.
 
 For example, to extract all elements that are present in **A ∩ B ∩ C**:

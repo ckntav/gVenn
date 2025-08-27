@@ -8,7 +8,7 @@ plotVenn(
   overlap_object,
   labels = FALSE,
   legend = "right",
-  fill = c("#2B70AB", "#FFB027", "#3EA742", "#CD3301", "#9370DB"),
+  fill = c("#2B70AB", "#FFB027", "#3EA742", "#CD3301", "#9370DB", "#008B8B", "#D87093"),
   quantities = list(type = "counts"),
   ...
 )

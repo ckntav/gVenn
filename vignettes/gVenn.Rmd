@@ -1,18 +1,28 @@
 ---
-title: "gVenn"
-output: rmarkdown::html_vignette
+title: "gVenn: Proportional Venn diagrams for genomic regions and gene set overlaps"
+author: "Christophe Tav, Ph.D."
+date: "August 2025"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: false
 vignette: >
   %\VignetteIndexEntry{gVenn}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r, echo=FALSE, out.width="20%", fig.align="center"}
+knitr::include_graphics("figures/20250827_hex_gVenn_v1.png")
+```
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+suppressWarnings(library(GenomicRanges))
 ```
 
 ```{r setup}
@@ -21,67 +31,215 @@ library(gVenn)
 
 # Introduction
 
-The gVenn package provides tools to compute overlaps between genomic region sets and visualize them as proportional Venn diagrams. It is especially useful in genomic analyses involving ChIP-seq, ATAC-seq, or other region-based datasets.
+**gVenn** stands for **gene/genomic Venn**.  
+It provides tools to compute overlaps between genomic regions or sets of genes
+and visualize them as **Venn** diagrams with areas proportional to the number of 
+overlapping elements. In addition, the package can generate **UpSet** plots for
+cases with many sets, offering a clear alternative to complex Venn diagrams.
+
+With seamless support for `GRanges` and `GRangesList` objects, **gVenn**
+integrates naturally into Bioconductor workflows such as ChIP-seq, ATAC-seq,
+or other interval-based analyses.
+
+Overlap groups can be easily extracted for further analysis, such as motif
+enrichment, transcription factor binding enrichment, or gene annotation.
+**gVenn** package produces clean, publication-ready figures.
+
+<br>
+```{r, echo=FALSE, out.width="100%", fig.align="center"}
+knitr::include_graphics("figures/20250827_graphical_abstract_v2.png")
+```
+<br>
 
 # Example workflow
 
-## Create example GRanges
+## 1. Load example ChIP-seq genomic regions
 
-We create three synthetic genomic regions on chromosome 1:
+We use the dataset **`a549_chipseq_dataset`**, which contains example consensus
+peak subsets for **MED1**, **BRD4**, and **GR** after dexamethasone treatment
+in A549 cells. To keep the dataset small and suitable for examples and tests,
+each set has been restricted to peaks located on *chromosome 7*.  
 
-```{r example-data}
-set.seed(42)
+These data originate from Tav *et al.* (2023)
+<a href="https://doi.org/10.3389/fgene.2023.1237092" target="_blank">
+doi:10.3389/fgene.2023.1237092</a>.
 
-gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(start = sample(1:1e6, 100), width = 200))
-gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(start = sample(1:1e6, 100), width = 200))
-gr3 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(start = sample(1:1e6, 100), width = 200))
+```{r, load_chip_dataset}
+# Load the example A549 ChIP-seq peaks (subset on chr7 for demo)
+data(a549_chipseq_peaks)
 
-regions <- list(A = gr1, B = gr2, C = gr3)
+# Inspect the number of peaks per factor
+sapply(a549_chipseq_peaks, length)
+```
+This indicates that, on chromosome 7 :
+
+- MED1 has 336 peaks 
+- BRD4 has 604 peaks 
+- GR has 450 peaks
+
+## 2. Compute overlaps between genomic regions
+
+We compute overlaps between the ChIP-seq peak sets using `computeOverlaps()`:
+
+```{r compute_overlaps}
+genomic_overlaps <- computeOverlaps(a549_chipseq_peaks)
 ```
 
-## Compute Overlaps
+The result is a structured object that contains
 
-We compute the overlaps using `computeOverlaps()`
+- A GRanges object, where each region includes metadata describing its
+overlap pattern across the input sets.
+- An associated count matrix (or data frame) summarizing the number of
+regions in each intersection.
 
-```{r compute-overlaps}
-genomic_overlaps <- computeOverlaps(regions)
-```
+## 3. Visualization
 
-The result is a list containing:
-- A GRanges object with metadata describing overlaps.
-- A count matrix or data frame used for visualization.
+### Venn Diagramm
+`plotVenn()` draws proportional Venn diagrams from the overlap object.
 
-## Proportional Venn Diagram
-
-We use `plotVenn()` to visualize the overlaps:
-
-```{r plot-venn}
+```{r, plot_venn, fig.width=5, fig.height=3, fig.align='center'}
 plotVenn(genomic_overlaps)
 ```
+<br>
 
-## UpSet Plot (Optional)
+### UpSet Plot
 
-If overlaps are complex, `plotUpset()` may be preferable:
+For more than **three sets**, a Venn diagram with **areas exactly proportional**
+to all intersections is **generally not mathematically attainable**. Solvers
+(like those used by `eulerr`) provide **best-effort approximations**, but the
+layout can become hard to read. In these cases, an **UpSet plot** is the
+recommended visualization because it scales cleanly to many sets and preserves
+intersection sizes precisely on bar axes.
 
-```{r plot-upset}
+We therefore suggest using `plotUpSet()` when you have **> 3 sets** (or any
+time the Venn becomes visually crowded).
+
+```{r, plot_upset, fig.width=5, fig.height=3, fig.align='center'}
 plotUpSet(genomic_overlaps)
 ```
+<br>
 
-## Export visualization
+### Export visualization
 
-You can export any plot using `saveViz()`:
+You can export any visualization using `saveViz()`:
 
-```{r save-plot, eval=FALSE}
+```{r save_plot, eval=FALSE}
 venn <- plotVenn(genomic_overlaps)
-saveViz(venn, filename = "venn_diagram", format = "pdf")
+saveViz(venn,
+        output_dir = ".",
+        output_file = "figure_gVenn",
+        format = "pdf")
 ```
 
-# Conclusion
+By default, files are written to the current directory (".").
+If you enabled the date option (today), the current date will be prepended to the filename.
 
-gVenn provides a user-friendly and accurate way to visualize and quantify overlaps between genomic datasets. It supports proportional areas for intuitive comparison and integrates smoothly into Bioconductor workflows.
+You can also export to PNG or SVG:
+
+```{r save_plot2, eval=FALSE}
+saveViz(venn,
+        output_dir = ".",
+        output_file = "figure_gVenn",
+        format = "png")
+
+saveViz(venn,
+        output_dir = ".",
+        output_file = "figure_gVenn",
+        format = "svg")
+```
+
+## 4. Extract elements per overlap group
+
+```{r, extractOverlaps_example1}
+groups <- extractOverlaps(genomic_overlaps)
+```
+```{r, extractOverlaps_example2}
+# Display the number of genomic regions per overlap group
+sapply(groups, length)
+```
+<br>
+
+#### Overlap group naming
+When overlaps are computed, each group of elements or genomic regions is
+labeled with a binary code that indicates which sets the element belongs to.
+
+ - Each digit in the code corresponds to one input set (e.g., A, B, C).
+ - A 1 means the element is present in that set, while 0 means absent.
+ - The group names in the output are prefixed with "group_" for clarity.
+
+<div align="center" width="50%">
+| Group name   | Meaning                       |
+|--------------|-------------------------------|
+| `group_100`  | Elements only in **A**        |
+| `group_010`  | Elements only in **B**        |
+| `group_001`  | Elements only in **C**        |
+| `group_110`  | Elements in **A ∩ B** (not C) |
+| `group_101`  | Elements in **A ∩ C** (not B) |
+| `group_011`  | Elements in **B ∩ C** (not A) |
+| `group_111`  | Elements in **A ∩ B ∩ C**     |
+</div>
+<br>
+
+#### Extract one particular group
+Each overlap group can be accessed directly by name for downstream analyses,
+including motif enrichment, transcription factor (TF) enrichment, annotation of
+peaks to nearby genes, functional enrichment or visualization.
+
+For example, to extract all elements that are present in **A ∩ B ∩ C**:
+
+```{r, extractOverlaps_example3}
+# Extract elements in group_111 (present in A, B, and C)
+peaks_in_all_sets <- groups[["group_111"]]
+
+# Display the elements
+peaks_in_all_sets
+```
+<br>
+
+#### Exporting overlap groups
+
+Each overlap group (e.g., `group_100`, `group_110`, `group_111`) can be
+exported for downstream analysis. The function `exportOverlaps()` writes
+each group to a Excel file, which makes it easy to reuse the results outside of
+R.
+
+```{r, exportOverlaps, eval=FALSE}
+# export overlpas
+exportOverlaps(genomic_overlaps,
+               output_dir = ".",
+               output_file = "overlap_groups")
+```
 
 # Session info
 
 ```{r session-info}
 sessionInfo()
 ```
+
+# References
+
+### Example A549 ChIP-seq dataset
+
+- Tav, C., Fournier, É., Fournier, M., Khadangi, F., Baguette, A., Côté, M.C., Silveira, M.A.D., Bérubé-Simard, F.-A., Bourque, G., Droit, A., & Bilodeau, S. (2023).
+*Glucocorticoid stimulation induces regionalized gene responses within topologically associating domains.*
+**Frontiers in Genetics**, 14, 1237092.
+<a href="https://doi.org/10.3389/fgene.2023.1237092" target="_blank">
+doi:10.3389/fgene.2023.1237092
+</a>
+
+### Supporting packages
+
+- **eulerr** :
+Larsson, J. (2023).
+*eulerr: Area-Proportional Euler and Venn Diagrams with Ellipses.*
+<a href="https://CRAN.R-project.org/package=eulerr" target="_blank">
+CRAN package page
+</a>
+
+- **ComplexHeatmap** :
+Gu, Z., Eils, R., & Schlesner, M. (2016).
+*Complex heatmaps reveal patterns and correlations in multidimensional genomic data.*
+**Bioinformatics**, 32(18), 2847–2849.
+<a href="https://doi.org/10.1093/bioinformatics/btw313" target="_blank">
+doi:10.1093/bioinformatics/btw313
+</a>

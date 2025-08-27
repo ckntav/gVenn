@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-**Proportional Venn and UpSet diagrams for genomic regions and gene set overlaps.**
+**Proportional Venn diagrams for genomic regions and gene set overlaps**
 
 <p align="center">
   <img src="man/figures/20250827_hex_gVenn_v1.png" width="175"/>

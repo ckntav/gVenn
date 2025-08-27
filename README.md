@@ -7,8 +7,7 @@
 
 <!-- badges: end -->
 
-**Proportional Venn and UpSet diagrams for genomic regions and gene set
-overlaps.**
+**Proportional Venn diagrams for genomic regions and gene set overlaps**
 
 <p align="center">
 

@@ -7,6 +7,10 @@
 
 <!-- badges: end -->
 
+<!-- Float the image to the right -->
+
+<img src="man/figures/20250827_hex_gVenn_v1.png" style="float:right; margin-left:10px; width:150px;">
+
 **Proportional Venn and UpSet diagrams for genomic regions and gene set
 overlaps.**
 

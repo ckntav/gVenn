@@ -106,6 +106,39 @@ to.
 
 </div>
 
+#### Extract one particular group
+
+Each overlap group can be accessed directly by name for downstream
+analyses, including motif enrichment, transcription factor (TF)
+enrichment, annotation of  
+peaks to nearby genes, functional enrichment or visualization.
+
+For example, to extract all elements that are present in **A ∩ B ∩ C**:
+
+``` r
+# Extract elements in group_111 (present in A, B, and C)
+peaks_in_all_sets <- groups[["group_111"]]
+
+# Display the elements
+peaks_in_all_sets
+#> GRanges object with 243 ranges and 1 metadata column:
+#>         seqnames              ranges strand | intersect_category
+#>            <Rle>           <IRanges>  <Rle> |        <character>
+#>     [1]     chr7     1156721-1157555      * |                111
+#>     [2]     chr7     1520256-1521263      * |                111
+#>     [3]     chr7     2309811-2310529      * |                111
+#>     [4]     chr7     3027924-3028466      * |                111
+#>     [5]     chr7     3436651-3437214      * |                111
+#>     ...      ...                 ...    ... .                ...
+#>   [239]     chr7 158431413-158433728      * |                111
+#>   [240]     chr7 158818200-158819318      * |                111
+#>   [241]     chr7 158821076-158821876      * |                111
+#>   [242]     chr7 158863108-158864616      * |                111
+#>   [243]     chr7 159015311-159016245      * |                111
+#>   -------
+#>   seqinfo: 24 sequences from an unspecified genome; no seqlengths
+```
+
 ## Contributing
 
 Pull requests are welcome. If you find a bug, have a suggestion, or want

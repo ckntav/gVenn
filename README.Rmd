@@ -99,6 +99,21 @@ labeled with a binary code that indicates which sets the element belongs to.
 | `group_111`  | Elements in **A ∩ B ∩ C**     |
 </div>
 
+#### Extract one particular group
+Each overlap group can be accessed directly by name for downstream analyses,
+including motif enrichment, transcription factor (TF) enrichment, annotation of  
+peaks to nearby genes, functional enrichment or visualization.
+
+For example, to extract all elements that are present in **A ∩ B ∩ C**:
+
+```{r, extractOverlaps_example3}
+# Extract elements in group_111 (present in A, B, and C)
+peaks_in_all_sets <- groups[["group_111"]]
+
+# Display the elements
+peaks_in_all_sets
+```
+
 ## Contributing
 
 Pull requests are welcome. If you find a bug, have a suggestion, or want to

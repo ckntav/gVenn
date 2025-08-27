@@ -71,12 +71,30 @@ plotUpSet(ov)
 ```
 
 ### 3. Extract elements per overlap group
-```{r, extractOverlaps_example}
+```{r, extractOverlaps_example1}
 groups <- extractOverlaps(ov)
-
+```
+```{r, extractOverlaps_example2}
 # display the number of genomic regions per overlap group
 sapply(groups, length)
 ```
+
+#### Overlap group naming
+When overlaps are computed, each group of elements or genomic regions is labeled with a binary code that indicates which sets the element belongs to.
+
+ - Each digit in the code corresponds to one input set (e.g., A, B, C).
+ - A 1 means the element is present in that set, while 0 means absent.
+ - The group names in the output are prefixed with "group_" for clarity.
+
+| Group name   | Meaning                       |
+|--------------|-------------------------------|
+| `group_100`  | Elements only in **A**        |
+| `group_010`  | Elements only in **B**        |
+| `group_001`  | Elements only in **C**        |
+| `group_110`  | Elements in **A ∩ B** (not C) |
+| `group_101`  | Elements in **A ∩ C** (not B) |
+| `group_011`  | Elements in **B ∩ C** (not A) |
+| `group_111`  | Elements in **A ∩ B ∩ C**     |
 
 ## Contributing
 

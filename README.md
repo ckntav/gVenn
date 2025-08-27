@@ -7,12 +7,13 @@
 
 <!-- badges: end -->
 
-<!-- Float the image to the right -->
-
-<img src="man/figures/20250827_hex_gVenn_v1.png" style="float:right; margin-left:10px; width:150px;">
-
 **Proportional Venn and UpSet diagrams for genomic regions and gene set
 overlaps.**
+
+<p align="center">
+
+<img src="man/figures/20250827_hex_gVenn_v1.png" width="150"/>
+</p>
 
 **gVenn** stands for **gene/genomic Venn**.  
 It provides tools to compute overlaps between genomic regions or sets of

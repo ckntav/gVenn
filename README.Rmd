@@ -80,12 +80,14 @@ sapply(groups, length)
 ```
 
 #### Overlap group naming
-When overlaps are computed, each group of elements or genomic regions is labeled with a binary code that indicates which sets the element belongs to.
+When overlaps are computed, each group of elements or genomic regions is
+labeled with a binary code that indicates which sets the element belongs to.
 
  - Each digit in the code corresponds to one input set (e.g., A, B, C).
  - A 1 means the element is present in that set, while 0 means absent.
  - The group names in the output are prefixed with "group_" for clarity.
 
+<div align="center">
 | Group name   | Meaning                       |
 |--------------|-------------------------------|
 | `group_100`  | Elements only in **A**        |
@@ -95,7 +97,10 @@ When overlaps are computed, each group of elements or genomic regions is labeled
 | `group_101`  | Elements in **A ∩ C** (not B) |
 | `group_011`  | Elements in **B ∩ C** (not A) |
 | `group_111`  | Elements in **A ∩ B ∩ C**     |
+</div>
 
 ## Contributing
 
-Pull requests are welcome.
+Pull requests are welcome. If you find a bug, have a suggestion, or want to
+add a feature, please open an issue first to discuss what you would like
+to change.

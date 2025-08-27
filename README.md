@@ -92,6 +92,8 @@ to.
 - A 1 means the element is present in that set, while 0 means absent.
 - The group names in the output are prefixed with “group\_” for clarity.
 
+<div align="center">
+
 | Group name  | Meaning                       |
 |-------------|-------------------------------|
 | `group_100` | Elements only in **A**        |
@@ -102,6 +104,10 @@ to.
 | `group_011` | Elements in **B ∩ C** (not A) |
 | `group_111` | Elements in **A ∩ B ∩ C**     |
 
+</div>
+
 ## Contributing
 
-Pull requests are welcome.
+Pull requests are welcome. If you find a bug, have a suggestion, or want
+to add a feature, please open an issue first to discuss what you would
+like to change.

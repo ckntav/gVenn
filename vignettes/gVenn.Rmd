@@ -1,6 +1,6 @@
 ---
 title: "gVenn: Proportional Venn diagrams for genomic regions and gene set overlaps"
-author: "Christophe Tav, Ph.D."
+author: "Christophe Tav"
 date: "August 2025"
 output:
   html_document:

@@ -70,11 +70,9 @@ extractOverlaps <- function(overlap_object) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'     res <- computeOverlaps(list(A = letters[1:3], B = letters[2:4]))
-#'     grouped <- extractOverlaps(res)
-#'     export_overlap_groups(grouped, "overlap_groups.xlsx")
-#'     }
+#' res <- computeOverlaps(list(A = letters[1:3], B = letters[2:4]))
+#' grouped <- extractOverlaps(res)
+#' exportOverlaps(grouped, output_dir = tempdir(), output_file = "overlap_groups.xlsx")
 exportOverlaps <- function(grouped,
                            output_dir = ".",
                            output_file = "overlap_groups",

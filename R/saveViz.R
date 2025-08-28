@@ -30,25 +30,23 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'   # Example with a built-in set dataset
+#' # Example with a built-in set dataset
 #'   data(gene_list)
 #'   ov_sets <- computeOverlaps(gene_list)
 #'   venn_plot <- plotVenn(ov_sets)
-#'   saveViz(venn_plot, output_dir = "viz_examples", output_file = "venn_sets")
+#'   saveViz(venn_plot, output_dir = tempdir(), output_file = "venn_sets")
 #'
 #'   # Example with a built-in genomic dataset
 #'   data(a549_chipseq_peaks)
 #'   ov_genomic <- computeOverlaps(a549_chipseq_peaks)
 #'   upset_plot <- plotUpSet(ov_genomic)
-#'   saveViz(upset_plot, output_dir = "viz_examples", output_file = "upset_genomic")
+#'   saveViz(upset_plot, output_dir = tempdir(), output_file = "upset_genomic")
 #'
 #'   # Save as PNG instead of PDF
-#'   saveViz(upset_plot, format = "png", output_file = "upset_png")
+#'   saveViz(upset_plot, format = "png", output_file = "upset_example")
 #'
 #'   # Save as SVG
-#'   saveViz(venn_plot, format = "svg", output_file = "venn_svg")
-#' }
+#'   saveViz(venn_plot, format = "svg", output_file = "venn_example")
 saveViz <- function(viz,
                     output_dir = ".",
                     output_file = "figure_gVenn",

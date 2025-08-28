@@ -69,8 +69,8 @@ the filename.
   saveViz(upset_plot, output_dir = tempdir(), output_file = "upset_genomic")
 
   # Save as PNG instead of PDF
-  saveViz(upset_plot, format = "png", output_file = "upset_png")
+  saveViz(upset_plot, format = "png", output_dir = tempdir(), output_file = "upset_example")
 
   # Save as SVG
-  saveViz(venn_plot, format = "svg", output_file = "venn_svg")
+  saveViz(venn_plot, format = "svg", output_dir = tempdir(), output_file = "venn_example")
 }

@@ -17,19 +17,23 @@ exportOverlaps(
 
 \item{output_dir}{A string specifying the output directory. Defaults to \code{"."}.}
 
-\item{output_file}{A string specifying the base filename (without extension). Defaults to \code{"overlap_groups"}.}
+\item{output_file}{A string specifying the base filename (without extension).
+Defaults to \code{"overlap_groups"}.}
 
-\item{with_date}{Logical (default \code{TRUE}). Whether to prepend the current date (from \code{today}) to the filename.}
+\item{with_date}{Logical (default \code{TRUE}). Whether to prepend the current
+date (from \code{today}) to the filename.}
 
-\item{verbose}{Logical. If \code{TRUE}, print a message with the saved path. Default \code{TRUE}.}
+\item{verbose}{Logical. If \code{TRUE}, print a message with the saved path.
+Default \code{TRUE}.}
 }
 \value{
-Overlap groups are saved to a Excel file on disk. Invisibly returns the full path to the saved file.
+Overlap groups are saved to a Excel file on disk. Invisibly returns
+the full path to the saved file.
 }
 \description{
 This function exports the output of \code{extractOverlaps()} to an Excel file,
-creating one sheet per overlap group. Genomic overlaps (\code{GRanges}) are converted
-to data frames before export.
+creating one sheet per overlap group. Genomic overlaps (\code{GRanges}) are
+converted to data frames before export.
 }
 \examples{
 res <- computeOverlaps(list(A = letters[1:3], B = letters[2:4]))

@@ -119,16 +119,23 @@ computeGenomicOverlaps <- function(genomic_regions) {
 
 #' Compute Overlaps Between Named Sets
 #'
-#' This function computes overlaps across a list of character vectors (e.g., gene symbols, transcript IDs, region names),
-#' returning a binary matrix of presence/absence and overlap categories per element.
+#' This function computes overlaps across a list of character vectors
+#' (e.g., gene symbols, transcript IDs, region names),
+#' returning a binary matrix of presence/absence and overlap categories per
+#' element.
 #'
-#' @param named_sets A named list of character vectors, where each vector contains identifiers (e.g., gene symbols) belonging to a set.
+#' @param named_sets A named list of character vectors, where each vector
+#' contains identifiers (e.g., gene symbols) belonging to a set.
 #'
-#' @return An object of class `SetOverlapsResult`, a list with the following components:
+#' @return An object of class `SetOverlapsResult`, a list with the following
+#' components:
 #' \describe{
-#'   \item{unique_elements}{A character vector of all unique elements across the input sets.}
-#'   \item{overlap_matrix}{A logical matrix indicating for each element (rows) whether it is present in each set (columns).}
-#'   \item{intersect_category}{A character vector encoding the pattern of overlaps per element (e.g., "110", "101").}
+#'   \item{unique_elements}{A character vector of all unique elements across
+#'   the input sets.}
+#'   \item{overlap_matrix}{A logical matrix indicating for each element (rows)
+#'   whether it is present in each set (columns).}
+#'   \item{intersect_category}{A character vector encoding the pattern of
+#'   overlaps per element (e.g., "110", "101").}
 #' }
 #'
 #' @examples
@@ -202,7 +209,8 @@ computeSetOverlaps <- function(named_sets) {
 #'   }
 #'
 #' @return
-#' An S3 object encoding the overlap result whose class depends on the input type:
+#' An S3 object encoding the overlap result whose class depends on the input
+#' type:
 #'
 #' \describe{
 #'   \item{GenomicOverlapResult}{Returned when the input is genomic

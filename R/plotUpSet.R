@@ -70,7 +70,8 @@ plotUpSet <- function(overlap_object, customSetOrder = NULL) {
 
     # Default: order sets by decreasing size
     if (is.null(customSetOrder)) {
-        customSetOrder <- order(ComplexHeatmap::set_size(combMat), decreasing = TRUE)
+        customSetOrder <- order(ComplexHeatmap::set_size(combMat),
+                                decreasing = TRUE)
     }
 
     upset <- ComplexHeatmap::UpSet(

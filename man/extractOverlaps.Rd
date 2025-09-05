@@ -7,18 +7,23 @@
 extractOverlaps(overlap_object)
 }
 \arguments{
-\item{overlap_object}{A \code{GenomicOverlapsResult} or \code{SetOverlapsResult} object.}
+\item{overlap_object}{A \code{GenomicOverlapsResult} or \code{SetOverlapsResult}
+object.}
 }
 \value{
 A named list of grouped intersecting elements:
 \itemize{
-\item If input is a \code{GenomicOverlapsResult}, a \code{GRangesList} split by \code{intersect_category}.
-\item If input is a \code{SetOverlapsResult}, a named \code{list} of character vectors grouped by \code{intersect_category}.
+\item If input is a \code{GenomicOverlapsResult}, a \code{GRangesList} split
+by \code{intersect_category}.
+\item If input is a \code{SetOverlapsResult}, a named \code{list} of character vectors
+grouped by \code{intersect_category}.
 }
 }
 \description{
-This function extracts subsets of intersecting elements grouped by their overlap category (e.g., "110").
-For genomic overlaps, it returns a \code{GRangesList}; for set overlaps, it returns a named list of character vectors.
+This function extracts subsets of intersecting elements grouped by their
+overlap category (e.g., "110").
+For genomic overlaps, it returns a \code{GRangesList}; for set overlaps, it
+returns a named list of character vectors.
 }
 \examples{
 # Example with gene sets (built-in dataset)

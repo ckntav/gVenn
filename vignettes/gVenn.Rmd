@@ -19,8 +19,8 @@ knitr::include_graphics("figures/20250827_hex_gVenn_v1.png")
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+    collapse = TRUE,
+    comment = "#>"
 )
 suppressWarnings(library(GenomicRanges))
 ```
@@ -126,7 +126,8 @@ saveViz(venn,
 ```
 
 By default, files are written to the current directory (".").
-If you enabled the date option (today), the current date will be prepended to the filename.
+If you enabled the date option (today), the current date will be prepended
+to the filename.
 
 You can also export to PNG or SVG:
 
@@ -157,9 +158,9 @@ sapply(groups, length)
 When overlaps are computed, each group of elements or genomic regions is
 labeled with a binary code that indicates which sets the element belongs to.
 
- - Each digit in the code corresponds to one input set (e.g., A, B, C).
- - A 1 means the element is present in that set, while 0 means absent.
- - The group names in the output are prefixed with "group_" for clarity.
+- Each digit in the code corresponds to one input set (e.g., A, B, C).
+- A 1 means the element is present in that set, while 0 means absent.
+- The group names in the output are prefixed with "group_" for clarity.
 
 <div align="center" width="50%">
 | Group name   | Meaning                       |

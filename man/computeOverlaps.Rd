@@ -16,7 +16,8 @@ all of the same type.
 }}
 }
 \value{
-An S3 object encoding the overlap result whose class depends on the input type:
+An S3 object encoding the overlap result whose class depends on the input
+type:
 
 \describe{
 \item{GenomicOverlapResult}{Returned when the input is genomic

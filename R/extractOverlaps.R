@@ -1,13 +1,18 @@
 #' Extract Overlap Groups from Genomic or Set Overlap Results
 #'
-#' This function extracts subsets of intersecting elements grouped by their overlap category (e.g., "110").
-#' For genomic overlaps, it returns a `GRangesList`; for set overlaps, it returns a named list of character vectors.
+#' This function extracts subsets of intersecting elements grouped by their
+#' overlap category (e.g., "110").
+#' For genomic overlaps, it returns a `GRangesList`; for set overlaps, it
+#' returns a named list of character vectors.
 #'
-#' @param overlap_object A `GenomicOverlapsResult` or `SetOverlapsResult` object.
+#' @param overlap_object A `GenomicOverlapsResult` or `SetOverlapsResult`
+#' object.
 #'
 #' @return A named list of grouped intersecting elements:
-#' - If input is a `GenomicOverlapsResult`, a `GRangesList` split by `intersect_category`.
-#' - If input is a `SetOverlapsResult`, a named `list` of character vectors grouped by `intersect_category`.
+#' - If input is a `GenomicOverlapsResult`, a `GRangesList` split
+#' by `intersect_category`.
+#' - If input is a `SetOverlapsResult`, a named `list` of character vectors
+#' grouped by `intersect_category`.
 #'
 #' @export
 #'
@@ -56,16 +61,20 @@ extractOverlaps <- function(overlap_object) {
 #' Export Overlap Groups to Excel
 #'
 #' This function exports the output of `extractOverlaps()` to an Excel file,
-#' creating one sheet per overlap group. Genomic overlaps (`GRanges`) are converted
-#' to data frames before export.
+#' creating one sheet per overlap group. Genomic overlaps (`GRanges`) are
+#' converted to data frames before export.
 #'
 #' @param grouped Overlap groups from `extractOverlaps()`.
 #' @param output_dir A string specifying the output directory. Defaults to `"."`.
-#' @param output_file A string specifying the base filename (without extension). Defaults to `"overlap_groups"`.
-#' @param with_date Logical (default `TRUE`). Whether to prepend the current date (from `today`) to the filename.
-#' @param verbose Logical. If `TRUE`, print a message with the saved path. Default `TRUE`.
+#' @param output_file A string specifying the base filename (without extension).
+#' Defaults to `"overlap_groups"`.
+#' @param with_date Logical (default `TRUE`). Whether to prepend the current
+#' date (from `today`) to the filename.
+#' @param verbose Logical. If `TRUE`, print a message with the saved path.
+#' Default `TRUE`.
 #'
-#' @return Overlap groups are saved to a Excel file on disk. Invisibly returns the full path to the saved file.
+#' @return Overlap groups are saved to a Excel file on disk. Invisibly returns
+#' the full path to the saved file.
 #'
 #' @export
 #'

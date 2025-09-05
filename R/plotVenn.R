@@ -1,12 +1,17 @@
 #' Plot a Venn Diagram from Genomic or Set Overlap Results
 #'
-#' This function creates a Venn diagram using the `eulerr` package to visualize intersections
-#' across multiple sets (up to ~5). Supports both `GenomicOverlapsResult` and `SetOverlapsResult` objects.
+#' This function creates a Venn diagram using the `eulerr` package to visualize
+#' intersections
+#' across multiple sets (up to ~5). Supports both `GenomicOverlapsResult` and
+#' `SetOverlapsResult` objects.
 #'
-#' @param overlap_object A `GenomicOverlapsResult` or `SetOverlapsResult` object returned by
+#' @param overlap_object A `GenomicOverlapsResult` or `SetOverlapsResult` object
+#' returned by
 #'   \code{\link{computeOverlaps}}.
-#' @param labels Logical. Whether to show set labels on the diagram. Default is `FALSE`.
-#' @param legend Position of the legend ("right", "top", "bottom", etc.) or `FALSE` to disable.
+#' @param labels Logical. Whether to show set labels on the diagram. Default
+#' is `FALSE`.
+#' @param legend Position of the legend ("right", "top", "bottom", etc.) or
+#' `FALSE` to disable.
 #' @param fill A character vector of fill colors for the sets.
 #' @param quantities How to display intersection quantities (passed to
 #'     \code{\link[eulerr]{plot.euler}}). Can be:

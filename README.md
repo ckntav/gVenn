@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+![Maintainer](https://img.shields.io/badge/maintainer-ckntav-blue)
+![Last commit](https://img.shields.io/github/last-commit/ckntav/gVenn)
 <!-- badges: end -->
 
 **Proportional Venn diagrams for genomic regions and gene set overlaps**

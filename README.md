@@ -3,12 +3,12 @@
 
 # gVenn
 
-<img align="right" src="man/figures/20250827_hex_gVenn_v1.png" width="175"/>
-
 ![Maintainer](https://img.shields.io/badge/maintainer-ckntav-blue)
 ![Last commit](https://img.shields.io/github/last-commit/ckntav/gVenn)
 
 **Proportional Venn diagrams for genomic regions and gene set overlaps**
+
+<img align="center" src="man/figures/20250827_hex_gVenn_v1.png" width="175"/>
 
 **gVenn** stands for **gene/genomic Venn**.  
 It provides tools to compute overlaps between genomic regions or sets of

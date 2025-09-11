@@ -3,12 +3,10 @@
 
 # gVenn
 
-<!-- badges: start -->
+<img align="right" src="man/figures/20250827_hex_gVenn_v1.png" width="175"/>
 
 ![Maintainer](https://img.shields.io/badge/maintainer-ckntav-blue)
 ![Last commit](https://img.shields.io/github/last-commit/ckntav/gVenn)
-<!-- badges: end -->
-<img align="right" src="man/figures/20250827_hex_gVenn_v1.png" width="175"/>
 
 **Proportional Venn diagrams for genomic regions and gene set overlaps**
 
@@ -20,7 +18,7 @@ number of overlapping elements. With seamless support for `GRanges` and
 workflows such as ChIP-seq, ATAC-seq, or other interval-based analyses,
 and produces clean, publication-ready figures.
 
-<img src="man/figures/20250827_graphical_abstract_v2.png" align="center" width="800"/>
+<img src="man/figures/20250827_graphical_abstract_v2.png" align="center" width="750"/>
 
 ## Installation
 

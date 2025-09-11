@@ -23,7 +23,7 @@ and produces clean, publication-ready figures.
 
 <p align="center">
 
-<img src="man/figures/20250827_graphical_abstract_v2.png" width="750"/>
+<img src="man/figures/20250827_graphical_abstract_v2.png" width="800"/>
 </p>
 
 ## Installation

@@ -8,7 +8,10 @@
 
 **Proportional Venn diagrams for genomic regions and gene set overlaps**
 
-<img src="man/figures/20250827_hex_gVenn_v1.png" width="175" style="vertical-align:middle"/>
+<p align="center">
+
+<img src="man/figures/20250827_hex_gVenn_v1.png" width="175"/>
+</p>
 
 **gVenn** stands for **gene/genomic Venn**.  
 It provides tools to compute overlaps between genomic regions or sets of
@@ -18,7 +21,10 @@ number of overlapping elements. With seamless support for `GRanges` and
 workflows such as ChIP-seq, ATAC-seq, or other interval-based analyses,
 and produces clean, publication-ready figures.
 
-<img align="center" src="man/figures/20250827_graphical_abstract_v2.png" width="750"/>
+<p align="center">
+
+<img src="man/figures/20250827_graphical_abstract_v2.png" width="750"/>
+</p>
 
 ## Installation
 

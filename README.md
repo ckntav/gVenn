@@ -18,7 +18,7 @@ number of overlapping elements. With seamless support for `GRanges` and
 workflows such as ChIP-seq, ATAC-seq, or other interval-based analyses,
 and produces clean, publication-ready figures.
 
-<img src="man/figures/20250827_graphical_abstract_v2.png" align="center" width="750"/>
+<img align="center" src="man/figures/20250827_graphical_abstract_v2.png" width="750"/>
 
 ## Installation
 

@@ -1,4 +1,8 @@
 url: https://ckntav.github.io/gVenn/
 template:
   bootstrap: 5
-
+  light-switch: true
+  bslib:
+    primary: "#F3B349"
+    navbar-light-bg: "#F3B349"
+    navbar-dark-bg: "#F3B349"

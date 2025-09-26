@@ -5,7 +5,6 @@
 
 ![Maintainer](https://img.shields.io/badge/maintainer-ckntav-blue)
 ![Last commit](https://img.shields.io/github/last-commit/ckntav/gVenn)
-[![bioc](http://www.bioconductor.org/shields/years-in-bioc/gVenn.svg)](http://bioconductor.org/packages/devel/bioc/html/gVenn.html)
 
 **Proportional Venn diagrams for genomic regions and gene set overlaps**
 

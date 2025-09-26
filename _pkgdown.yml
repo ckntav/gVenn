@@ -1,4 +1,9 @@
 url: https://ckntav.github.io/gVenn/
+
+authors:
+  "Christophe Tav":
+    href: https://ckntav.github.io/
+
 template:
   bootstrap: 5
   light-switch: true
@@ -6,3 +11,4 @@ template:
     primary: "#F3B349"
     navbar-light-bg: "#F3B349"
     navbar-dark-bg: "#F3B349"
+    link-decoration: none

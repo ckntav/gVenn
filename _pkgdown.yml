@@ -12,6 +12,8 @@ template:
     navbar-light-bg: "#F3B349"
     navbar-dark-bg: "#F3B349"
     link-decoration: none
+  assets:
+    css: "pkgdown/extra.css"
   includes:
     in_header:
       <!-- Google tag (gtag.js) -->

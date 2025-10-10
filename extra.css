@@ -1,0 +1,5 @@
+[data-bs-theme="dark"] {
+  --bs-link-color-rgb: 243, 179, 73;  /* RGB de ta couleur */
+  --bs-link-hover-color-rgb: 194, 143, 58;  /* Couleur au survol */
+  --bs-secondary-color: rgba(33, 37, 41, 0.5);
+}

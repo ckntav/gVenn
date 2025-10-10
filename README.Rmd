@@ -62,12 +62,12 @@ ov <- computeOverlaps(a549_chipseq_peaks)
 ```
 
 ### 2. Visualize
-```{r, example_venn}
+```{r, example_venn, dpi=300}
 # Draw Venn diagram
 plotVenn(ov)
 ```
 
-```{r, example_upset, fig.width=5, fig.height=2.5}
+```{r, example_upset, fig.width=5, fig.height=2.5, dpi=300}
 # Draw UpSet plot (useful for larger numbers of sets)
 plotUpSet(ov)
 ```

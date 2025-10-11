@@ -15,7 +15,7 @@ Description: Tools to compute and visualize overlaps between gene sets or
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 URL: https://github.com/ckntav/gVenn, https://ckntav.github.io/gVenn/
 BugReports: https://github.com/ckntav/gVenn/issues
 Suggests: 

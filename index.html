@@ -71,10 +71,20 @@ It provides tools to compute overlaps between genomic regions or sets of genes a
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of gVenn from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>The gVenn package is available through Bioconductor and GitHub.</p>
+<p>You can install it from Bioconductor using:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"ckntav/gVenn"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.github.io/BiocManager/" class="external-link">"BiocManager"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="st">"gVenn"</span><span class="op">)</span></span></code></pre></div>
+<p>To install the development version from GitHub, use:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")  # if not already installed</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"ckntav/gVenn"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># or, alternatively:</span></span>
+<span><span class="co"># install.packages("devtools")  # if not already installed</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ckntav/gVenn"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
@@ -83,7 +93,7 @@ It provides tools to compute overlaps between genomic regions or sets of genes a
 <div class="section level3">
 <h3 id="id_1-load-example-chip-seq-data-and-compute-overlaps">1. Load example ChIP-seq data and compute overlaps<a class="anchor" aria-label="anchor" href="#id_1-load-example-chip-seq-data-and-compute-overlaps"></a>
 </h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ckntav/gVenn" class="external-link">gVenn</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Example dataset of ChIP-seq peaks (A549 cell line, 3 genomic regions)</span></span>
@@ -96,11 +106,11 @@ It provides tools to compute overlaps between genomic regions or sets of genes a
 <div class="section level3">
 <h3 id="id_2-visualize">2. Visualize<a class="anchor" aria-label="anchor" href="#id_2-visualize"></a>
 </h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Draw Venn diagram</span></span>
 <span><span class="fu"><a href="reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">ov</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-example_venn-1.png" width="100%"></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Draw UpSet plot (useful for larger numbers of sets)</span></span>
 <span><span class="fu"><a href="reference/plotUpSet.html">plotUpSet</a></span><span class="op">(</span><span class="va">ov</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-example_upset-1.png" width="100%"></p>
@@ -108,9 +118,9 @@ It provides tools to compute overlaps between genomic regions or sets of genes a
 <div class="section level3">
 <h3 id="id_3-extract-elements-per-overlap-group">3. Extract elements per overlap group<a class="anchor" aria-label="anchor" href="#id_3-extract-elements-per-overlap-group"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/extractOverlaps.html">extractOverlaps</a></span><span class="op">(</span><span class="va">ov</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/extractOverlaps.html">extractOverlaps</a></span><span class="op">(</span><span class="va">ov</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Display the number of genomic regions per overlap group</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">groups</span>, <span class="va">length</span><span class="op">)</span></span>
 <span><span class="co">#&gt; group_010 group_001 group_100 group_110 group_011 group_101 group_111 </span></span>
@@ -172,7 +182,7 @@ It provides tools to compute overlaps between genomic regions or sets of genes a
 </h4>
 <p>Each overlap group can be accessed directly by name for downstream analyses, including motif enrichment, transcription factor (TF) enrichment, annotation of peaks to nearby genes, functional enrichment or visualization.</p>
 <p>For example, to extract all elements that are present in <strong>A ∩ B ∩ C</strong>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Extract elements in group_111 (present in A, B, and C)</span></span>
 <span><span class="va">peaks_in_all_sets</span> <span class="op">&lt;-</span> <span class="va">groups</span><span class="op">[[</span><span class="st">"group_111"</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>

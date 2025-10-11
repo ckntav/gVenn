@@ -28,12 +28,25 @@ and produces clean, publication-ready figures.
 
 ## Installation
 
-You can install the development version of gVenn from
-[GitHub](https://github.com/) with:
+The gVenn package is available through Bioconductor and GitHub.
+
+You can install it from Bioconductor using:
 
 ``` r
-# install.packages("pak")
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("gVenn")
+```
+
+To install the development version from GitHub, use:
+
+``` r
+# install.packages("pak")  # if not already installed
 pak::pak("ckntav/gVenn")
+
+# or, alternatively:
+# install.packages("devtools")  # if not already installed
+devtools::install_github("ckntav/gVenn")
 ```
 
 ## Quick start

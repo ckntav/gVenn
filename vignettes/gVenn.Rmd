@@ -47,6 +47,29 @@ knitr::include_graphics("figures/20250827_graphical_abstract_v2.png")
 ```
 <br>
 
+# Installation
+
+The gVenn package is available through Bioconductor and GitHub.
+
+You can install it from Bioconductor using:
+```{r, install-bioconductor, eval=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("gVenn")
+```
+
+To install the development version from GitHub, use:
+
+```{r, install-github, eval=FALSE}
+# install.packages("pak")  # if not already installed
+pak::pak("ckntav/gVenn")
+
+# or, alternatively:
+# install.packages("devtools")  # if not already installed
+devtools::install_github("ckntav/gVenn")
+```
+<br>
+
 # Example workflow
 
 This section demonstrates a typical workflow with gVenn, from computing overlaps to generating clean, publication-ready figures. The examples show how to work with genomic interval data.
@@ -204,6 +227,73 @@ exportOverlaps(genomic_overlaps,
                output_dir = ".",
                output_file = "overlap_groups")
 ```
+<br>
+
+# Customization examples
+
+This section shows common ways to customize the Venn diagram produced by `plotVenn()`.
+
+```{r venn-custom-default, fig.width=6, fig.height=4}
+# Load the example gene_list
+data(gene_list)
+
+# compute overlaps between gene set
+res_sets <- computeOverlaps(gene_list)
+
+# basic default venn plot (uses package defaults)
+plotVenn(res_sets)
+```
+<br>
+
+#### Custom fills with transparency
+``` {r venn-custom-fills, fig.width=6, fig.height=4, fig.align="center"}
+plotVenn(res_sets,
+         fills = list(fill = c("#FF6B6B", "#4ECDC4", "#45B7D1"), alpha = 0.5),
+         legend = "right",
+         main = list(label = "Custom fills (transparent)", fontsize = 14))
+```
+<br>
+
+#### Colored edges, no fills (colored borders only)
+``` {r venn-transparent-fills, fig.width=6, fig.height=4, fig.align="center"}
+plotVenn(res_sets,
+         fills = "transparent",
+         edges = list(col = c("red", "blue", "darkgreen"), lwd = 2),
+         main = list(label = "Colored borders only"))
+```
+<br>
+
+#### Custom labels and counts + percentages
+``` {r venn-labels-quantities, fig.width=6, fig.height=4, fig.align="center"}
+plotVenn(res_sets,
+         labels = list(col = "black", fontsize = 12, font = 2),
+         quantities = list(type = c("counts","percent"),
+                           col = "black", fontsize = 10),
+         main = list(label = "Counts + Percentages", fontsize = 14))
+```
+<br>
+
+#### Legend at the bottom with custom text
+``` {r venn-legend-bottom, fig.width=6, fig.height=4, fig.align="center"}
+plotVenn(res_sets,
+         legend = list(side = "bottom",
+                       labels = c("Treatment A","Treatment B","Control"),
+                       fontsize = 10),
+         main = list(label = "Custom legend"))
+```
+<br>
+
+#### Combining multiple custom options
+``` {r venn-multiple-custom, fig.width=6, fig.height=4, fig.align="center"}
+plotVenn(res_sets,
+         fills = list(fill = c("#2B70AB", "#FFB027", "#3EA742"), alpha = 0.6),
+         edges = list(col = "gray30", lwd = 1.5),
+         labels = list(col = "black", fontsize = 7, font = 2),
+         quantities = list(type = "counts", col = "black", fontsize = 10),
+         main = list(label = "multiple custom options Venn", fontsize = 16, font = 2),
+         legend = FALSE)
+```
+<br>
 
 # Session info
 

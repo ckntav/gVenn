@@ -96,7 +96,7 @@ It provides tools to compute overlaps between genomic regions or sets of genes a
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ckntav/gVenn" class="external-link">gVenn</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Example dataset of ChIP-seq peaks (A549 cell line, 3 genomic regions)</span></span>
+<span><span class="co"># Example dataset of ChIP-seq peaks (A549 cell line, 3 set of genomic regions)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">a549_chipseq_peaks</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Compute overlaps</span></span>
@@ -125,6 +125,12 @@ It provides tools to compute overlaps between genomic regions or sets of genes a
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">groups</span>, <span class="va">length</span><span class="op">)</span></span>
 <span><span class="co">#&gt; group_010 group_001 group_100 group_110 group_011 group_101 group_111 </span></span>
 <span><span class="co">#&gt;       267       125         4        48        46        16       243</span></span></code></pre></div>
+<p>In this example:</p>
+<ul>
+<li>243 peaks are shared across all three factors (MED1, BRD4, and GR)</li>
+<li>267 peaks are unique to BRD4</li>
+<li>48 peaks are shared between MED1 and BRD4 only</li>
+</ul>
 <div class="section level4">
 <h4 id="overlap-group-naming">Overlap group naming<a class="anchor" aria-label="anchor" href="#overlap-group-naming"></a>
 </h4>
@@ -183,7 +189,7 @@ It provides tools to compute overlaps between genomic regions or sets of genes a
 <p>Each overlap group can be accessed directly by name for downstream analyses, including motif enrichment, transcription factor (TF) enrichment, annotation of peaks to nearby genes, functional enrichment or visualization.</p>
 <p>For example, to extract all elements that are present in <strong>A ∩ B ∩ C</strong>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Extract elements in group_111 (present in A, B, and C)</span></span>
+<code class="sourceCode R"><span><span class="co"># Extract elements in group_111 (present in all three sets: MED1_Dex_chr7, BRD4_Dex_chr7, GR_Dex_chr7)</span></span>
 <span><span class="va">peaks_in_all_sets</span> <span class="op">&lt;-</span> <span class="va">groups</span><span class="op">[[</span><span class="st">"group_111"</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Display the elements</span></span>

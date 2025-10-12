@@ -72,23 +72,24 @@ devtools::install_github("ckntav/gVenn")
 
 # Example workflow
 
-This section demonstrates a typical workflow with gVenn, from computing overlaps to generating clean, publication-ready figures. The examples show how to work with genomic interval data.
+This section demonstrates a typical workflow with gVenn, from computing
+overlaps to generating clean, publication-ready figures. The examples show how
+to work with genomic interval data.
 
 We start by loading the package:
 ```{r setup}
 library(gVenn)
 ```
 
-## 1. Load example ChIP-seq genomic regions
+## 1. Load example ChIP-seq peak sets (genomic)
 
-We use the dataset **`a549_chipseq_dataset`**, which contains example consensus
+We use the dataset **`a549_chipseq_peaks`**, which contains example consensus
 peak subsets for **MED1**, **BRD4**, and **GR** after dexamethasone treatment
 in A549 cells. To keep the dataset small and suitable for examples and tests,
 each set has been restricted to peaks located on *chromosome 7*.  
 
 These data originate from Tav *et al.* (2023)
-<a href="https://doi.org/10.3389/fgene.2023.1237092" target="_blank">
-doi:10.3389/fgene.2023.1237092</a>.
+(<a href="https://doi.org/10.3389/fgene.2023.1237092" target="_blank">doi:10.3389/fgene.2023.1237092</a>).
 
 ```{r, load_chip_dataset}
 # Load the example A549 ChIP-seq peaks (subset on chr7 for demo)
@@ -102,12 +103,12 @@ We compute overlaps between the ChIP-seq peak sets using `computeOverlaps()`:
 genomic_overlaps <- computeOverlaps(a549_chipseq_peaks)
 ```
 
-The result is a structured object that contains
+The result is a structured `GenomicOverlapResult` object that contains:
 
 - A GRanges object, where each region includes metadata describing its
 overlap pattern across the input sets.
-- An associated count matrix (or data frame) summarizing the number of
-regions in each intersection.
+- An associated logical matrix (or data frame) indicating which reduced regions
+overlap with which input sets.
 
 ## 3. Visualization
 
@@ -175,7 +176,14 @@ groups <- extractOverlaps(genomic_overlaps)
 # Display the number of genomic regions per overlap group
 sapply(groups, length)
 ```
-<br>
+
+In this example:
+
+ - 243 peaks are shared across all three factors (MED1, BRD4, and GR)
+ - 267 peaks are unique to BRD4
+ - 48 peaks are shared between MED1 and BRD4 only
+ 
+ <br>
 
 #### Overlap group naming
 When overlaps are computed, each group of elements or genomic regions is
@@ -206,7 +214,7 @@ peaks to nearby genes, functional enrichment or visualization.
 For example, to extract all elements that are present in **A ∩ B ∩ C**:
 
 ```{r, extractOverlaps_example3}
-# Extract elements in group_111 (present in A, B, and C)
+# Extract elements in group_111 (present in all three sets: MED1, BRD4, and GR)
 peaks_in_all_sets <- groups[["group_111"]]
 
 # Display the elements
@@ -222,8 +230,8 @@ each group to a Excel file, which makes it easy to reuse the results outside of
 R.
 
 ```{r, exportOverlaps, eval=FALSE}
-# export overlpas
-exportOverlaps(genomic_overlaps,
+# export overlaps
+exportOverlaps(groups,
                output_dir = ".",
                output_file = "overlap_groups")
 ```
@@ -232,12 +240,13 @@ exportOverlaps(genomic_overlaps,
 # Customization examples
 
 This section shows common ways to customize the Venn diagram produced by `plotVenn()`.
+All examples use the built-in `gene_list` dataset.
 
-```{r venn-custom-default, fig.width=6, fig.height=4}
-# Load the example gene_list
+```{r venn-custom-default, fig.width=6, fig.height=4, fig.align="center"}
+# load the example gene_list
 data(gene_list)
 
-# compute overlaps between gene set
+# compute overlaps between gene sets
 res_sets <- computeOverlaps(gene_list)
 
 # basic default venn plot (uses package defaults)
@@ -297,6 +306,7 @@ plotVenn(res_sets,
 
 # Session info
 
+This vignette was built with the following R session:
 ```{r session-info}
 sessionInfo()
 ```

@@ -59,7 +59,7 @@ peaks and visualize them with both a Venn diagram and an UpSet plot.
 ``` r
 library(gVenn)
 
-# Example dataset of ChIP-seq peaks (A549 cell line, 3 genomic regions)
+# Example dataset of ChIP-seq peaks (A549 cell line, 3 set of genomic regions)
 data(a549_chipseq_peaks)
 
 # Compute overlaps
@@ -96,6 +96,12 @@ sapply(groups, length)
 #>       267       125         4        48        46        16       243
 ```
 
+In this example:
+
+- 243 peaks are shared across all three factors (MED1, BRD4, and GR)
+- 267 peaks are unique to BRD4
+- 48 peaks are shared between MED1 and BRD4 only
+
 #### Overlap group naming
 
 When overlaps are computed, each group of elements or genomic regions is
@@ -130,7 +136,7 @@ or visualization.
 For example, to extract all elements that are present in **A ∩ B ∩ C**:
 
 ``` r
-# Extract elements in group_111 (present in A, B, and C)
+# Extract elements in group_111 (present in all three sets: MED1_Dex_chr7, BRD4_Dex_chr7, GR_Dex_chr7)
 peaks_in_all_sets <- groups[["group_111"]]
 
 # Display the elements

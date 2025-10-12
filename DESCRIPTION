@@ -1,6 +1,6 @@
 Package: gVenn
 Title: Proportional Venn and UpSet Diagrams for Gene Sets and Genomic Regions
-Version: 0.99.1
+Version: 0.99.2
 Authors@R:
     person("Christophe", "Tav",
     email = "christophe.tav@gmail.com",

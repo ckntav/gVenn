@@ -1,3 +1,20 @@
+# gVenn 0.99.2
+
+## New Features
+
+- Add customization options for `plotVenn()`.
+
+## Documentation
+
+- Improved clarity in function documentation and examples.
+- Enhanced vignette with additional customization examples for `plotVenn()`.
+
+# gVenn 0.99.1
+
+## Minor Updates
+
+- Package refinements and documentation improvements for Bioconductor submission.
+
 # gVenn 0.99.0
 
 ## New Features

@@ -11,6 +11,9 @@ vignette: >
   %\VignetteIndexEntry{gVenn}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    fig.bg: "white"
 ---
 
 ```{r, echo=FALSE, out.width="20%", fig.align="center"}

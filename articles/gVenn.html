@@ -123,18 +123,16 @@ examples show how to work with genomic interval data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ckntav/gVenn" class="external-link">gVenn</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="load-example-chip-seq-genomic-regions">1. Load example ChIP-seq genomic regions<a class="anchor" aria-label="anchor" href="#load-example-chip-seq-genomic-regions"></a>
+<h3 id="load-example-chip-seq-peak-sets-genomic">1. Load example ChIP-seq peak sets (genomic)<a class="anchor" aria-label="anchor" href="#load-example-chip-seq-peak-sets-genomic"></a>
 </h3>
-<p>We use the dataset
-<strong><code>a549_chipseq_dataset</code></strong>, which contains
-example consensus peak subsets for <strong>MED1</strong>,
+<p>We use the dataset <strong><code>a549_chipseq_peaks</code></strong>,
+which contains example consensus peak subsets for <strong>MED1</strong>,
 <strong>BRD4</strong>, and <strong>GR</strong> after dexamethasone
 treatment in A549 cells. To keep the dataset small and suitable for
 examples and tests, each set has been restricted to peaks located on
 <em>chromosome 7</em>.</p>
 <p>These data originate from Tav <em>et al.</em> (2023)
-<a href="https://doi.org/10.3389/fgene.2023.1237092" target="_blank" class="external-link">
-doi:10.3389/fgene.2023.1237092</a>.</p>
+(<a href="https://doi.org/10.3389/fgene.2023.1237092" target="_blank" class="external-link">doi:10.3389/fgene.2023.1237092</a>).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load the example A549 ChIP-seq peaks (subset on chr7 for demo)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">a549_chipseq_peaks</span><span class="op">)</span></span></code></pre></div>
@@ -146,12 +144,13 @@ doi:10.3389/fgene.2023.1237092</a>.</p>
 <code><a href="../reference/computeOverlaps.html">computeOverlaps()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">genomic_overlaps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computeOverlaps.html">computeOverlaps</a></span><span class="op">(</span><span class="va">a549_chipseq_peaks</span><span class="op">)</span></span></code></pre></div>
-<p>The result is a structured object that contains</p>
+<p>The result is a structured <code>GenomicOverlapResult</code> object
+that contains:</p>
 <ul>
 <li>A GRanges object, where each region includes metadata describing its
 overlap pattern across the input sets.</li>
-<li>An associated count matrix (or data frame) summarizing the number of
-regions in each intersection.</li>
+<li>An associated logical matrix (or data frame) indicating which
+reduced regions overlap with which input sets.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -220,6 +219,13 @@ the filename.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">groups</span>, <span class="va">length</span><span class="op">)</span></span>
 <span><span class="co">#&gt; group_010 group_001 group_100 group_110 group_011 group_101 group_111 </span></span>
 <span><span class="co">#&gt;       267       125         4        48        46        16       243</span></span></code></pre></div>
+<p>In this example:</p>
+<ul>
+<li>243 peaks are shared across all three factors (MED1, BRD4, and
+GR)</li>
+<li>267 peaks are unique to BRD4</li>
+<li>48 peaks are shared between MED1 and BRD4 only</li>
+</ul>
 <p><br></p>
 <div class="section level5">
 <h5 id="overlap-group-naming">Overlap group naming<a class="anchor" aria-label="anchor" href="#overlap-group-naming"></a>
@@ -289,7 +295,7 @@ or visualization.</p>
 <p>For example, to extract all elements that are present in <strong>A ∩
 B ∩ C</strong>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Extract elements in group_111 (present in A, B, and C)</span></span>
+<code class="sourceCode R"><span><span class="co"># Extract elements in group_111 (present in all three sets: MED1, BRD4, and GR)</span></span>
 <span><span class="va">peaks_in_all_sets</span> <span class="op">&lt;-</span> <span class="va">groups</span><span class="op">[[</span><span class="st">"group_111"</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Display the elements</span></span>
@@ -321,8 +327,8 @@ downstream analysis. The function <code><a href="../reference/exportOverlaps.htm
 each group to a Excel file, which makes it easy to reuse the results
 outside of R.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># export overlpas</span></span>
-<span><span class="fu"><a href="../reference/exportOverlaps.html">exportOverlaps</a></span><span class="op">(</span><span class="va">genomic_overlaps</span>,</span>
+<code class="sourceCode R"><span><span class="co"># export overlaps</span></span>
+<span><span class="fu"><a href="../reference/exportOverlaps.html">exportOverlaps</a></span><span class="op">(</span><span class="va">groups</span>,</span>
 <span>               output_dir <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>               output_file <span class="op">=</span> <span class="st">"overlap_groups"</span><span class="op">)</span></span></code></pre></div>
 <p><br></p>
@@ -333,17 +339,18 @@ outside of R.</p>
 <h2 id="customization-examples">Customization examples<a class="anchor" aria-label="anchor" href="#customization-examples"></a>
 </h2>
 <p>This section shows common ways to customize the Venn diagram produced
-by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>.</p>
+by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All examples use the built-in
+<code>gene_list</code> dataset.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load the example gene_list</span></span>
+<code class="sourceCode R"><span><span class="co"># load the example gene_list</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gene_list</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># compute overlaps between gene set</span></span>
+<span><span class="co"># compute overlaps between gene sets</span></span>
 <span><span class="va">res_sets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computeOverlaps.html">computeOverlaps</a></span><span class="op">(</span><span class="va">gene_list</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># basic default venn plot (uses package defaults)</span></span>
 <span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/venn-custom-default-1.png" width="576"><br></p>
+<p><img src="gVenn_files/figure-html/venn-custom-default-1.png" width="576" style="display: block; margin: auto;"><br></p>
 <div class="section level5">
 <h5 id="custom-fills-with-transparency">Custom fills with transparency<a class="anchor" aria-label="anchor" href="#custom-fills-with-transparency"></a>
 </h5>
@@ -403,6 +410,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>.</p>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
+<p>This vignette was built with the following R session:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.5.1 (2025-06-13)</span></span>

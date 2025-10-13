@@ -1,3 +1,9 @@
+# gVenn 0.99.3
+
+## Minor Updates
+
+- Set default colors in `plotVenn()`.
+
 # gVenn 0.99.2
 
 ## New Features

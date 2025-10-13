@@ -117,8 +117,7 @@ plotVenn <- function(overlap_object,
         # Default colors if fills = TRUE
         default_colors <- c("#2B70AB", "#FFB027", "#3EA742", "#CD3301",
                             "#9370DB", "#008B8B", "#D87093")
-        n_sets <- length(fit$ellipses)
-        fills <- default_colors[1:min(n_sets, length(default_colors))]
+        fills <- default_colors
     } else if (is.character(fills) && length(fills) == 1 && fills == "transparent") {
         # Handle "transparent" as special case
         fills <- "transparent"

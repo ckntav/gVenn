@@ -38,7 +38,7 @@ BED format files, creating one BED file per overlap group."><!-- Google tag (gta
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Export Overlap Groups to BED Files</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ckntav/gVenn/blob/master/R/extractOverlaps.R" class="external-link"><code>R/extractOverlaps.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ckntav/gVenn/blob/master/R/exportOverlaps.R" class="external-link"><code>R/exportOverlaps.R</code></a></small>
       <div class="d-none name"><code>exportOverlapsToBed.Rd</code></div>
     </div>
 
@@ -88,6 +88,14 @@ date to filenames.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Invisibly returns a character vector of file paths created.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>This function only works with genomic overlaps (i.e., when the input to
+<code><a href="extractOverlaps.html">extractOverlaps()</a></code> was a <code>GenomicOverlapResult</code> object, resulting in a
+<code>GRangesList</code>). It does not work with set overlaps (character vectors).
+Each overlap group will be saved as a separate BED file with the group
+identifier included in the filename.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

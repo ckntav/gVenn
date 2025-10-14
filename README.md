@@ -126,7 +126,7 @@ to.
 
 </div>
 
-#### Extract one particular group
+#### Retrieve one particular overlap group
 
 Each overlap group can be accessed directly by name for downstream
 analyses, including motif enrichment, transcription factor (TF)

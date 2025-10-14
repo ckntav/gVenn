@@ -188,7 +188,7 @@ In this example:
  
  <br>
 
-#### Overlap group naming
+### Overlap group naming
 When overlaps are computed, each group of elements or genomic regions is
 labeled with a binary code that indicates which sets the element belongs to.
 
@@ -209,7 +209,7 @@ labeled with a binary code that indicates which sets the element belongs to.
 </div>
 <br>
 
-#### Extract one particular group
+### Extract one particular group
 Each overlap group can be accessed directly by name for downstream analyses,
 including motif enrichment, transcription factor (TF) enrichment, annotation of
 peaks to nearby genes, functional enrichment or visualization.
@@ -225,19 +225,48 @@ peaks_in_all_sets
 ```
 <br>
 
-#### Exporting overlap groups
-
+### Export overlap groups
 Each overlap group (e.g., `group_100`, `group_110`, `group_111`) can be
-exported for downstream analysis. The function `exportOverlaps()` writes
-each group to a Excel file, which makes it easy to reuse the results outside of
-R.
+exported for downstream analysis. The gVenn package provides two export functions
+depending on your data type and downstream needs:
+
+<br>
+
+#### For all overlap types (genomic or gene sets):
+
+The function `exportOverlaps()` writes each group to an Excel file with one
+sheet per overlap group, making it easy to review and reuse the results outside
+of R.
 
 ```{r, exportOverlaps, eval=FALSE}
-# export overlaps
+# export overlaps to Excel file
 exportOverlaps(groups,
                output_dir = ".",
                output_file = "overlap_groups")
 ```
+
+<br>
+
+#### For genomic overlaps only: 
+
+When working with genomic regions (GRanges objects), you can export overlap
+groups as BED files using `exportOverlapsToBed()`. This creates one BED file
+per overlap group, which is ideal for visualization in genome browsers (IGV,
+UCSC Genome Browser) or for downstream analyses requiring BED format input.
+
+```{r, exportOverlapsToBed, eval=FALSE}
+# Export genomic overlaps to BED files
+exportOverlapsToBed(groups,
+                    output_dir = ".",
+                    output_prefix = "overlaps")
+
+# This will create separate BED files such as:
+# - overlaps_group_100.bed
+# - overlaps_group_110.bed
+# - overlaps_group_111.bed
+# etc.
+```
+
 <br>
 
 # Customization examples

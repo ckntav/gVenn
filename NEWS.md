@@ -1,12 +1,25 @@
 # gVenn 0.99.3
 
-## Minor Updates
+## New features
+
+- Add `exportOverlapsToBed()` function to export genomic overlap groups
+to BED format files.
+
+## Documentation
+
+- Updated vignette to include information about `exportOverlapsToBed()` and
+guidance on choosing between `exportOverlaps()` (Excel format) and
+`exportOverlapsToBed()` (BED format) based on data type and downstream needs.
+
+# gVenn 0.99.3
+
+## Minor updates
 
 - Set default colors in `plotVenn()`.
 
 # gVenn 0.99.2
 
-## New Features
+## New features
 
 - Add customization options for `plotVenn()`.
 
@@ -17,13 +30,13 @@
 
 # gVenn 0.99.1
 
-## Minor Updates
+## Minor updates
 
 - Package refinements and documentation improvements for Bioconductor submission.
 
 # gVenn 0.99.0
 
-## New Features
+## New fFatures
 
 - Initial release of the `gVenn` package.
 - Introduced a workflow for overlap analysis:

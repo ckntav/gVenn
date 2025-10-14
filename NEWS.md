@@ -1,4 +1,4 @@
-# gVenn 0.99.3
+# gVenn 0.99.4
 
 ## New features
 

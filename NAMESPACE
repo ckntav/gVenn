@@ -2,6 +2,7 @@
 
 export(computeOverlaps)
 export(exportOverlaps)
+export(exportOverlapsToBed)
 export(extractOverlaps)
 export(plotUpSet)
 export(plotVenn)

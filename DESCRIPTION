@@ -32,6 +32,7 @@ Imports:
     IRanges,
     lubridate,
     methods,
+    rtracklayer,
     stringr,
     writexl
 biocViews: Software, Visualization, ChIPSeq, ATACSeq, Epigenetics,

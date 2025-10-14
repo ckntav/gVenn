@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   gVenn: gVenn.html
-last_built: 2025-10-14T01:34Z
+last_built: 2025-10-14T02:51Z
 urls:
   reference: https://ckntav.github.io/gVenn/reference
   article: https://ckntav.github.io/gVenn/articles

@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gVenn</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -181,13 +181,21 @@ intersection sizes precisely on bar axes.</p>
 crowded).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotUpSet.html">plotUpSet</a></span><span class="op">(</span><span class="va">genomic_overlaps</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/plot_upset-1.png" width="480" style="display: block; margin: auto;"><br></p>
+<p><img src="gVenn_files/figure-html/plot_upset-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><br></p>
+<p>You can customize the colors of the combination matrix dots and
+connecting lines using the <code>comb_col</code> parameter. This
+parameter accepts a single color or a vector of colors:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotUpSet.html">plotUpSet</a></span><span class="op">(</span><span class="va">genomic_overlaps</span>, comb_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"#D87093"</span>,  <span class="st">"#CD3301"</span>, <span class="st">"#9370DB"</span>, <span class="st">"#008B8B"</span>, <span class="st">"#2B70AB"</span>, <span class="st">"#FFB027"</span>, <span class="st">"#3EA742"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="gVenn_files/figure-html/plot_upset_custom-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><br></p>
 </div>
 <div class="section level4">
 <h4 id="export-visualization">Export visualization<a class="anchor" aria-label="anchor" href="#export-visualization"></a>
 </h4>
 <p>You can export any visualization using <code><a href="../reference/saveViz.html">saveViz()</a></code>:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">venn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">genomic_overlaps</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/saveViz.html">saveViz</a></span><span class="op">(</span><span class="va">venn</span>,</span>
 <span>        output_dir <span class="op">=</span> <span class="st">"."</span>,</span>
@@ -197,7 +205,7 @@ crowded).</p>
 enabled the date option (today), the current date will be prepended to
 the filename.</p>
 <p>You can also export to PNG or SVG:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/saveViz.html">saveViz</a></span><span class="op">(</span><span class="va">venn</span>,</span>
 <span>        output_dir <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>        output_file <span class="op">=</span> <span class="st">"figure_gVenn"</span>,</span>
@@ -212,9 +220,9 @@ the filename.</p>
 <div class="section level3">
 <h3 id="extract-elements-per-overlap-group">4. Extract elements per overlap group<a class="anchor" aria-label="anchor" href="#extract-elements-per-overlap-group"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractOverlaps.html">extractOverlaps</a></span><span class="op">(</span><span class="va">genomic_overlaps</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extractOverlaps.html">extractOverlaps</a></span><span class="op">(</span><span class="va">genomic_overlaps</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Display the number of genomic regions per overlap group</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">groups</span>, <span class="va">length</span><span class="op">)</span></span>
 <span><span class="co">#&gt; group_010 group_001 group_100 group_110 group_011 group_101 group_111 </span></span>
@@ -294,7 +302,7 @@ enrichment, annotation of peaks to nearby genes, functional enrichment
 or visualization.</p>
 <p>For example, to extract all elements that are present in <strong>A ∩
 B ∩ C</strong>:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Extract elements in group_111 (present in all three sets: MED1, BRD4, and GR)</span></span>
 <span><span class="va">peaks_in_all_sets</span> <span class="op">&lt;-</span> <span class="va">groups</span><span class="op">[[</span><span class="st">"group_111"</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
@@ -332,7 +340,7 @@ depending on your data type and downstream needs:</p>
 <p>The function <code><a href="../reference/exportOverlaps.html">exportOverlaps()</a></code> writes each group to an
 Excel file with one sheet per overlap group, making it easy to review
 and reuse the results outside of R.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># export overlaps to Excel file</span></span>
 <span><span class="fu"><a href="../reference/exportOverlaps.html">exportOverlaps</a></span><span class="op">(</span><span class="va">groups</span>,</span>
 <span>               output_dir <span class="op">=</span> <span class="st">"."</span>,</span>
@@ -347,7 +355,7 @@ overlap groups as BED files using <code><a href="../reference/exportOverlapsToBe
 This creates one BED file per overlap group, which is ideal for
 visualization in genome browsers (IGV, UCSC Genome Browser) or for
 downstream analyses requiring BED format input.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Export genomic overlaps to BED files</span></span>
 <span><span class="fu"><a href="../reference/exportOverlapsToBed.html">exportOverlapsToBed</a></span><span class="op">(</span><span class="va">groups</span>,</span>
 <span>                    output_dir <span class="op">=</span> <span class="st">"."</span>,</span>
@@ -369,7 +377,7 @@ downstream analyses requiring BED format input.</p>
 <p>This section shows common ways to customize the Venn diagram produced
 by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All examples use the built-in
 <code>gene_list</code> dataset.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load the example gene_list</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gene_list</span><span class="op">)</span></span>
 <span></span>
@@ -382,7 +390,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <div class="section level5">
 <h5 id="custom-fills-with-transparency">Custom fills with transparency<a class="anchor" aria-label="anchor" href="#custom-fills-with-transparency"></a>
 </h5>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span>,</span>
 <span>         fills <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#FF6B6B"</span>, <span class="st">"#4ECDC4"</span>, <span class="st">"#45B7D1"</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>         legend <span class="op">=</span> <span class="st">"right"</span>,</span>
@@ -392,7 +400,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <div class="section level5">
 <h5 id="colored-edges-no-fills-colored-borders-only">Colored edges, no fills (colored borders only)<a class="anchor" aria-label="anchor" href="#colored-edges-no-fills-colored-borders-only"></a>
 </h5>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span>,</span>
 <span>         fills <span class="op">=</span> <span class="st">"transparent"</span>,</span>
 <span>         edges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"darkgreen"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
@@ -402,7 +410,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <div class="section level5">
 <h5 id="custom-labels-and-counts-percentages">Custom labels and counts + percentages<a class="anchor" aria-label="anchor" href="#custom-labels-and-counts-percentages"></a>
 </h5>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span>,</span>
 <span>         labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, fontsize <span class="op">=</span> <span class="fl">12</span>, font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
 <span>         quantities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"counts"</span>,<span class="st">"percent"</span><span class="op">)</span>,</span>
@@ -413,7 +421,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <div class="section level5">
 <h5 id="legend-at-the-bottom-with-custom-text">Legend at the bottom with custom text<a class="anchor" aria-label="anchor" href="#legend-at-the-bottom-with-custom-text"></a>
 </h5>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span>,</span>
 <span>         legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>side <span class="op">=</span> <span class="st">"bottom"</span>,</span>
 <span>                       labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment A"</span>,<span class="st">"Treatment B"</span>,<span class="st">"Control"</span><span class="op">)</span>,</span>
@@ -424,7 +432,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <div class="section level5">
 <h5 id="combining-multiple-custom-options">Combining multiple custom options<a class="anchor" aria-label="anchor" href="#combining-multiple-custom-options"></a>
 </h5>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span>,</span>
 <span>         fills <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#2B70AB"</span>, <span class="st">"#FFB027"</span>, <span class="st">"#3EA742"</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>,</span>
 <span>         edges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"gray30"</span>, lwd <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span>,</span>
@@ -439,7 +447,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <p>This vignette was built with the following R session:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.5.1 (2025-06-13)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
@@ -463,7 +471,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] gVenn_0.99.4         GenomicRanges_1.60.0 GenomeInfoDb_1.44.3 </span></span>
+<span><span class="co">#&gt; [1] gVenn_0.99.5         GenomicRanges_1.60.0 GenomeInfoDb_1.44.3 </span></span>
 <span><span class="co">#&gt; [4] IRanges_2.42.0       S4Vectors_0.46.0     BiocGenerics_0.54.1 </span></span>
 <span><span class="co">#&gt; [7] generics_0.1.4      </span></span>
 <span><span class="co">#&gt; </span></span>

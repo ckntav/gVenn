@@ -1,3 +1,15 @@
+# gVenn 0.99.5
+
+## Minor update
+
+- Add `comb_col` parameter to `plotUpSet()` for customizing the color of
+combination matrix elements.
+
+## Documentation
+
+- Update UpSet plot example in the vignette with color customization of
+combination matrix elements using the `comb_col` parameter.
+
 # gVenn 0.99.4
 
 ## New features
@@ -36,7 +48,7 @@ guidance on choosing between `exportOverlaps()` (Excel format) and
 
 # gVenn 0.99.0
 
-## New fFatures
+## New features
 
 - Initial release of the `gVenn` package.
 - Introduced a workflow for overlap analysis:

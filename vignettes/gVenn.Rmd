@@ -138,6 +138,17 @@ time the Venn becomes visually crowded).
 ```{r, plot_upset, fig.width=5, fig.height=3, fig.align='center'}
 plotUpSet(genomic_overlaps)
 ```
+
+<br>
+
+You can customize the colors of the combination matrix dots and connecting lines 
+using the `comb_col` parameter. This parameter accepts a single color or a
+vector of colors:
+
+```{r, plot_upset_custom, fig.width=5, fig.height=3, fig.align='center'}
+plotUpSet(genomic_overlaps, comb_col = c( "#D87093",  "#CD3301", "#9370DB", "#008B8B", "#2B70AB", "#FFB027", "#3EA742"))
+```
+
 <br>
 
 ### Export visualization

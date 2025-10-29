@@ -1,3 +1,12 @@
+# gVenn 0.99.6
+
+## New features
+
+- Add `bg` parameter to `saveViz()` for controlling plot background color,
+including transparent backgrounds. Users can now save plots with
+`bg = "transparent"` for use in presentations or publications requiring
+transparent backgrounds.
+
 # gVenn 0.99.5
 
 ## Minor update

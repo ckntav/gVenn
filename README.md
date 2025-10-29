@@ -49,6 +49,11 @@ pak::pak("ckntav/gVenn")
 devtools::install_github("ckntav/gVenn")
 ```
 
+## Documentation
+
+For comprehensive documentation and vignettes, visit the [gVenn
+documentation page](https://ckntav.github.io/gVenn/).
+
 ## Quick start
 
 This quick example demonstrates how to compute overlaps between ChIP-seq

@@ -6,6 +6,7 @@
 including transparent backgrounds. Users can now save plots with
 `bg = "transparent"` for use in presentations or publications requiring
 transparent backgrounds.
+- Add hex sticker logo created using the `hexSticker` R package.
 
 # gVenn 0.99.5
 

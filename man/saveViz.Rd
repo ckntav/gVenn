@@ -13,6 +13,7 @@ saveViz(
   width = 5,
   height = 5,
   resolution = 300,
+  bg = "white",
   verbose = TRUE
 )
 }
@@ -39,6 +40,10 @@ current date (from \code{today}) to the filename.}
 
 \item{resolution}{Resolution in DPI (only used for PNG). Default is
 300.}
+
+\item{bg}{Background color for the plot. Default is \code{"white"}.
+Use \code{"transparent"} for a transparent background. This parameter
+is passed to the graphics device (pdf, png, or svg).}
 
 \item{verbose}{Logical. If \code{TRUE}, print a message with the saved
 path. Default \code{TRUE}.}
@@ -73,4 +78,8 @@ the filename.
 
   # Save as SVG
   saveViz(venn_plot, format = "svg", output_dir = tempdir(), output_file = "venn_example")
+
+  # Save with transparent background
+  saveViz(venn_plot, format = "png", bg = "transparent",
+          output_dir = tempdir(), output_file = "venn_transparent")
 }

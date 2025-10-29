@@ -16,6 +16,9 @@
 #'   extension). Defaults to `"viz_genomicVenn"`.
 #' @param format Output format. One of `"pdf"`, `"png"`, or `"svg"`.
 #'   Defaults to `"pdf"`.
+#' @param bg Background color for the plot. Default is `"white"`.
+#'   Use `"transparent"` for a transparent background. This parameter
+#'   is passed to the graphics device (pdf, png, or svg).
 #' @param with_date Logical (default `TRUE`). Whether to prepend the
 #'   current date (from `today`) to the filename.
 #' @param width Width of the output file in inches. Default is 5.
@@ -47,6 +50,10 @@
 #'
 #'   # Save as SVG
 #'   saveViz(venn_plot, format = "svg", output_dir = tempdir(), output_file = "venn_example")
+#'
+#'   # Save with transparent background
+#'   saveViz(venn_plot, format = "png", bg = "transparent",
+#'           output_dir = tempdir(), output_file = "venn_transparent")
 saveViz <- function(viz,
                     output_dir = ".",
                     output_file = "figure_gVenn",
@@ -55,6 +62,7 @@ saveViz <- function(viz,
                     width = 5,
                     height = 5,
                     resolution = 300,
+                    bg = "white",
                     verbose = TRUE) {
     format <- match.arg(format, choices = c("pdf", "png", "svg"))
 
@@ -69,9 +77,9 @@ saveViz <- function(viz,
     filepath <- file.path(output_dir, paste0(output_file, ".", format))
 
     switch(format,
-           pdf = grDevices::pdf(file = filepath, width = width, height = height),
-           png = grDevices::png(file = filepath, width = width, height = height, units = "in", res = resolution),
-           svg = grDevices::svg(file = filepath, width = width, height = height))
+           pdf = grDevices::pdf(file = filepath, width = width, height = height, bg = bg),
+           png = grDevices::png(file = filepath, width = width, height = height, units = "in", res = resolution, bg = bg),
+           svg = grDevices::svg(file = filepath, width = width, height = height, bg = bg))
 
     print(viz)
     grDevices::dev.off()

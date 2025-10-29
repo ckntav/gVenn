@@ -46,7 +46,7 @@ enrichment, transcription factor binding enrichment, or gene annotation.
 
 <br>
 ```{r, echo=FALSE, out.width="100%", fig.align="center"}
-knitr::include_graphics("figures/20250827_graphical_abstract_v2.png")
+knitr::include_graphics("figures/Tav_graphical_abstract_v3_20251029.png")
 ```
 <br>
 

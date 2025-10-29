@@ -17,7 +17,7 @@ knitr:
 ---
 
 ```{r, echo=FALSE, out.width="20%", fig.align="center"}
-knitr::include_graphics("figures/20250827_hex_gVenn_v1.png")
+knitr::include_graphics("figures/gVenn_hex_sticker.png")
 ```
 
 ```{r, include = FALSE}

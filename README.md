@@ -10,7 +10,7 @@
 
 <p align="center">
 
-<img src="man/figures/20250827_hex_gVenn_v1.png" width="175"/>
+<img src="man/figures/gVenn_hex_sticker.png" width="175"/>
 </p>
 
 **gVenn** stands for **gene/genomic Venn**.  

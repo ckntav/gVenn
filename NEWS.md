@@ -7,6 +7,13 @@ including transparent backgrounds. Users can now save plots with
 `bg = "transparent"` for use in presentations or publications requiring
 transparent backgrounds.
 - Add hex sticker logo created using the `hexSticker` R package.
+- Update graphical abstract highlighting gVenn's overlap visualization and 
+extraction capabilities
+
+## Documentation
+
+- Add example to vignette demonstrating transparent background export using
+`bg = "transparent"` parameter in `saveViz()`
 
 # gVenn 0.99.5
 

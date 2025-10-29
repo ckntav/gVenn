@@ -170,15 +170,35 @@ to the filename.
 You can also export to PNG or SVG:
 
 ```{r save_plot2, eval=FALSE}
+# png
 saveViz(venn,
         output_dir = ".",
         output_file = "figure_gVenn",
         format = "png")
 
+# pdf
 saveViz(venn,
         output_dir = ".",
         output_file = "figure_gVenn",
         format = "svg")
+```
+
+By default, the background is white. For presentations or publications with colored backgrounds, figures can be exported with a transparent background using `bg = "transparent"`:
+
+```{r save_plot_transparent, eval=FALSE}
+# png
+saveViz(venn,
+        output_dir = ".",
+        output_file = "figure_gVenn_transparent",
+        format = "png",
+        bg = "transparent")
+
+# svg
+saveViz(venn,
+        output_dir = ".",
+        output_file = "figure_gVenn_transparent",
+        format = "svg",
+        bg = "transparent")
 ```
 
 ## 4. Extract elements per overlap group

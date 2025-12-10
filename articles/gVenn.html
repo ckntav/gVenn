@@ -65,7 +65,7 @@
                         <h4 data-toc-skip class="author">Christophe
 Tav</h4>
             
-            <h4 data-toc-skip class="date">November 2025</h4>
+            <h4 data-toc-skip class="date">December 2025</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ckntav/gVenn/blob/master/vignettes/gVenn.Rmd" class="external-link"><code>vignettes/gVenn.Rmd</code></a></small>
       <div class="d-none name"><code>gVenn.Rmd</code></div>
@@ -73,7 +73,7 @@ Tav</h4>
 
     
     
-<p><img src="figures/gVenn_hex_sticker.png" width="20%" style="display: block; margin: auto;"></p>
+<p><img src="figures/gVenn_hex_sticker.png" class="r-plt" width="20%" style="display: block; margin: auto;"></p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -92,7 +92,7 @@ other interval-based analyses.</p>
 motif enrichment, transcription factor binding enrichment, or gene
 annotation. <strong>gVenn</strong> package produces clean,
 publication-ready figures.</p>
-<p><br><img src="figures/Tav_graphical_abstract_v3_20251029.png" width="100%" style="display: block; margin: auto;"><br></p>
+<p><br><img src="figures/Tav_graphical_abstract_v3_20251029.png" class="r-plt" width="100%" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -163,7 +163,7 @@ reduced regions overlap with which input sets.</li>
 overlap object.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">genomic_overlaps</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/plot_venn-1.png" width="480" style="display: block; margin: auto;"><br></p>
+<p><img src="gVenn_files/figure-html/plot_venn-1.png" class="r-plt" width="480" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level4">
 <h4 id="upset-plot">UpSet plot<a class="anchor" aria-label="anchor" href="#upset-plot"></a>
@@ -181,14 +181,14 @@ intersection sizes precisely on bar axes.</p>
 crowded).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotUpSet.html">plotUpSet</a></span><span class="op">(</span><span class="va">genomic_overlaps</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/plot_upset-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="gVenn_files/figure-html/plot_upset-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p><br></p>
 <p>You can customize the colors of the combination matrix dots and
 connecting lines using the <code>comb_col</code> parameter. This
 parameter accepts a single color or a vector of colors:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotUpSet.html">plotUpSet</a></span><span class="op">(</span><span class="va">genomic_overlaps</span>, comb_col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"#D87093"</span>,  <span class="st">"#CD3301"</span>, <span class="st">"#9370DB"</span>, <span class="st">"#008B8B"</span>, <span class="st">"#2B70AB"</span>, <span class="st">"#FFB027"</span>, <span class="st">"#3EA742"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/plot_upset_custom-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="gVenn_files/figure-html/plot_upset_custom-1.png" class="r-plt" width="480" style="display: block; margin: auto;"></p>
 <p><br></p>
 </div>
 <div class="section level4">
@@ -405,7 +405,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span></span>
 <span><span class="co"># basic default venn plot (uses package defaults)</span></span>
 <span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/venn-custom-default-1.png" width="576" style="display: block; margin: auto;"><br></p>
+<p><img src="gVenn_files/figure-html/venn-custom-default-1.png" class="r-plt" width="576" style="display: block; margin: auto;"><br></p>
 <div class="section level5">
 <h5 id="custom-fills-with-transparency">Custom fills with transparency<a class="anchor" aria-label="anchor" href="#custom-fills-with-transparency"></a>
 </h5>
@@ -414,7 +414,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span>         fills <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#FF6B6B"</span>, <span class="st">"#4ECDC4"</span>, <span class="st">"#45B7D1"</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>         legend <span class="op">=</span> <span class="st">"right"</span>,</span>
 <span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Custom fills (transparent)"</span>, fontsize <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/venn-custom-fills-1.png" width="576" style="display: block; margin: auto;"><br></p>
+<p><img src="gVenn_files/figure-html/venn-custom-fills-1.png" class="r-plt" width="576" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level5">
 <h5 id="colored-edges-no-fills-colored-borders-only">Colored edges, no fills (colored borders only)<a class="anchor" aria-label="anchor" href="#colored-edges-no-fills-colored-borders-only"></a>
@@ -424,7 +424,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span>         fills <span class="op">=</span> <span class="st">"transparent"</span>,</span>
 <span>         edges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"darkgreen"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
 <span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Colored borders only"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/venn-transparent-fills-1.png" width="576" style="display: block; margin: auto;"><br></p>
+<p><img src="gVenn_files/figure-html/venn-transparent-fills-1.png" class="r-plt" width="576" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level5">
 <h5 id="custom-labels-and-counts-percentages">Custom labels and counts + percentages<a class="anchor" aria-label="anchor" href="#custom-labels-and-counts-percentages"></a>
@@ -435,7 +435,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span>         quantities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"counts"</span>,<span class="st">"percent"</span><span class="op">)</span>,</span>
 <span>                           col <span class="op">=</span> <span class="st">"black"</span>, fontsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Counts + Percentages"</span>, fontsize <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/venn-labels-quantities-1.png" width="576" style="display: block; margin: auto;"><br></p>
+<p><img src="gVenn_files/figure-html/venn-labels-quantities-1.png" class="r-plt" width="576" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level5">
 <h5 id="legend-at-the-bottom-with-custom-text">Legend at the bottom with custom text<a class="anchor" aria-label="anchor" href="#legend-at-the-bottom-with-custom-text"></a>
@@ -446,7 +446,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span>                       labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment A"</span>,<span class="st">"Treatment B"</span>,<span class="st">"Control"</span><span class="op">)</span>,</span>
 <span>                       fontsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Custom legend"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/venn-legend-bottom-1.png" width="576" style="display: block; margin: auto;"><br></p>
+<p><img src="gVenn_files/figure-html/venn-legend-bottom-1.png" class="r-plt" width="576" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level5">
 <h5 id="combining-multiple-custom-options">Combining multiple custom options<a class="anchor" aria-label="anchor" href="#combining-multiple-custom-options"></a>
@@ -459,7 +459,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span>         quantities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"counts"</span>, col <span class="op">=</span> <span class="st">"black"</span>, fontsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"multiple custom options Venn"</span>, fontsize <span class="op">=</span> <span class="fl">16</span>, font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
 <span>         legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="gVenn_files/figure-html/venn-multiple-custom-1.png" width="576" style="display: block; margin: auto;"><br></p>
+<p><img src="gVenn_files/figure-html/venn-multiple-custom-1.png" class="r-plt" width="576" style="display: block; margin: auto;"><br></p>
 </div>
 </div>
 <div class="section level2">
@@ -497,22 +497,22 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
 <span><span class="co">#&gt;  [1] eulerr_7.0.4          sass_0.4.10           shape_1.4.6.1        </span></span>
 <span><span class="co">#&gt;  [4] polylabelr_0.3.0      stringi_1.8.7         magrittr_2.0.4       </span></span>
-<span><span class="co">#&gt;  [7] digest_0.6.37         evaluate_1.0.5        grid_4.5.2           </span></span>
+<span><span class="co">#&gt;  [7] digest_0.6.39         evaluate_1.0.5        grid_4.5.2           </span></span>
 <span><span class="co">#&gt; [10] timechange_0.3.0      RColorBrewer_1.1-3    iterators_1.0.14     </span></span>
-<span><span class="co">#&gt; [13] circlize_0.4.16       fastmap_1.2.0         foreach_1.5.2        </span></span>
-<span><span class="co">#&gt; [16] doParallel_1.0.17     jsonlite_2.0.0        GlobalOptions_0.1.2  </span></span>
+<span><span class="co">#&gt; [13] circlize_0.4.17       fastmap_1.2.0         foreach_1.5.2        </span></span>
+<span><span class="co">#&gt; [16] doParallel_1.0.17     jsonlite_2.0.0        GlobalOptions_0.1.3  </span></span>
 <span><span class="co">#&gt; [19] ComplexHeatmap_2.26.0 codetools_0.2-20      textshaping_1.0.4    </span></span>
 <span><span class="co">#&gt; [22] jquerylib_0.1.4       cli_3.6.5             rlang_1.1.6          </span></span>
 <span><span class="co">#&gt; [25] crayon_1.5.3          polyclip_1.10-7       cachem_1.1.0         </span></span>
-<span><span class="co">#&gt; [28] yaml_2.3.10           tools_4.5.2           parallel_4.5.2       </span></span>
-<span><span class="co">#&gt; [31] colorspace_2.1-2      GetoptLong_1.0.5      vctrs_0.6.5          </span></span>
+<span><span class="co">#&gt; [28] yaml_2.3.11           tools_4.5.2           parallel_4.5.2       </span></span>
+<span><span class="co">#&gt; [31] colorspace_2.1-2      GetoptLong_1.1.0      vctrs_0.6.5          </span></span>
 <span><span class="co">#&gt; [34] R6_2.6.1              png_0.1-8             matrixStats_1.5.0    </span></span>
-<span><span class="co">#&gt; [37] lifecycle_1.0.4       lubridate_1.9.4       stringr_1.5.2        </span></span>
+<span><span class="co">#&gt; [37] lifecycle_1.0.4       lubridate_1.9.4       stringr_1.6.0        </span></span>
 <span><span class="co">#&gt; [40] fs_1.6.6              clue_0.3-66           cluster_2.1.8.1      </span></span>
-<span><span class="co">#&gt; [43] ragg_1.5.0            desc_1.4.3            pkgdown_2.1.3        </span></span>
+<span><span class="co">#&gt; [43] ragg_1.5.0            desc_1.4.3            pkgdown_2.2.0        </span></span>
 <span><span class="co">#&gt; [46] bslib_0.9.0           glue_1.8.0            Rcpp_1.1.0           </span></span>
 <span><span class="co">#&gt; [49] systemfonts_1.3.1     xfun_0.54             knitr_1.50           </span></span>
-<span><span class="co">#&gt; [52] rjson_0.2.23          htmltools_0.5.8.1     rmarkdown_2.30       </span></span>
+<span><span class="co">#&gt; [52] rjson_0.2.23          htmltools_0.5.9       rmarkdown_2.30       </span></span>
 <span><span class="co">#&gt; [55] compiler_4.5.2</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -560,7 +560,7 @@ doi:10.1093/bioinformatics/btw313 </a></p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

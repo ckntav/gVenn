@@ -36,6 +36,9 @@ publication-ready figures.
 <img src="man/figures/Tav_graphical_abstract_v3_20251029.png" width="800"/>
 </p>
 
+> The gVenn hex logo was generated using the [hexSticker](https://github.com/GuangchuangYu/hexSticker) R package ([code](https://github.com/ckntav/gVenn_manuscript/blob/main/scripts/generate_hex_sticker_logo/02_generate_hex_sticker.R))
+
+
 ## Installation
 
 The gVenn package is available through Bioconductor and GitHub.

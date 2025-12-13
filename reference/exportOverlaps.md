@@ -54,5 +54,5 @@ full path to the saved file.
 res <- computeOverlaps(list(A = letters[1:3], B = letters[2:4]))
 grouped <- extractOverlaps(res)
 exportOverlaps(grouped, output_dir = tempdir(), output_file = "overlap_groups")
-#>  > Overlap groups saved in /tmp/RtmpPgQZi7/20251213_overlap_groups.xlsx
+#>  > Overlap groups saved in /tmp/RtmpXKRec3/20251213_overlap_groups.xlsx
 ```

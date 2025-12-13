@@ -92,25 +92,25 @@ path to the saved file.
   ov_sets <- computeOverlaps(gene_list)
   venn_plot <- plotVenn(ov_sets)
   saveViz(venn_plot, output_dir = tempdir(), output_file = "venn_sets")
-#>  > Visualization (pdf) saved in /tmp/RtmpwWwKur/20251210_venn_sets.pdf
+#>  > Visualization (pdf) saved in /tmp/RtmpfpCeIe/20251213_venn_sets.pdf
 
   # Example with a built-in genomic dataset
   data(a549_chipseq_peaks)
   ov_genomic <- computeOverlaps(a549_chipseq_peaks)
   upset_plot <- plotUpSet(ov_genomic)
   saveViz(upset_plot, output_dir = tempdir(), output_file = "upset_genomic")
-#>  > Visualization (pdf) saved in /tmp/RtmpwWwKur/20251210_upset_genomic.pdf
+#>  > Visualization (pdf) saved in /tmp/RtmpfpCeIe/20251213_upset_genomic.pdf
 
   # Save as PNG instead of PDF
   saveViz(upset_plot, format = "png", output_dir = tempdir(), output_file = "upset_example")
-#>  > Visualization (png) saved in /tmp/RtmpwWwKur/20251210_upset_example.png
+#>  > Visualization (png) saved in /tmp/RtmpfpCeIe/20251213_upset_example.png
 
   # Save as SVG
   saveViz(venn_plot, format = "svg", output_dir = tempdir(), output_file = "venn_example")
-#>  > Visualization (svg) saved in /tmp/RtmpwWwKur/20251210_venn_example.svg
+#>  > Visualization (svg) saved in /tmp/RtmpfpCeIe/20251213_venn_example.svg
 
   # Save with transparent background
   saveViz(venn_plot, format = "png", bg = "transparent",
           output_dir = tempdir(), output_file = "venn_transparent")
-#>  > Visualization (png) saved in /tmp/RtmpwWwKur/20251210_venn_transparent.png
+#>  > Visualization (png) saved in /tmp/RtmpfpCeIe/20251213_venn_transparent.png
 ```

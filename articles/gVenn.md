@@ -425,7 +425,7 @@ sessionInfo()
 #> [8] base     
 #> 
 #> other attached packages:
-#> [1] gVenn_1.1.1          GenomicRanges_1.62.0 Seqinfo_1.0.0       
+#> [1] gVenn_1.1.1          GenomicRanges_1.62.1 Seqinfo_1.0.0       
 #> [4] IRanges_2.44.0       S4Vectors_0.48.0     BiocGenerics_0.56.0 
 #> [7] generics_0.1.4      
 #> 
@@ -439,7 +439,7 @@ sessionInfo()
 #> [19] ComplexHeatmap_2.26.0 codetools_0.2-20      textshaping_1.0.4    
 #> [22] jquerylib_0.1.4       cli_3.6.5             rlang_1.1.6          
 #> [25] crayon_1.5.3          polyclip_1.10-7       cachem_1.1.0         
-#> [28] yaml_2.3.11           tools_4.5.2           parallel_4.5.2       
+#> [28] yaml_2.3.12           tools_4.5.2           parallel_4.5.2       
 #> [31] colorspace_2.1-2      GetoptLong_1.1.0      vctrs_0.6.5          
 #> [34] R6_2.6.1              png_0.1-8             matrixStats_1.5.0    
 #> [37] lifecycle_1.0.4       lubridate_1.9.4       stringr_1.6.0        

@@ -1,7 +1,7 @@
 # gVenn
 
 ![Maintainer](https://img.shields.io/badge/maintainer-ckntav-blue)![Last
-commit](https://img.shields.io/github/last-commit/ckntav/gVenn)
+commit](https://img.shields.io/github/last-commit/ckntav/gVenn)[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17918548.svg)](https://doi.org/10.5281/zenodo.17918548)
 
 **Proportional Venn diagrams for genomic regions and gene set overlaps**
 

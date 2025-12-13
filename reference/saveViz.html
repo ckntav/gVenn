@@ -46,7 +46,7 @@ the filename."><!-- Google tag (gtag.js) --><script async src="https://www.googl
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Save a Visualization to File (PDF, PNG, or SVG)</h1>
-      <small class="dont-index">Source: <a href="https://github.com/ckntav/gVenn/blob/v.1.1.1/R/saveViz.R" class="external-link"><code>R/saveViz.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ckntav/gVenn/blob/master/R/saveViz.R" class="external-link"><code>R/saveViz.R</code></a></small>
       <div class="d-none name"><code>saveViz.Rd</code></div>
     </div>
 
@@ -142,27 +142,27 @@ returns the full path to the saved file.</p>
 <span class="r-in"><span>  <span class="va">ov_sets</span> <span class="op">&lt;-</span> <span class="fu"><a href="computeOverlaps.html">computeOverlaps</a></span><span class="op">(</span><span class="va">gene_list</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">venn_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">ov_sets</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">saveViz</span><span class="op">(</span><span class="va">venn_plot</span>, output_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, output_file <span class="op">=</span> <span class="st">"venn_sets"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; Visualization (pdf) saved in /tmp/RtmpfpCeIe/20251213_venn_sets.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; Visualization (pdf) saved in /tmp/RtmpPgQZi7/20251213_venn_sets.pdf</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># Example with a built-in genomic dataset</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">a549_chipseq_peaks</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">ov_genomic</span> <span class="op">&lt;-</span> <span class="fu"><a href="computeOverlaps.html">computeOverlaps</a></span><span class="op">(</span><span class="va">a549_chipseq_peaks</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">upset_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="plotUpSet.html">plotUpSet</a></span><span class="op">(</span><span class="va">ov_genomic</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">saveViz</span><span class="op">(</span><span class="va">upset_plot</span>, output_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, output_file <span class="op">=</span> <span class="st">"upset_genomic"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; Visualization (pdf) saved in /tmp/RtmpfpCeIe/20251213_upset_genomic.pdf</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; Visualization (pdf) saved in /tmp/RtmpPgQZi7/20251213_upset_genomic.pdf</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># Save as PNG instead of PDF</span></span></span>
 <span class="r-in"><span>  <span class="fu">saveViz</span><span class="op">(</span><span class="va">upset_plot</span>, format <span class="op">=</span> <span class="st">"png"</span>, output_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, output_file <span class="op">=</span> <span class="st">"upset_example"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; Visualization (png) saved in /tmp/RtmpfpCeIe/20251213_upset_example.png</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; Visualization (png) saved in /tmp/RtmpPgQZi7/20251213_upset_example.png</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># Save as SVG</span></span></span>
 <span class="r-in"><span>  <span class="fu">saveViz</span><span class="op">(</span><span class="va">venn_plot</span>, format <span class="op">=</span> <span class="st">"svg"</span>, output_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, output_file <span class="op">=</span> <span class="st">"venn_example"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; Visualization (svg) saved in /tmp/RtmpfpCeIe/20251213_venn_example.svg</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; Visualization (svg) saved in /tmp/RtmpPgQZi7/20251213_venn_example.svg</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># Save with transparent background</span></span></span>
 <span class="r-in"><span>  <span class="fu">saveViz</span><span class="op">(</span><span class="va">venn_plot</span>, format <span class="op">=</span> <span class="st">"png"</span>, bg <span class="op">=</span> <span class="st">"transparent"</span>,</span></span>
 <span class="r-in"><span>          output_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, output_file <span class="op">=</span> <span class="st">"venn_transparent"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; Visualization (png) saved in /tmp/RtmpfpCeIe/20251213_venn_transparent.png</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; Visualization (png) saved in /tmp/RtmpPgQZi7/20251213_venn_transparent.png</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

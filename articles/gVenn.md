@@ -446,7 +446,7 @@ sessionInfo()
 #> [40] fs_1.6.6              clue_0.3-66           cluster_2.1.8.1      
 #> [43] ragg_1.5.0            desc_1.4.3            pkgdown_2.2.0        
 #> [46] bslib_0.9.0           glue_1.8.0            Rcpp_1.1.0           
-#> [49] systemfonts_1.3.1     xfun_0.54             knitr_1.50           
+#> [49] systemfonts_1.3.1     xfun_0.55             knitr_1.51           
 #> [52] rjson_0.2.23          htmltools_0.5.9       rmarkdown_2.30       
 #> [55] compiler_4.5.2
 ```

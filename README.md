@@ -1,11 +1,16 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # gVenn
 
 ![Maintainer](https://img.shields.io/badge/maintainer-ckntav-blue)
 ![Last commit](https://img.shields.io/github/last-commit/ckntav/gVenn)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17918547.svg)](https://doi.org/10.5281/zenodo.17918547)
+
+------------------------------------------------------------------------
+
+**🚀 NEW: gVenn app is now online** (beta version) at
+[ckntav.shinyapps.io/gVenn](https://ckntav.shinyapps.io/gVenn/)
+
+------------------------------------------------------------------------
 
 **Proportional Venn diagrams for genomic regions and gene set overlaps**
 
@@ -84,14 +89,14 @@ ov <- computeOverlaps(a549_chipseq_peaks)
 plotVenn(ov)
 ```
 
-<img src="man/figures/README-example_venn-1.png" width="100%" />
+<img src="man/figures/README-example_venn-1.png" alt="" width="100%" />
 
 ``` r
 # Draw UpSet plot (useful for larger numbers of sets)
 plotUpSet(ov)
 ```
 
-<img src="man/figures/README-example_upset-1.png" width="100%" />
+<img src="man/figures/README-example_upset-1.png" alt="" width="100%" />
 
 ### 3. Extract elements per overlap group
 

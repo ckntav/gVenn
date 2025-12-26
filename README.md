@@ -5,13 +5,6 @@
 ![Last commit](https://img.shields.io/github/last-commit/ckntav/gVenn)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17918547.svg)](https://doi.org/10.5281/zenodo.17918547)
 
-------------------------------------------------------------------------
-
-**🚀 NEW: gVenn app is now online** (beta version) at
-[ckntav.shinyapps.io/gVenn](https://ckntav.shinyapps.io/gVenn/)
-
-------------------------------------------------------------------------
-
 **Proportional Venn diagrams for genomic regions and gene set overlaps**
 
 <p align="center">

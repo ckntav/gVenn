@@ -114,10 +114,11 @@ plotVenn <- function(overlap_object,
 
     # Process fills parameter
     if (is.logical(fills) && fills == TRUE) {
-        # Default colors if fills = TRUE
+        # eulerr requires fills length to be 1, n_sets, or n_subsets;
+        # recycle defaults to n_sets so any set count works.
         default_colors <- c("#2B70AB", "#FFB027", "#3EA742", "#CD3301",
                             "#9370DB", "#008B8B", "#D87093")
-        fills <- default_colors
+        fills <- rep_len(default_colors, ncol(overlap_matrix))
     } else if (is.character(fills) && length(fills) == 1 && fills == "transparent") {
         # Handle "transparent" as special case
         fills <- "transparent"

@@ -9,3 +9,6 @@ inst/doc
 /Meta/
 *.Rproj
 docs
+.positai
+
+.claude

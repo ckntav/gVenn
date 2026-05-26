@@ -1,3 +1,12 @@
+# gVenn 1.3.1
+
+## Bug fixes
+
+- Fix `plotVenn()` failing on 2-set inputs. The default fill palette had
+  a fixed length of 7, which violated eulerr's stricter validation
+  (`fills$fill` must have length 1, `n_sets`, or `n_subsets`). The default
+  is now recycled to match `n_sets`.
+
 # gVenn 1.1.1
 
 ## New features

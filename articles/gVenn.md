@@ -29,6 +29,7 @@ The gVenn package is available through Bioconductor and GitHub.
 You can install it from Bioconductor using:
 
 ``` r
+
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("gVenn")
@@ -37,6 +38,7 @@ BiocManager::install("gVenn")
 To install the development version from GitHub, use:
 
 ``` r
+
 # install.packages("pak")  # if not already installed
 pak::pak("ckntav/gVenn")
 
@@ -56,6 +58,7 @@ show how to work with genomic interval data.
 We start by loading the package:
 
 ``` r
+
 library(gVenn)
 ```
 
@@ -71,6 +74,7 @@ These data originate from Tav *et al.* (2023)
 ([doi:10.3389/fgene.2023.1237092](https://doi.org/10.3389/fgene.2023.1237092)).
 
 ``` r
+
 # Load the example A549 ChIP-seq peaks (subset on chr7 for demo)
 data(a549_chipseq_peaks)
 ```
@@ -81,6 +85,7 @@ We compute overlaps between the ChIP-seq peak sets using
 [`computeOverlaps()`](https://ckntav.github.io/gVenn/reference/computeOverlaps.md):
 
 ``` r
+
 genomic_overlaps <- computeOverlaps(a549_chipseq_peaks)
 ```
 
@@ -99,6 +104,7 @@ The result is a structured `GenomicOverlapResult` object that contains:
 draws proportional Venn diagrams from the overlap object.
 
 ``` r
+
 plotVenn(genomic_overlaps)
 ```
 
@@ -120,6 +126,7 @@ when you have **\> 3 sets** (or any time the Venn becomes visually
 crowded).
 
 ``` r
+
 plotUpSet(genomic_overlaps)
 ```
 
@@ -132,6 +139,7 @@ connecting lines using the `comb_col` parameter. This parameter accepts
 a single color or a vector of colors:
 
 ``` r
+
 plotUpSet(genomic_overlaps, comb_col = c( "#D87093",  "#CD3301", "#9370DB", "#008B8B", "#2B70AB", "#FFB027", "#3EA742"))
 ```
 
@@ -145,6 +153,7 @@ You can export any visualization using
 [`saveViz()`](https://ckntav.github.io/gVenn/reference/saveViz.md):
 
 ``` r
+
 venn <- plotVenn(genomic_overlaps)
 saveViz(venn,
         output_dir = ".",
@@ -159,6 +168,7 @@ the filename.
 You can also export to PNG or SVG:
 
 ``` r
+
 # png
 saveViz(venn,
         output_dir = ".",
@@ -177,6 +187,7 @@ with colored backgrounds, figures can be exported with a transparent
 background using `bg = "transparent"`:
 
 ``` r
+
 # png
 saveViz(venn,
         output_dir = ".",
@@ -195,10 +206,12 @@ saveViz(venn,
 ### 4. Extract elements per overlap group
 
 ``` r
+
 groups <- extractOverlaps(genomic_overlaps)
 ```
 
 ``` r
+
 # Display the number of genomic regions per overlap group
 sapply(groups, length)
 #> group_010 group_001 group_100 group_110 group_011 group_101 group_111 
@@ -245,6 +258,7 @@ or visualization.
 For example, to extract all elements that are present in **A ∩ B ∩ C**:
 
 ``` r
+
 # Extract elements in group_111 (present in all three sets: MED1, BRD4, and GR)
 peaks_in_all_sets <- groups[["group_111"]]
 
@@ -286,6 +300,7 @@ writes each group to an Excel file with one sheet per overlap group,
 making it easy to review and reuse the results outside of R.
 
 ``` r
+
 # export overlaps to Excel file
 exportOverlaps(groups,
                output_dir = ".",
@@ -304,6 +319,7 @@ visualization in genome browsers (IGV, UCSC Genome Browser) or for
 downstream analyses requiring BED format input.
 
 ``` r
+
 # Export genomic overlaps to BED files
 exportOverlapsToBed(groups,
                     output_dir = ".",
@@ -325,6 +341,7 @@ This section shows common ways to customize the Venn diagram produced by
 All examples use the built-in `gene_list` dataset.
 
 ``` r
+
 # load the example gene_list
 data(gene_list)
 
@@ -340,6 +357,7 @@ plotVenn(res_sets)
 ##### Custom fills with transparency
 
 ``` r
+
 plotVenn(res_sets,
          fills = list(fill = c("#FF6B6B", "#4ECDC4", "#45B7D1"), alpha = 0.5),
          legend = "right",
@@ -351,6 +369,7 @@ plotVenn(res_sets,
 ##### Colored edges, no fills (colored borders only)
 
 ``` r
+
 plotVenn(res_sets,
          fills = "transparent",
          edges = list(col = c("red", "blue", "darkgreen"), lwd = 2),
@@ -362,6 +381,7 @@ plotVenn(res_sets,
 ##### Custom labels and counts + percentages
 
 ``` r
+
 plotVenn(res_sets,
          labels = list(col = "black", fontsize = 12, font = 2),
          quantities = list(type = c("counts","percent"),
@@ -374,6 +394,7 @@ plotVenn(res_sets,
 ##### Legend at the bottom with custom text
 
 ``` r
+
 plotVenn(res_sets,
          legend = list(side = "bottom",
                        labels = c("Treatment A","Treatment B","Control"),
@@ -386,6 +407,7 @@ plotVenn(res_sets,
 ##### Combining multiple custom options
 
 ``` r
+
 plotVenn(res_sets,
          fills = list(fill = c("#2B70AB", "#FFB027", "#3EA742"), alpha = 0.6),
          edges = list(col = "gray30", lwd = 1.5),
@@ -402,10 +424,11 @@ plotVenn(res_sets,
 This vignette was built with the following R session:
 
 ``` r
+
 sessionInfo()
-#> R version 4.5.2 (2025-10-31)
+#> R version 4.6.0 (2026-04-24)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.3 LTS
+#> Running under: Ubuntu 24.04.4 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -425,30 +448,30 @@ sessionInfo()
 #> [8] base     
 #> 
 #> other attached packages:
-#> [1] gVenn_1.1.1          GenomicRanges_1.62.1 Seqinfo_1.0.0       
-#> [4] IRanges_2.44.0       S4Vectors_0.48.0     BiocGenerics_0.56.0 
+#> [1] gVenn_1.3.0          GenomicRanges_1.64.0 Seqinfo_1.2.0       
+#> [4] IRanges_2.46.0       S4Vectors_0.50.1     BiocGenerics_0.58.1 
 #> [7] generics_0.1.4      
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] eulerr_7.0.4          sass_0.4.10           shape_1.4.6.1        
-#>  [4] polylabelr_0.3.0      stringi_1.8.7         magrittr_2.0.4       
-#>  [7] digest_0.6.39         evaluate_1.0.5        grid_4.5.2           
-#> [10] timechange_0.3.0      RColorBrewer_1.1-3    iterators_1.0.14     
-#> [13] circlize_0.4.17       fastmap_1.2.0         foreach_1.5.2        
-#> [16] doParallel_1.0.17     jsonlite_2.0.0        GlobalOptions_0.1.3  
-#> [19] ComplexHeatmap_2.26.0 codetools_0.2-20      textshaping_1.0.4    
-#> [22] jquerylib_0.1.4       cli_3.6.5             rlang_1.1.6          
+#>  [1] eulerr_7.1.0          sass_0.4.10           shape_1.4.6.1        
+#>  [4] polylabelr_1.0.0      stringi_1.8.7         magrittr_2.0.5       
+#>  [7] digest_0.6.39         evaluate_1.0.5        grid_4.6.0           
+#> [10] timechange_0.4.0      RColorBrewer_1.1-3    iterators_1.0.14     
+#> [13] circlize_0.4.18       fastmap_1.2.0         foreach_1.5.2        
+#> [16] doParallel_1.0.17     jsonlite_2.0.0        GlobalOptions_0.1.4  
+#> [19] ComplexHeatmap_2.28.0 codetools_0.2-20      textshaping_1.0.5    
+#> [22] jquerylib_0.1.4       cli_3.6.6             rlang_1.2.0          
 #> [25] crayon_1.5.3          polyclip_1.10-7       cachem_1.1.0         
-#> [28] yaml_2.3.12           tools_4.5.2           parallel_4.5.2       
-#> [31] colorspace_2.1-2      GetoptLong_1.1.0      vctrs_0.6.5          
-#> [34] R6_2.6.1              png_0.1-8             matrixStats_1.5.0    
-#> [37] lifecycle_1.0.4       lubridate_1.9.4       stringr_1.6.0        
-#> [40] fs_1.6.6              clue_0.3-66           cluster_2.1.8.1      
-#> [43] ragg_1.5.0            desc_1.4.3            pkgdown_2.2.0        
-#> [46] bslib_0.9.0           glue_1.8.0            Rcpp_1.1.0           
-#> [49] systemfonts_1.3.1     xfun_0.55             knitr_1.51           
-#> [52] rjson_0.2.23          htmltools_0.5.9       rmarkdown_2.30       
-#> [55] compiler_4.5.2
+#> [28] yaml_2.3.12           tools_4.6.0           parallel_4.6.0       
+#> [31] colorspace_2.1-2      GetoptLong_1.1.1      vctrs_0.7.3          
+#> [34] R6_2.6.1              png_0.1-9             matrixStats_1.5.0    
+#> [37] lifecycle_1.0.5       lubridate_1.9.5       stringr_1.6.0        
+#> [40] fs_2.1.0              clue_0.3-68           cluster_2.1.8.2      
+#> [43] ragg_1.5.2            desc_1.4.3            pkgdown_2.2.0        
+#> [46] bslib_0.11.0          glue_1.8.1            Rcpp_1.1.1-1.1       
+#> [49] systemfonts_1.3.2     xfun_0.57             knitr_1.51           
+#> [52] rjson_0.2.23          htmltools_0.5.9       rmarkdown_2.31       
+#> [55] compiler_4.6.0
 ```
 
 ## References

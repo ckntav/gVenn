@@ -1,9 +1,9 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   gVenn: gVenn.html
-last_built: 2025-12-26T22:07Z
+last_built: 2026-05-26T16:21Z
 urls:
   reference: https://ckntav.github.io/gVenn/reference
   article: https://ckntav.github.io/gVenn/articles

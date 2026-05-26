@@ -28,6 +28,7 @@ The gVenn package is available through Bioconductor and GitHub.
 You can install it from Bioconductor using:
 
 ``` r
+
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("gVenn")
@@ -36,6 +37,7 @@ BiocManager::install("gVenn")
 To install the development version from GitHub, use:
 
 ``` r
+
 # install.packages("pak")  # if not already installed
 pak::pak("ckntav/gVenn")
 
@@ -57,6 +59,7 @@ peaks and visualize them with both a Venn diagram and an UpSet plot.
 ### 1. Load example ChIP-seq data and compute overlaps
 
 ``` r
+
 library(gVenn)
 
 # Example dataset of ChIP-seq peaks (A549 cell line, 3 set of genomic regions)
@@ -70,6 +73,7 @@ ov <- computeOverlaps(a549_chipseq_peaks)
 ### 2. Visualize
 
 ``` r
+
 # Draw Venn diagram
 plotVenn(ov)
 ```
@@ -77,6 +81,7 @@ plotVenn(ov)
 ![](reference/figures/README-example_venn-1.png)
 
 ``` r
+
 # Draw UpSet plot (useful for larger numbers of sets)
 plotUpSet(ov)
 ```
@@ -86,10 +91,12 @@ plotUpSet(ov)
 ### 3. Extract elements per overlap group
 
 ``` r
+
 groups <- extractOverlaps(ov)
 ```
 
 ``` r
+
 # Display the number of genomic regions per overlap group
 sapply(groups, length)
 #> group_010 group_001 group_100 group_110 group_011 group_101 group_111 
@@ -132,6 +139,7 @@ or visualization.
 For example, to extract all elements that are present in **A ∩ B ∩ C**:
 
 ``` r
+
 # Extract elements in group_111 (present in all three sets: MED1_Dex_chr7, BRD4_Dex_chr7, GR_Dex_chr7)
 peaks_in_all_sets <- groups[["group_111"]]
 

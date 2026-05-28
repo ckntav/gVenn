@@ -18,7 +18,7 @@ Generated from \pkg{org.Hs.eg.db} (keys of type \code{SYMBOL}),
 using a reproducible random seed.
 }
 \usage{
-gene_list
+data(gene_list)
 }
 \description{
 A synthetic dataset of three gene lists, created from the first 250 human

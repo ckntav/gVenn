@@ -1,3 +1,13 @@
+# gVenn 1.3.2
+
+## Bug fixes
+
+- Fix `plotVenn()` failing with `fills$fill must have length 1, n_sets, or
+  n_subsets` when the data did not populate every region of the diagram.
+  The default fill palette is now recycled to `length(fit$original.values)`
+  (eulerr's `n_subsets`), so every region receives a color regardless of
+  which combinations are populated.
+
 # gVenn 1.3.1
 
 ## Bug fixes

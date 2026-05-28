@@ -112,13 +112,17 @@ plotVenn <- function(overlap_object,
     # Compute Euler fit
     fit <- eulerr::euler(overlap_matrix, shape = "ellipse")
 
+    # Number of subsets as defined by eulerr: every region of the diagram
+    # (2^n_sets - 1), regardless of whether each region is populated.
+    n_subset <- length(fit$original.values)
+
     # Process fills parameter
     if (is.logical(fills) && fills == TRUE) {
         # eulerr requires fills length to be 1, n_sets, or n_subsets;
-        # recycle defaults to n_sets so any set count works.
+        # recycle defaults to n_subset so every region gets a color.
         default_colors <- c("#2B70AB", "#FFB027", "#3EA742", "#CD3301",
                             "#9370DB", "#008B8B", "#D87093")
-        fills <- rep_len(default_colors, ncol(overlap_matrix))
+        fills <- rep_len(default_colors, n_subset)
     } else if (is.character(fills) && length(fills) == 1 && fills == "transparent") {
         # Handle "transparent" as special case
         fills <- "transparent"

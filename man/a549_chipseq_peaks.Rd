@@ -17,7 +17,7 @@ Internal consensus peak sets processed in A549 cells after
 dexamethasone stimulation.
 }
 \usage{
-a549_chipseq_peaks
+data(a549_chipseq_peaks)
 }
 \description{
 Example consensus peak subsets for MED1, BRD4, and GR after dexamethasone

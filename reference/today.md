@@ -21,9 +21,9 @@ A character string (e.g., "20250624").
 # Print the date stored at package load
 library(gVenn)
 today
-#> [1] "20260526"
+#> [1] "20260528"
 
 # Use it in a filename
 paste0("venn_plot_", today, ".pdf")
-#> [1] "venn_plot_20260526.pdf"
+#> [1] "venn_plot_20260528.pdf"
 ```

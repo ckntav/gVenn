@@ -6,7 +6,7 @@ human gene symbols in org.Hs.eg.db.
 ## Usage
 
 ``` r
-gene_list
+data(gene_list)
 ```
 
 ## Format

@@ -8,7 +8,7 @@ tests.
 ## Usage
 
 ``` r
-a549_chipseq_peaks
+data(a549_chipseq_peaks)
 ```
 
 ## Format

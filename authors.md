@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/ckntav/gVenn/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/ckntav/gVenn/blob/v.1.3.2/DESCRIPTION)
 
 Tav C (2026). *gVenn: Proportional Venn and UpSet Diagrams for Gene Sets
 and Genomic Regions*. R package version 1.3.2,

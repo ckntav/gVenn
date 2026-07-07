@@ -426,7 +426,7 @@ This vignette was built with the following R session:
 ``` r
 
 sessionInfo()
-#> R version 4.6.0 (2026-04-24)
+#> R version 4.6.1 (2026-06-24)
 #> Platform: x86_64-pc-linux-gnu
 #> Running under: Ubuntu 24.04.4 LTS
 #> 
@@ -453,25 +453,24 @@ sessionInfo()
 #> [7] generics_0.1.4      
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] eulerr_7.1.0          sass_0.4.10           shape_1.4.6.1        
-#>  [4] polylabelr_1.0.0      stringi_1.8.7         magrittr_2.0.5       
-#>  [7] digest_0.6.39         evaluate_1.0.5        grid_4.6.0           
-#> [10] timechange_0.4.0      RColorBrewer_1.1-3    iterators_1.0.14     
-#> [13] circlize_0.4.18       fastmap_1.2.0         foreach_1.5.2        
-#> [16] doParallel_1.0.17     jsonlite_2.0.0        GlobalOptions_0.1.4  
-#> [19] ComplexHeatmap_2.28.0 codetools_0.2-20      textshaping_1.0.5    
-#> [22] jquerylib_0.1.4       cli_3.6.6             rlang_1.2.0          
-#> [25] crayon_1.5.3          polyclip_1.10-7       cachem_1.1.0         
-#> [28] yaml_2.3.12           tools_4.6.0           parallel_4.6.0       
-#> [31] colorspace_2.1-2      GetoptLong_1.1.1      vctrs_0.7.3          
-#> [34] R6_2.6.1              png_0.1-9             matrixStats_1.5.0    
-#> [37] lifecycle_1.0.5       lubridate_1.9.5       stringr_1.6.0        
-#> [40] fs_2.1.0              clue_0.3-68           cluster_2.1.8.2      
-#> [43] ragg_1.5.2            desc_1.4.3            pkgdown_2.2.0        
-#> [46] bslib_0.11.0          glue_1.8.1            Rcpp_1.1.1-1.1       
-#> [49] systemfonts_1.3.2     xfun_0.57             knitr_1.51           
-#> [52] rjson_0.2.23          htmltools_0.5.9       rmarkdown_2.31       
-#> [55] compiler_4.6.0
+#>  [1] eulerr_8.1.0          sass_0.4.10           shape_1.4.6.1        
+#>  [4] stringi_1.8.7         magrittr_2.0.5        digest_0.6.39        
+#>  [7] evaluate_1.0.5        grid_4.6.1            timechange_0.4.0     
+#> [10] RColorBrewer_1.1-3    iterators_1.0.14      circlize_0.4.18      
+#> [13] fastmap_1.2.0         foreach_1.5.2         doParallel_1.0.17    
+#> [16] jsonlite_2.0.0        GlobalOptions_0.1.4   ComplexHeatmap_2.28.0
+#> [19] codetools_0.2-20      textshaping_1.0.5     jquerylib_0.1.4      
+#> [22] cli_3.6.6             rlang_1.3.0           crayon_1.5.3         
+#> [25] cachem_1.1.0          yaml_2.3.12           otel_0.2.0           
+#> [28] tools_4.6.1           parallel_4.6.1        colorspace_2.1-2     
+#> [31] GetoptLong_1.1.1      vctrs_0.7.3           R6_2.6.1             
+#> [34] png_0.1-9             matrixStats_1.5.0     lifecycle_1.0.5      
+#> [37] lubridate_1.9.5       stringr_1.6.0         fs_2.1.0             
+#> [40] clue_0.3-68           ragg_1.5.2            cluster_2.1.8.2      
+#> [43] desc_1.4.3            pkgdown_2.2.0         bslib_0.11.0         
+#> [46] glue_1.8.1            systemfonts_1.3.2     xfun_0.59            
+#> [49] knitr_1.51            rjson_0.2.23          htmltools_0.5.9      
+#> [52] rmarkdown_2.31        compiler_4.6.1
 ```
 
 ## References

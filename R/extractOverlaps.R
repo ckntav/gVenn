@@ -30,13 +30,13 @@
 #' group_genomic
 extractOverlaps <- function(overlap_object) {
     if (inherits(overlap_object, "GenomicOverlapResult")) {
-        reduced_regions <- overlap_object[["reduced_regions"]]
-        categories <- unique(reduced_regions$intersect_category)
+        regions <- overlap_object[["regions"]]
+        categories <- unique(regions$intersect_category)
         sorted_categories <- categories[order(stringr::str_count(categories, "1"))]
 
         intersect_regions_list <- GenomicRanges::GRangesList()
         for (category in sorted_categories) {
-            intersect_regions_list[[paste0("group_", category)]] <- reduced_regions[reduced_regions$intersect_category == category]
+            intersect_regions_list[[paste0("group_", category)]] <- regions[regions$intersect_category == category]
         }
 
         return(intersect_regions_list)

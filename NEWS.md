@@ -7,7 +7,10 @@
   `mode = "reduce"`, keeps the previous "reduce-then-classify" behavior.
   The new `mode = "disjoin"` reduces each set on its own, then partitions the
   union into non-overlapping segments with `GenomicRanges::disjoin()`, so that
-  every segment is covered by exactly one combination of sets.
+  every segment is covered by exactly one combination of sets. Because the 
+  resulting intervals are merged in one mode and disjoint in the other, the
+  `reduced_regions` element of `GenomicOverlapResult` is renamed to `regions`;
+  code using `ov$reduced_regions` must be updated to `ov$regions`.
 
 # gVenn 1.3.2
 

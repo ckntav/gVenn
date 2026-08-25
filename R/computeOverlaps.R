@@ -50,7 +50,7 @@ defineCategories <- function(data) {
 #' @return An object of class `GenomicOverlapsResult`, which is a list with the
 #' following components:
 #' \describe{
-#'   \item{reduced_regions}{A `GRanges` object containing the merged
+#'   \item{regions}{A `GRanges` object containing the merged
 #'   (`mode = "reduce"`) or disjoint (`mode = "disjoin"`) genomic intervals
 #'   across all sets.
 #'   Each region is annotated with an `intersect_category` string representing
@@ -86,7 +86,7 @@ defineCategories <- function(data) {
 #' head(ov$overlap_matrix)
 #'
 #' # Check the intersection category assigned to each region
-#' GenomicRanges::mcols(ov$reduced_regions)$intersect_category
+#' GenomicRanges::mcols(ov$regions)$intersect_category
 #'
 #' # Visualize with a Venn diagram
 #' plotVenn(ov)
@@ -103,31 +103,31 @@ computeGenomicOverlaps <- function(genomic_regions, mode = c("reduce", "disjoin"
     }
 
     if (mode == "reduce") {
-        reduced_regions <- GenomicRanges::reduce(unlist(genomic_regions))
+        regions <- GenomicRanges::reduce(unlist(genomic_regions))
     } else {
         # Reduce each set on its own first, so that intervals that are
         # redundant *within* a set do not introduce spurious breakpoints,
         # then split the union at every remaining set boundary.
         per_set <- GenomicRanges::reduce(genomic_regions)
-        reduced_regions <- GenomicRanges::disjoin(unlist(per_set))
+        regions <- GenomicRanges::disjoin(unlist(per_set))
     }
 
     overlap_matrix <- matrix(FALSE,
-                             nrow = length(reduced_regions),
+                             nrow = length(regions),
                              ncol = length(genomic_regions))
 
     for (i in seq_along(genomic_regions)) {
-        overlap_matrix[, i] <- IRanges::overlapsAny(reduced_regions,
+        overlap_matrix[, i] <- IRanges::overlapsAny(regions,
                                                     genomic_regions[[i]])
     }
 
     colnames(overlap_matrix) <- names(genomic_regions)
 
     intersect_category <- defineCategories(overlap_matrix)
-    GenomicRanges::mcols(reduced_regions)$intersect_category <- intersect_category
+    GenomicRanges::mcols(regions)$intersect_category <- intersect_category
 
     res <- list(
-        reduced_regions = reduced_regions,
+        regions = regions,
         overlap_matrix = overlap_matrix,
         mode = mode
     )
@@ -247,12 +247,10 @@ computeSetOverlaps <- function(named_sets) {
 #'   \item{GenomicOverlapResult}{Returned when the input is genomic
 #'       (`GRangesList` or list of `GRanges`). A list with:
 #'       \itemize{
-#'         \item \code{reduced_regions}: A `GRanges` object containing the
+#'         \item \code{regions}: A `GRanges` object containing the
 #'             non-redundant intervals, merged when `mode = "reduce"` and
 #'             disjoint when `mode = "disjoin"`. Each region is annotated with
-#'             an \code{intersect_category} column. (The name is kept as
-#'             \code{reduced_regions} in both modes for backward
-#'             compatibility.)
+#'             an \code{intersect_category} column.
 #'         \item \code{overlap_matrix}: A logical matrix indicating whether each
 #'             region overlaps each input set (rows = regions,
 #'             columns = sets).
@@ -315,10 +313,10 @@ computeSetOverlaps <- function(named_sets) {
 #' C <- GenomicRanges::GRanges("chr1", IRanges::IRanges(280, 400))
 #'
 #' # "reduce" merges the chain into a single "111" region
-#' computeOverlaps(list(A = A, B = B, C = C))$reduced_regions
+#' computeOverlaps(list(A = A, B = B, C = C))$regions
 #'
 #' # "disjoin" keeps A-B and B-C as separate two-way intersections
-#' computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$reduced_regions
+#' computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$regions
 #'
 #' @seealso \code{\link{plotVenn}}, \code{\link{plotUpSet}},
 #'     \code{\link[GenomicRanges]{GRangesList}},

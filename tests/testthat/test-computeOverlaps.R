@@ -84,7 +84,7 @@ test_that("computeGenomicOverlaps merges and annotates correctly", {
 
     # class + structure
     expect_s3_class(res, "GenomicOverlapResult")
-    expect_named(res, c("reduced_regions", "overlap_matrix", "mode"))
+    expect_named(res, c("regions", "overlap_matrix", "mode"))
     expect_identical(res$mode, "reduce")
 
     # reduced regions should split into merged chunks:
@@ -92,7 +92,7 @@ test_that("computeGenomicOverlaps merges and annotates correctly", {
     # [300-399]
     # [700-799]
     # [900-999]
-    rr <- res$reduced_regions
+    rr <- res$regions
     expect_true(inherits(rr, "GRanges"))
     expect_equal(length(rr), 4L)
 
@@ -207,8 +207,8 @@ test_that("mode = 'disjoin' splits chained overlaps into pairwise ones", {
     # "reduce" merges the chain into one region called a 3-way intersection
     red <- computeOverlaps(sets, mode = "reduce")
     expect_identical(red$mode, "reduce")
-    expect_equal(length(red$reduced_regions), 1L)
-    expect_identical(GenomicRanges::mcols(red$reduced_regions)$intersect_category,
+    expect_equal(length(red$regions), 1L)
+    expect_identical(GenomicRanges::mcols(red$regions)$intersect_category,
                      "111")
 
     # "disjoin" keeps A∩B and B∩C separate, and reports no 3-way intersection
@@ -216,7 +216,7 @@ test_that("mode = 'disjoin' splits chained overlaps into pairwise ones", {
     expect_s3_class(dis, "GenomicOverlapResult")
     expect_identical(dis$mode, "disjoin")
 
-    rr <- dis$reduced_regions
+    rr <- dis$regions
     cats <- GenomicRanges::mcols(rr)$intersect_category
     expect_identical(cats, c("100", "110", "010", "011", "001"))
     expect_false("111" %in% cats)
@@ -226,7 +226,7 @@ test_that("mode = 'disjoin' splits chained overlaps into pairwise ones", {
     # segments are non-overlapping and cover the same span as the reduced ones
     expect_equal(length(GenomicRanges::reduce(rr)), 1L)
     expect_equal(sum(GenomicRanges::width(rr)),
-                 sum(GenomicRanges::width(red$reduced_regions)))
+                 sum(GenomicRanges::width(red$regions)))
     expect_identical(
         as.character(GenomicRanges::start(rr)),
         as.character(c(100, 180, 201, 280, 301))
@@ -246,7 +246,7 @@ test_that("mode = 'disjoin' ignores within-set redundancy", {
     B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(500, 600))
 
     res <- computeOverlaps(list(A = A, B = B), mode = "disjoin")
-    rr <- res$reduced_regions
+    rr <- res$regions
     expect_equal(length(rr), 2L)
     expect_identical(GenomicRanges::mcols(rr)$intersect_category, c("10", "01"))
     expect_identical(as.character(GenomicRanges::end(rr)[1]), "250")
@@ -261,11 +261,11 @@ test_that("mode = 'disjoin' separates bookended intervals from different sets", 
     B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(201, 300))
 
     red <- computeOverlaps(list(A = A, B = B), mode = "reduce")
-    expect_identical(GenomicRanges::mcols(red$reduced_regions)$intersect_category,
+    expect_identical(GenomicRanges::mcols(red$regions)$intersect_category,
                      "11")
 
     dis <- computeOverlaps(list(A = A, B = B), mode = "disjoin")
-    expect_identical(GenomicRanges::mcols(dis$reduced_regions)$intersect_category,
+    expect_identical(GenomicRanges::mcols(dis$regions)$intersect_category,
                      c("10", "01"))
 })
 
@@ -303,6 +303,6 @@ test_that("category strings match overlap_matrix for both engines", {
     grA <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(1, 100), width = 20))
     grB <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(10, 300), width = 20))
     gres <- computeGenomicOverlaps(list(A = grA, B = grB))
-    cats <- GenomicRanges::mcols(gres$reduced_regions)$intersect_category
+    cats <- GenomicRanges::mcols(gres$regions)$intersect_category
     expect_identical(defineCategories(gres$overlap_matrix), cats)
 })

@@ -110,7 +110,7 @@ The result is a structured `GenomicOverlapResult` object that contains:
 
 - A GRanges object, where each region includes metadata describing its
 overlap pattern across the input sets.
-- An associated logical matrix (or data frame) indicating which reduced regions
+- An associated logical matrix (or data frame) indicating which regions
 overlap with which input sets.
 
 ## 3. Visualization

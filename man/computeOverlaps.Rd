@@ -37,12 +37,10 @@ type:
 \item{GenomicOverlapResult}{Returned when the input is genomic
 (\code{GRangesList} or list of \code{GRanges}). A list with:
 \itemize{
-\item \code{reduced_regions}: A \code{GRanges} object containing the
+\item \code{regions}: A \code{GRanges} object containing the
 non-redundant intervals, merged when \code{mode = "reduce"} and
 disjoint when \code{mode = "disjoin"}. Each region is annotated with
-an \code{intersect_category} column. (The name is kept as
-\code{reduced_regions} in both modes for backward
-compatibility.)
+an \code{intersect_category} column.
 \item \code{overlap_matrix}: A logical matrix indicating whether each
 region overlaps each input set (rows = regions,
 columns = sets).
@@ -124,10 +122,10 @@ B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(180, 300))
 C <- GenomicRanges::GRanges("chr1", IRanges::IRanges(280, 400))
 
 # "reduce" merges the chain into a single "111" region
-computeOverlaps(list(A = A, B = B, C = C))$reduced_regions
+computeOverlaps(list(A = A, B = B, C = C))$regions
 
 # "disjoin" keeps A-B and B-C as separate two-way intersections
-computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$reduced_regions
+computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$regions
 
 }
 \seealso{

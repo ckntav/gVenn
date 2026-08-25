@@ -1,3 +1,14 @@
+# gVenn 1.3.3
+
+## New features
+
+- Add a `mode` argument to `computeOverlaps()` controlling how genomic
+  intervals are made non-redundant before they are classified. The default,
+  `mode = "reduce"`, keeps the previous "reduce-then-classify" behavior.
+  The new `mode = "disjoin"` reduces each set on its own, then partitions the
+  union into non-overlapping segments with `GenomicRanges::disjoin()`, so that
+  every segment is covered by exactly one combination of sets.
+
 # gVenn 1.3.2
 
 ## Bug fixes

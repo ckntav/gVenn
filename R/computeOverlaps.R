@@ -36,36 +36,42 @@ defineCategories <- function(data) {
 #'
 #' This function computes overlaps across multiple genomic region sets provided
 #' as a `GRangesList` or a list of `GRanges` objects.
-#' It reduces all regions into a unified, non-redundant set and determines which
-#'  original sets each region overlaps.
+#' It builds a unified, non-redundant set of intervals and determines which
+#'  original sets each interval overlaps.
 #' This facilitates the analysis and visualization of genomic intersection
 #' patterns (e.g., using Venn or UpSet plots).
 #'
 #' @param genomic_regions A `GRangesList` or a named list of `GRanges` objects.
 #'   Each element should represent a genomic region set (e.g., ChIP-seq peaks,
 #'   annotated genes, etc.).
+#' @param mode Character string, either `"reduce"` (default) or `"disjoin"`.
+#'   See the `mode` documentation of \code{\link{computeOverlaps}}.
 #'
 #' @return An object of class `GenomicOverlapsResult`, which is a list with the
 #' following components:
 #' \describe{
-#'   \item{reduced_regions}{A `GRanges` object containing the reduced (merged)
-#'   genomic intervals across all sets.
+#'   \item{reduced_regions}{A `GRanges` object containing the merged
+#'   (`mode = "reduce"`) or disjoint (`mode = "disjoin"`) genomic intervals
+#'   across all sets.
 #'   Each region is annotated with an `intersect_category` string representing
 #'   the overlap pattern (e.g., `"110"`).}
-#'   \item{overlap_matrix}{A logical matrix indicating which reduced regions
+#'   \item{overlap_matrix}{A logical matrix indicating which regions
 #'   overlap with which input sets.
-#'   Rows correspond to reduced regions; columns correspond to the input sets.}
+#'   Rows correspond to regions; columns correspond to the input sets.}
+#'   \item{mode}{The `mode` used to build the regions.}
 #' }
 #'
-#' @details Internally, the function uses `GenomicRanges::reduce()` to merge
-#' overlapping or adjacent regions across all sets.
-#'   It then determines overlaps between each reduced region and the original
-#'   input sets using `IRanges::overlapsAny()`.
-#'   The resulting matrix can be used to generate set diagrams or for further
-#'   statistical analysis.
+#' @details With `mode = "reduce"`, the function uses `GenomicRanges::reduce()`
+#'   to merge overlapping or adjacent regions across all sets. With
+#'   `mode = "disjoin"`, each set is first reduced on its own (to drop
+#'   within-set redundancy), then `GenomicRanges::disjoin()` partitions the
+#'   union into non-overlapping segments delimited by every set boundary.
+#'   In both cases, overlaps between the resulting regions and the original
+#'   input sets are determined with `IRanges::overlapsAny()`.
 #'
 #' @seealso \code{\link[GenomicRanges]{GRangesList}},
-#' \code{\link[GenomicRanges]{reduce}}, \code{\link[IRanges]{overlapsAny}},
+#' \code{\link[GenomicRanges]{reduce}}, \code{\link[GenomicRanges]{disjoin}},
+#' \code{\link[IRanges]{overlapsAny}},
 #'   \code{\link{plotVenn}}, \code{\link{plotUpSet}}
 #'
 #' @examples
@@ -87,14 +93,25 @@ defineCategories <- function(data) {
 #'
 #' @keywords internal
 #' @noRd
-computeGenomicOverlaps <- function(genomic_regions) {
+computeGenomicOverlaps <- function(genomic_regions, mode = c("reduce", "disjoin")) {
+    mode <- match.arg(mode)
+
     if (inherits(genomic_regions, "list")) {
         genomic_regions <- GenomicRanges::GRangesList(genomic_regions)
     } else if (!inherits(genomic_regions, "GRangesList")) {
         stop("Input must be a list of GRanges or a GRangesList.")
     }
 
-    reduced_regions <- GenomicRanges::reduce(unlist(genomic_regions))
+    if (mode == "reduce") {
+        reduced_regions <- GenomicRanges::reduce(unlist(genomic_regions))
+    } else {
+        # Reduce each set on its own first, so that intervals that are
+        # redundant *within* a set do not introduce spurious breakpoints,
+        # then split the union at every remaining set boundary.
+        per_set <- GenomicRanges::reduce(genomic_regions)
+        reduced_regions <- GenomicRanges::disjoin(unlist(per_set))
+    }
+
     overlap_matrix <- matrix(FALSE,
                              nrow = length(reduced_regions),
                              ncol = length(genomic_regions))
@@ -111,7 +128,8 @@ computeGenomicOverlaps <- function(genomic_regions) {
 
     res <- list(
         reduced_regions = reduced_regions,
-        overlap_matrix = overlap_matrix
+        overlap_matrix = overlap_matrix,
+        mode = mode
     )
     class(res) <- "GenomicOverlapResult"
     return(res)
@@ -189,8 +207,8 @@ computeSetOverlaps <- function(named_sets) {
 #' (character/numeric vectors) and computes a binary overlap matrix describing
 #' the presence or absence of each element across sets.
 #'
-#' - When provided with genomic regions, the function merges all intervals into
-#'   a non-redundant set (`reduce()`), then determines which original sets each
+#' - When provided with genomic regions, the function builds a non-redundant
+#'   set of intervals (see `mode`), then determines which original sets each
 #'   region overlaps.
 #' - When provided with ordinary sets (e.g., gene symbols), it collects all
 #'   unique elements and records which sets contain them.
@@ -207,6 +225,19 @@ computeSetOverlaps <- function(named_sets) {
 #'     \item A named list of atomic vectors (character, numeric, factor, etc.),
 #'       all of the same type.
 #'   }
+#' @param mode Character string controlling how genomic intervals are made
+#'   non-redundant before they are classified. One of:
+#'   \itemize{
+#'     \item `"reduce"` (default): all intervals from all sets are merged with
+#'       `GenomicRanges::reduce()`, and each merged region is classified by the
+#'       sets it overlaps. Region counts then correspond to merged loci.
+#'     \item `"disjoin"`: each set is reduced on its own, and the union is then
+#'       partitioned into non-overlapping segments with
+#'       `GenomicRanges::disjoin()`. Every segment is covered by exactly one
+#'       combination of sets, so a category such as `"111"` is reported only
+#'       for positions genuinely shared by all three sets.
+#'   }
+#'   Ignored (with a warning) for non-genomic inputs.
 #'
 #' @return
 #' An S3 object encoding the overlap result whose class depends on the input
@@ -217,11 +248,15 @@ computeSetOverlaps <- function(named_sets) {
 #'       (`GRangesList` or list of `GRanges`). A list with:
 #'       \itemize{
 #'         \item \code{reduced_regions}: A `GRanges` object containing the
-#'             merged (non-redundant) intervals. Each region is annotated with
-#'             an \code{intersect_category} column.
+#'             non-redundant intervals, merged when `mode = "reduce"` and
+#'             disjoint when `mode = "disjoin"`. Each region is annotated with
+#'             an \code{intersect_category} column. (The name is kept as
+#'             \code{reduced_regions} in both modes for backward
+#'             compatibility.)
 #'         \item \code{overlap_matrix}: A logical matrix indicating whether each
-#'             reduced region overlaps each input set (rows = regions,
+#'             region overlaps each input set (rows = regions,
 #'             columns = sets).
+#'         \item \code{mode}: The `mode` used to build the regions.
 #'       }}
 #'   \item{SetOverlapResult}{Returned when the input is a list of atomic
 #'       vectors. A list with:
@@ -241,6 +276,26 @@ computeSetOverlaps <- function(named_sets) {
 #' `computeSetOverlaps()` (for ordinary sets). Users are encouraged to call
 #' only `computeOverlaps()`.
 #'
+#' ## Choosing between `"reduce"` and `"disjoin"`
+#'
+#' The two modes answer different questions, and they differ whenever
+#' overlaps are chained: an interval of A overlapping an interval of B, which
+#' in turn overlaps an interval of C, without A and C sharing any position.
+#'
+#' `mode = "reduce"` merges such a chain into a single connected region and
+#' labels it `"111"`, reporting a three-way intersection even though no base
+#' pair is common to the three sets. This is the historical behavior, and it
+#' is the natural one when the sets describe the same underlying features
+#' (e.g., peaks called on replicates of the same experiment) and the question
+#' is "which loci are shared?".
+#'
+#' `mode = "disjoin"` splits the chain at every set boundary, yielding one
+#' `"110"` segment, one `"011"` segment, and the set-specific remainders. Use
+#' it when categories must reflect genuinely shared genomic positions, which
+#' is what an intersection is usually taken to mean. Note that the resulting
+#' counts are counts of segments, not of input intervals, so a single long
+#' interval may contribute to several categories.
+#'
 #' @examples
 #' # Example with gene sets (built-in dataset)
 #' data(gene_list)
@@ -254,11 +309,26 @@ computeSetOverlaps <- function(named_sets) {
 #' head(ov_gr$overlap_matrix)
 #' plotVenn(ov_gr)
 #'
+#' # Chained overlaps: A-B and B-C overlap, but A and C do not
+#' A <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200))
+#' B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(180, 300))
+#' C <- GenomicRanges::GRanges("chr1", IRanges::IRanges(280, 400))
+#'
+#' # "reduce" merges the chain into a single "111" region
+#' computeOverlaps(list(A = A, B = B, C = C))$reduced_regions
+#'
+#' # "disjoin" keeps A-B and B-C as separate two-way intersections
+#' computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$reduced_regions
+#'
 #' @seealso \code{\link{plotVenn}}, \code{\link{plotUpSet}},
-#'     \code{\link[GenomicRanges]{GRangesList}}, \code{\link[GenomicRanges]{reduce}}
+#'     \code{\link[GenomicRanges]{GRangesList}},
+#'     \code{\link[GenomicRanges]{reduce}},
+#'     \code{\link[GenomicRanges]{disjoin}}
 #'
 #' @export
-computeOverlaps <- function(x) {
+computeOverlaps <- function(x, mode = c("reduce", "disjoin")) {
+    mode <- match.arg(mode)
+
     if (missing(x) || is.null(x)) {
         stop("'x' must be provided.", call. = FALSE)
     }
@@ -266,7 +336,7 @@ computeOverlaps <- function(x) {
     # ---- direct GRangesList -------------------------------------------------
     if (methods::is(x, "GRangesList")) {
         if (is.null(names(x))) names(x) <- paste0("set", seq_along(x))
-        return(computeGenomicOverlaps(x))
+        return(computeGenomicOverlaps(x, mode = mode))
     }
 
     # ---- list inputs --------------------------------------------------------
@@ -284,12 +354,16 @@ computeOverlaps <- function(x) {
     is_gr <- vapply(x, function(e) methods::is(e, "GRanges"), logical(1))
     if (all(is_gr)) {
         # list of GRanges -> genomic
-        return(computeGenomicOverlaps(x))
+        return(computeGenomicOverlaps(x, mode = mode))
     }
 
     # atomic vectors (genes/ids). Allow numeric/factor but coerce to character.
     is_atomic_vec <- vapply(x, function(e) is.atomic(e) && !is.list(e), logical(1))
     if (all(is_atomic_vec)) {
+        if (mode != "reduce") {
+            warning("'mode' applies to genomic inputs only; ignored for sets ",
+                    "of identifiers.", call. = FALSE)
+        }
         x_chr <- lapply(x, function(e) as.character(e))
         return(computeSetOverlaps(x_chr))
     }

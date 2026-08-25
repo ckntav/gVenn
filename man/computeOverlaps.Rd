@@ -4,7 +4,7 @@
 \alias{computeOverlaps}
 \title{Compute Overlaps Between Multiple Sets or Genomic Regions}
 \usage{
-computeOverlaps(x)
+computeOverlaps(x, mode = c("reduce", "disjoin"))
 }
 \arguments{
 \item{x}{Input sets. One of:
@@ -14,6 +14,20 @@ computeOverlaps(x)
 \item A named list of atomic vectors (character, numeric, factor, etc.),
 all of the same type.
 }}
+
+\item{mode}{Character string controlling how genomic intervals are made
+non-redundant before they are classified. One of:
+\itemize{
+\item \code{"reduce"} (default): all intervals from all sets are merged with
+\code{GenomicRanges::reduce()}, and each merged region is classified by the
+sets it overlaps. Region counts then correspond to merged loci.
+\item \code{"disjoin"}: each set is reduced on its own, and the union is then
+partitioned into non-overlapping segments with
+\code{GenomicRanges::disjoin()}. Every segment is covered by exactly one
+combination of sets, so a category such as \code{"111"} is reported only
+for positions genuinely shared by all three sets.
+}
+Ignored (with a warning) for non-genomic inputs.}
 }
 \value{
 An S3 object encoding the overlap result whose class depends on the input
@@ -24,11 +38,15 @@ type:
 (\code{GRangesList} or list of \code{GRanges}). A list with:
 \itemize{
 \item \code{reduced_regions}: A \code{GRanges} object containing the
-merged (non-redundant) intervals. Each region is annotated with
-an \code{intersect_category} column.
+non-redundant intervals, merged when \code{mode = "reduce"} and
+disjoint when \code{mode = "disjoin"}. Each region is annotated with
+an \code{intersect_category} column. (The name is kept as
+\code{reduced_regions} in both modes for backward
+compatibility.)
 \item \code{overlap_matrix}: A logical matrix indicating whether each
-reduced region overlaps each input set (rows = regions,
+region overlaps each input set (rows = regions,
 columns = sets).
+\item \code{mode}: The \code{mode} used to build the regions.
 }}
 \item{SetOverlapResult}{Returned when the input is a list of atomic
 vectors. A list with:
@@ -50,8 +68,8 @@ the presence or absence of each element across sets.
 }
 \details{
 \itemize{
-\item When provided with genomic regions, the function merges all intervals into
-a non-redundant set (\code{reduce()}), then determines which original sets each
+\item When provided with genomic regions, the function builds a non-redundant
+set of intervals (see \code{mode}), then determines which original sets each
 region overlaps.
 \item When provided with ordinary sets (e.g., gene symbols), it collects all
 unique elements and records which sets contain them.
@@ -66,6 +84,26 @@ Internally, \code{computeOverlaps()} dispatches to either
 \code{computeGenomicOverlaps()} (for genomic inputs) or
 \code{computeSetOverlaps()} (for ordinary sets). Users are encouraged to call
 only \code{computeOverlaps()}.
+\subsection{Choosing between \code{"reduce"} and \code{"disjoin"}}{
+
+The two modes answer different questions, and they differ whenever
+overlaps are chained: an interval of A overlapping an interval of B, which
+in turn overlaps an interval of C, without A and C sharing any position.
+
+\code{mode = "reduce"} merges such a chain into a single connected region and
+labels it \code{"111"}, reporting a three-way intersection even though no base
+pair is common to the three sets. This is the historical behavior, and it
+is the natural one when the sets describe the same underlying features
+(e.g., peaks called on replicates of the same experiment) and the question
+is "which loci are shared?".
+
+\code{mode = "disjoin"} splits the chain at every set boundary, yielding one
+\code{"110"} segment, one \code{"011"} segment, and the set-specific remainders. Use
+it when categories must reflect genuinely shared genomic positions, which
+is what an intersection is usually taken to mean. Note that the resulting
+counts are counts of segments, not of input intervals, so a single long
+interval may contribute to several categories.
+}
 }
 \examples{
 # Example with gene sets (built-in dataset)
@@ -80,8 +118,21 @@ ov_gr <- computeOverlaps(a549_chipseq_peaks)
 head(ov_gr$overlap_matrix)
 plotVenn(ov_gr)
 
+# Chained overlaps: A-B and B-C overlap, but A and C do not
+A <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200))
+B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(180, 300))
+C <- GenomicRanges::GRanges("chr1", IRanges::IRanges(280, 400))
+
+# "reduce" merges the chain into a single "111" region
+computeOverlaps(list(A = A, B = B, C = C))$reduced_regions
+
+# "disjoin" keeps A-B and B-C as separate two-way intersections
+computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$reduced_regions
+
 }
 \seealso{
 \code{\link{plotVenn}}, \code{\link{plotUpSet}},
-\code{\link[GenomicRanges]{GRangesList}}, \code{\link[GenomicRanges]{reduce}}
+\code{\link[GenomicRanges]{GRangesList}},
+\code{\link[GenomicRanges]{reduce}},
+\code{\link[GenomicRanges]{disjoin}}
 }

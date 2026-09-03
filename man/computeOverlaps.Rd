@@ -4,7 +4,7 @@
 \alias{computeOverlaps}
 \title{Compute Overlaps Between Multiple Sets or Genomic Regions}
 \usage{
-computeOverlaps(x, mode = c("reduce", "disjoin"))
+computeOverlaps(x, mode = c("reduce", "disjoin"), ignore.strand = FALSE)
 }
 \arguments{
 \item{x}{Input sets. One of:
@@ -28,6 +28,15 @@ combination of sets, so a category such as \code{"111"} is reported only
 for positions genuinely shared by all three sets.
 }
 Ignored (with a warning) for non-genomic inputs.}
+
+\item{ignore.strand}{Logical, default \code{FALSE}. Controls whether strand is
+taken into account when regions are made non-redundant (\code{reduce()}/
+\code{disjoin()}) and when overlaps against the input sets are determined
+(\code{overlapsAny()}). With the default \code{FALSE}, regions on opposite strands
+are never merged or considered overlapping. With \code{TRUE}, strand is
+disregarded throughout, and regions on opposite strands can be merged
+into a single, unstranded (\code{"*"}) region. Ignored (with a warning) for
+non-genomic inputs.}
 }
 \value{
 An S3 object encoding the overlap result whose class depends on the input
@@ -126,6 +135,13 @@ computeOverlaps(list(A = A, B = B, C = C))$regions
 
 # "disjoin" keeps A-B and B-C as separate two-way intersections
 computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$regions
+
+# Chained overlaps on opposite strands: kept separate by default,
+# merged when ignore.strand = TRUE
+D <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200), strand = "+")
+E <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250), strand = "-")
+computeOverlaps(list(D = D, E = E))$regions
+computeOverlaps(list(D = D, E = E), ignore.strand = TRUE)$regions
 
 }
 \seealso{

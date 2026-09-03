@@ -290,6 +290,50 @@ test_that("mode is validated and ignored for non-genomic inputs", {
     expect_warning(computeOverlaps(sets, mode = "disjoin"), "genomic inputs only")
 })
 
+test_that("ignore.strand controls whether opposite-strand regions are merged", {
+    skip_if_not_installed("GenomicRanges")
+    skip_if_not_installed("IRanges")
+
+    # Overlapping coordinates but opposite strands
+    A <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200), strand = "+")
+    B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250), strand = "-")
+
+    # default (ignore.strand = FALSE): strand-aware, never merged/overlapping
+    default_res <- computeOverlaps(list(A = A, B = B))
+    expect_length(default_res$regions, 2)
+    expect_identical(GenomicRanges::mcols(default_res$regions)$intersect_category,
+                     c("10", "01"))
+
+    # ignore.strand = TRUE: merged into a single unstranded region
+    ignored_res <- computeOverlaps(list(A = A, B = B), ignore.strand = TRUE)
+    expect_length(ignored_res$regions, 1)
+    expect_identical(GenomicRanges::mcols(ignored_res$regions)$intersect_category, "11")
+    expect_identical(as.character(GenomicRanges::strand(ignored_res$regions)), "*")
+})
+
+test_that("ignore.strand = TRUE also applies in mode = 'disjoin'", {
+    skip_if_not_installed("GenomicRanges")
+    skip_if_not_installed("IRanges")
+
+    A <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200), strand = "+")
+    B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250), strand = "-")
+
+    dis_default <- computeOverlaps(list(A = A, B = B), mode = "disjoin")
+    expect_identical(GenomicRanges::mcols(dis_default$regions)$intersect_category,
+                     c("10", "01"))
+
+    dis_ignored <- computeOverlaps(list(A = A, B = B), mode = "disjoin",
+                                   ignore.strand = TRUE)
+    expect_identical(GenomicRanges::mcols(dis_ignored$regions)$intersect_category,
+                     c("10", "11", "01"))
+})
+
+test_that("ignore.strand is validated and ignored (with warning) for non-genomic inputs", {
+    sets <- list(A = letters[1:3], B = letters[2:4])
+    expect_silent(computeOverlaps(sets))
+    expect_warning(computeOverlaps(sets, ignore.strand = TRUE), "genomic inputs only")
+})
+
 test_that("category strings match overlap_matrix for both engines", {
     skip_if_not_installed("GenomicRanges")
     skip_if_not_installed("IRanges")

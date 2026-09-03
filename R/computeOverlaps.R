@@ -46,6 +46,12 @@ defineCategories <- function(data) {
 #'   annotated genes, etc.).
 #' @param mode Character string, either `"reduce"` (default) or `"disjoin"`.
 #'   See the `mode` documentation of \code{\link{computeOverlaps}}.
+#' @param ignore.strand Logical, passed to `GenomicRanges::reduce()`,
+#'   `GenomicRanges::disjoin()`, and `IRanges::overlapsAny()`. If `FALSE`
+#'   (default), regions on opposite strands are never merged or considered
+#'   overlapping, matching the base R/Bioconductor default. If `TRUE`, strand
+#'   is disregarded throughout and regions on opposite strands can be merged
+#'   into a single, unstranded (`"*"`) region.
 #'
 #' @return An object of class `GenomicOverlapsResult`, which is a list with the
 #' following components:
@@ -93,7 +99,8 @@ defineCategories <- function(data) {
 #'
 #' @keywords internal
 #' @noRd
-computeGenomicOverlaps <- function(genomic_regions, mode = c("reduce", "disjoin")) {
+computeGenomicOverlaps <- function(genomic_regions, mode = c("reduce", "disjoin"),
+                                    ignore.strand = FALSE) {
     mode <- match.arg(mode)
 
     if (inherits(genomic_regions, "list")) {
@@ -103,13 +110,14 @@ computeGenomicOverlaps <- function(genomic_regions, mode = c("reduce", "disjoin"
     }
 
     if (mode == "reduce") {
-        regions <- GenomicRanges::reduce(unlist(genomic_regions))
+        regions <- GenomicRanges::reduce(unlist(genomic_regions),
+                                         ignore.strand = ignore.strand)
     } else {
         # Reduce each set on its own first, so that intervals that are
         # redundant *within* a set do not introduce spurious breakpoints,
         # then split the union at every remaining set boundary.
-        per_set <- GenomicRanges::reduce(genomic_regions)
-        regions <- GenomicRanges::disjoin(unlist(per_set))
+        per_set <- GenomicRanges::reduce(genomic_regions, ignore.strand = ignore.strand)
+        regions <- GenomicRanges::disjoin(unlist(per_set), ignore.strand = ignore.strand)
     }
 
     overlap_matrix <- matrix(FALSE,
@@ -118,7 +126,8 @@ computeGenomicOverlaps <- function(genomic_regions, mode = c("reduce", "disjoin"
 
     for (i in seq_along(genomic_regions)) {
         overlap_matrix[, i] <- IRanges::overlapsAny(regions,
-                                                    genomic_regions[[i]])
+                                                    genomic_regions[[i]],
+                                                    ignore.strand = ignore.strand)
     }
 
     colnames(overlap_matrix) <- names(genomic_regions)
@@ -238,6 +247,14 @@ computeSetOverlaps <- function(named_sets) {
 #'       for positions genuinely shared by all three sets.
 #'   }
 #'   Ignored (with a warning) for non-genomic inputs.
+#' @param ignore.strand Logical, default `FALSE`. Controls whether strand is
+#'   taken into account when regions are made non-redundant (`reduce()`/
+#'   `disjoin()`) and when overlaps against the input sets are determined
+#'   (`overlapsAny()`). With the default `FALSE`, regions on opposite strands
+#'   are never merged or considered overlapping. With `TRUE`, strand is
+#'   disregarded throughout, and regions on opposite strands can be merged
+#'   into a single, unstranded (`"*"`) region. Ignored (with a warning) for
+#'   non-genomic inputs.
 #'
 #' @return
 #' An S3 object encoding the overlap result whose class depends on the input
@@ -318,13 +335,20 @@ computeSetOverlaps <- function(named_sets) {
 #' # "disjoin" keeps A-B and B-C as separate two-way intersections
 #' computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$regions
 #'
+#' # Chained overlaps on opposite strands: kept separate by default,
+#' # merged when ignore.strand = TRUE
+#' D <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200), strand = "+")
+#' E <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250), strand = "-")
+#' computeOverlaps(list(D = D, E = E))$regions
+#' computeOverlaps(list(D = D, E = E), ignore.strand = TRUE)$regions
+#'
 #' @seealso \code{\link{plotVenn}}, \code{\link{plotUpSet}},
 #'     \code{\link[GenomicRanges]{GRangesList}},
 #'     \code{\link[GenomicRanges]{reduce}},
 #'     \code{\link[GenomicRanges]{disjoin}}
 #'
 #' @export
-computeOverlaps <- function(x, mode = c("reduce", "disjoin")) {
+computeOverlaps <- function(x, mode = c("reduce", "disjoin"), ignore.strand = FALSE) {
     mode <- match.arg(mode)
 
     if (missing(x) || is.null(x)) {
@@ -334,7 +358,7 @@ computeOverlaps <- function(x, mode = c("reduce", "disjoin")) {
     # ---- direct GRangesList -------------------------------------------------
     if (methods::is(x, "GRangesList")) {
         if (is.null(names(x))) names(x) <- paste0("set", seq_along(x))
-        return(computeGenomicOverlaps(x, mode = mode))
+        return(computeGenomicOverlaps(x, mode = mode, ignore.strand = ignore.strand))
     }
 
     # ---- list inputs --------------------------------------------------------
@@ -352,7 +376,7 @@ computeOverlaps <- function(x, mode = c("reduce", "disjoin")) {
     is_gr <- vapply(x, function(e) methods::is(e, "GRanges"), logical(1))
     if (all(is_gr)) {
         # list of GRanges -> genomic
-        return(computeGenomicOverlaps(x, mode = mode))
+        return(computeGenomicOverlaps(x, mode = mode, ignore.strand = ignore.strand))
     }
 
     # atomic vectors (genes/ids). Allow numeric/factor but coerce to character.
@@ -361,6 +385,10 @@ computeOverlaps <- function(x, mode = c("reduce", "disjoin")) {
         if (mode != "reduce") {
             warning("'mode' applies to genomic inputs only; ignored for sets ",
                     "of identifiers.", call. = FALSE)
+        }
+        if (!isFALSE(ignore.strand)) {
+            warning("'ignore.strand' applies to genomic inputs only; ignored for ",
+                    "sets of identifiers.", call. = FALSE)
         }
         x_chr <- lapply(x, function(e) as.character(e))
         return(computeSetOverlaps(x_chr))

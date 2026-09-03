@@ -15,6 +15,11 @@
   attribute, retrievable with `attr(venn, "fit_diagnostics")`. A message
   reporting `stress` and `diagError` is printed by default; set the new
   `verbose = FALSE` argument to silence it.
+- Add an `ignore.strand` argument to `computeOverlaps()`/`computeGenomicOverlaps()`,
+  passed through to `GenomicRanges::reduce()`, `GenomicRanges::disjoin()`, and
+  `IRanges::overlapsAny()`. Defaults to `FALSE` (previous, strand-aware
+  behavior is unchanged); set to `TRUE` to disregard strand when merging or
+  partitioning regions and when determining overlaps.
 
 # gVenn 1.3.2
 

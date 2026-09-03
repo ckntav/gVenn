@@ -69,3 +69,24 @@ test_that("plotVenn() works with labels = TRUE", {
     obj <- make_set_overlap()
     expect_no_error(plotVenn(obj, labels = TRUE))
 })
+
+test_that("plotVenn() attaches eulerr fit diagnostics", {
+    skip_if_not_installed("eulerr")
+    obj <- make_genomic_overlap()
+    p <- suppressMessages(plotVenn(obj))
+    diag <- attr(p, "fit_diagnostics")
+    expect_type(diag, "list")
+    expect_named(diag, c("stress", "diagError", "regionError"))
+    expect_true(is.numeric(diag$stress) && length(diag$stress) == 1)
+    expect_true(is.numeric(diag$diagError) && length(diag$diagError) == 1)
+})
+
+test_that("plotVenn() messages fit diagnostics when verbose = TRUE (default)", {
+    obj <- make_set_overlap()
+    expect_message(plotVenn(obj), "eulerr fit diagnostics")
+})
+
+test_that("plotVenn() silences fit diagnostics message when verbose = FALSE", {
+    obj <- make_set_overlap()
+    expect_no_message(plotVenn(obj, verbose = FALSE))
+})

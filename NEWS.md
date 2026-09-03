@@ -1,4 +1,4 @@
-# gVenn 1.3.3
+# gVenn 2.0.0
 
 ## New features
 
@@ -9,8 +9,12 @@
   union into non-overlapping segments with `GenomicRanges::disjoin()`, so that
   every segment is covered by exactly one combination of sets. Because the 
   resulting intervals are merged in one mode and disjoint in the other, the
-  `reduced_regions` element of `GenomicOverlapResult` is renamed to `regions`;
-  code using `ov$reduced_regions` must be updated to `ov$regions`.
+  `reduced_regions` element of `GenomicOverlapResult` is renamed to `regions`.
+- `plotVenn()` now attaches `eulerr`'s goodness-of-fit diagnostics (`stress`,
+  `diagError`, `regionError`) to the returned plot as a `"fit_diagnostics"`
+  attribute, retrievable with `attr(venn, "fit_diagnostics")`. A message
+  reporting `stress` and `diagError` is printed by default; set the new
+  `verbose = FALSE` argument to silence it.
 
 # gVenn 1.3.2
 

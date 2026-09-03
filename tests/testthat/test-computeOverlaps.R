@@ -334,6 +334,79 @@ test_that("ignore.strand is validated and ignored (with warning) for non-genomic
     expect_warning(computeOverlaps(sets, ignore.strand = TRUE), "genomic inputs only")
 })
 
+test_that("computeOverlaps warns when input sets share no chromosome name", {
+    skip_if_not_installed("GenomicRanges")
+    skip_if_not_installed("IRanges")
+    skip_if_not_installed("GenomeInfoDb")
+
+    # "chr1" vs "1": classic naming-convention mismatch
+    A <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200))
+    B <- GenomicRanges::GRanges("1", IRanges::IRanges(150, 250))
+
+    expect_warning(
+        computeOverlaps(list(A = A, B = B)),
+        "share no common chromosome name"
+    )
+    expect_warning(
+        computeOverlaps(list(A = A, B = B)),
+        "A/B"
+    )
+
+    # the computation still proceeds (sets classified as fully disjoint)
+    res <- suppressWarnings(computeOverlaps(list(A = A, B = B)))
+    expect_setequal(GenomicRanges::mcols(res$regions)$intersect_category,
+                    c("10", "01"))
+})
+
+test_that("computeOverlaps does not warn when input sets share chromosome names", {
+    skip_if_not_installed("GenomicRanges")
+    skip_if_not_installed("IRanges")
+    skip_if_not_installed("GenomeInfoDb")
+
+    A <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200))
+    B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250))
+
+    expect_no_warning(computeOverlaps(list(A = A, B = B)))
+})
+
+test_that("chromosome-name compatibility check pinpoints the mismatched pair among 3+ sets", {
+    skip_if_not_installed("GenomicRanges")
+    skip_if_not_installed("IRanges")
+    skip_if_not_installed("GenomeInfoDb")
+
+    A <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200))
+    B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250))
+    C <- GenomicRanges::GRanges("1", IRanges::IRanges(150, 250))
+
+    w <- tryCatch(
+        {
+            computeOverlaps(list(A = A, B = B, C = C))
+            NULL
+        },
+        warning = function(w) conditionMessage(w)
+    )
+    expect_match(w, "A/C")
+    expect_match(w, "B/C")
+    # A and B do share a chromosome name, so that pair should not be flagged
+    expect_false(grepl("A/B", w, fixed = TRUE))
+})
+
+test_that("conflicting genome assemblies on a shared chromosome name error natively", {
+    skip_if_not_installed("GenomicRanges")
+    skip_if_not_installed("GenomeInfoDb")
+
+    # Documents existing GenomicRanges::GRangesList() behavior relied upon by
+    # checkGenomicCompatibility(): computeOverlaps() does not need its own
+    # check for this case, since GRangesList() already refuses to combine
+    # sets that disagree on the genome tagged for the same seqlevel name.
+    A <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200))
+    GenomeInfoDb::genome(A) <- "hg38"
+    B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250))
+    GenomeInfoDb::genome(B) <- "hg19"
+
+    expect_error(computeOverlaps(list(A = A, B = B)), "incompatible genomes")
+})
+
 test_that("category strings match overlap_matrix for both engines", {
     skip_if_not_installed("GenomicRanges")
     skip_if_not_installed("IRanges")

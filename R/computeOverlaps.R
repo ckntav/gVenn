@@ -32,6 +32,59 @@ defineCategories <- function(data) {
     return(categories)
 }
 
+#' Warn on Incompatible Chromosome Naming Across Input Sets
+#'
+#' Internal helper that warns when two or more input genomic region sets
+#' share no chromosome name at all, a common symptom of mismatched chromosome
+#' naming conventions (e.g. `"chr1"` vs `"1"`) or of genuinely different
+#' genome assemblies. gVenn does not harmonize chromosome names or coordinate
+#' systems across input sets, so overlap computations between such sets are
+#' silently and permanently empty rather than erroring, which this warning
+#' is meant to catch. Genome-assembly conflicts on a *shared* chromosome name
+#' (e.g. `"chr1"` tagged `hg38` in one set and `hg19` in another) are not
+#' checked here, as `GenomicRanges::GRangesList()` already errors on those.
+#'
+#' @param genomic_regions A `GRangesList`, already coerced and named.
+#'
+#' @keywords internal
+#' @noRd
+checkGenomicCompatibility <- function(genomic_regions) {
+    set_names <- names(genomic_regions)
+    if (is.null(set_names)) {
+        set_names <- paste0("set", seq_along(genomic_regions))
+    }
+
+    seqlevels_per_set <- lapply(genomic_regions, GenomeInfoDb::seqlevelsInUse)
+    names(seqlevels_per_set) <- set_names
+    non_empty <- Filter(length, seqlevels_per_set)
+
+    if (length(non_empty) < 2) {
+        return(invisible(NULL))
+    }
+
+    pairs <- utils::combn(names(non_empty), 2, simplify = FALSE)
+    empty_pairs <- Filter(
+        function(p) length(intersect(non_empty[[p[1]]], non_empty[[p[2]]])) == 0,
+        pairs
+    )
+
+    if (length(empty_pairs) > 0) {
+        pair_txt <- vapply(empty_pairs, paste, character(1), collapse = "/")
+        warning(
+            "The following input sets share no common chromosome name: ",
+            paste(pair_txt, collapse = ", "),
+            ". This often indicates incompatible chromosome naming ",
+            "conventions (e.g. \"chr1\" vs \"1\") or different genome ",
+            "assemblies; gVenn does not harmonize chromosome names or ",
+            "coordinate systems across input sets, so overlaps between ",
+            "these sets will always be empty.",
+            call. = FALSE
+        )
+    }
+
+    invisible(NULL)
+}
+
 #' Compute Genomic Overlaps Across GRanges Sets
 #'
 #' This function computes overlaps across multiple genomic region sets provided
@@ -108,6 +161,8 @@ computeGenomicOverlaps <- function(genomic_regions, mode = c("reduce", "disjoin"
     } else if (!inherits(genomic_regions, "GRangesList")) {
         stop("Input must be a list of GRanges or a GRangesList.")
     }
+
+    checkGenomicCompatibility(genomic_regions)
 
     if (mode == "reduce") {
         regions <- GenomicRanges::reduce(unlist(genomic_regions),

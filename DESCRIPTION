@@ -24,9 +24,10 @@ Suggests:
     knitr,
     rmarkdown
 Config/testthat/edition: 3
-Imports: 
+Imports:
     ComplexHeatmap,
     eulerr,
+    GenomeInfoDb,
     GenomicRanges,
     IRanges,
     lubridate,

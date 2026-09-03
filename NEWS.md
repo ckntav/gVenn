@@ -20,6 +20,12 @@
   `IRanges::overlapsAny()`. Defaults to `FALSE` (previous, strand-aware
   behavior is unchanged); set to `TRUE` to disregard strand when merging or
   partitioning regions and when determining overlaps.
+- `computeOverlaps()` now warns when two or more input genomic sets share no
+  chromosome name at all, a common symptom of mismatched chromosome naming
+  conventions (e.g. `"chr1"` vs `"1"`) or of comparing different genome
+  assemblies, cases where overlaps would otherwise be silently and
+  permanently empty. Genome-assembly conflicts on a *shared* chromosome name
+  already error via `GenomicRanges::GRangesList()`, unchanged.
 
 # gVenn 1.3.2
 

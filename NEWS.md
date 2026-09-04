@@ -27,6 +27,12 @@
   permanently empty. Genome-assembly conflicts on a *shared* chromosome name
   already error via `GenomicRanges::GRangesList()`, unchanged.
 
+## Minor updates
+
+- The right-hand annotation of `plotUpSet()` is now labelled according to the
+  type of the input: `"Region size"` for a `GenomicOverlapResult` and
+  `"Set size"` for a `SetOverlapResult`.
+
 # gVenn 1.3.2
 
 ## Bug fixes

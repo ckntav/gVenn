@@ -47,6 +47,12 @@ plotUpSet <- function(overlap_object, customSetOrder = NULL, comb_col = "black")
     overlap_matrix <- overlap_object[["overlap_matrix"]]
     combMat <- ComplexHeatmap::make_comb_mat(overlap_matrix)
 
+    set_size_label <- if (inherits(overlap_object, "GenomicOverlapResult")) {
+        "Region size"
+    } else {
+        "Set size"
+    }
+
     annot_top <- ComplexHeatmap::HeatmapAnnotation(
         "Intersection\nsize" = ComplexHeatmap::anno_barplot(
             ComplexHeatmap::comb_size(combMat),
@@ -64,15 +70,19 @@ plotUpSet <- function(overlap_object, customSetOrder = NULL, comb_col = "black")
         annotation_name_rot = 0
     )
 
-    annot_right <- ComplexHeatmap::rowAnnotation(
-        "Set size" = ComplexHeatmap::anno_barplot(
+    annot_right_args <- list(
+        ComplexHeatmap::anno_barplot(
             ComplexHeatmap::set_size(combMat),
+            which = "row",
             border = FALSE,
             gp = grid::gpar(fill = "black"),
             width = grid::unit(2, "cm")
         ),
-        "Size" = ComplexHeatmap::anno_text(ComplexHeatmap::set_size(combMat))
+        "Size" = ComplexHeatmap::anno_text(ComplexHeatmap::set_size(combMat),
+                                           which = "row")
     )
+    names(annot_right_args)[1] <- set_size_label
+    annot_right <- do.call(ComplexHeatmap::rowAnnotation, annot_right_args)
 
     # Default: order sets by decreasing size
     if (is.null(customSetOrder)) {

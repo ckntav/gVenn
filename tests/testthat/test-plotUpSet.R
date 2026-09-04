@@ -69,3 +69,21 @@ test_that("plotUpSet() works with GenomicOverlapResult", {
 test_that("plotUpSet() errors clearly on wrong input", {
     expect_error(plotUpSet(list(a = 1)), "GenomicOverlapResult|SetOverlapResult")
 })
+
+test_that("plotUpSet() labels the right annotation according to input type", {
+    skip_on_cran()
+    skip_if_not_installed("ComplexHeatmap")
+    skip_if_not_installed("GenomicRanges")
+    skip_if_not_installed("IRanges")
+
+    gene_sets <- list(TF1 = c("A", "B", "C"), TF2 = c("B", "C", "D"))
+    res_sets <- computeOverlaps(gene_sets)
+    upset_sets <- plotUpSet(res_sets)
+    expect_true("Set size" %in% names(upset_sets@right_annotation@anno_list))
+
+    gr1 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(100, 500), width = 100))
+    gr2 <- GenomicRanges::GRanges("chr1", IRanges::IRanges(c(150, 520), width = 100))
+    res_genomic <- computeOverlaps(list(A = gr1, B = gr2))
+    upset_genomic <- plotUpSet(res_genomic)
+    expect_true("Region size" %in% names(upset_genomic@right_annotation@anno_list))
+})

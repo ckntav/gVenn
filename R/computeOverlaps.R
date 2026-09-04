@@ -26,10 +26,8 @@
 #' @keywords internal
 #' @noRd
 defineCategories <- function(data) {
-    categories <- apply(data, 1, function(row) {
-        paste0(as.integer(row), collapse = "")
-    })
-    return(categories)
+    m <- matrix(as.integer(data), nrow = nrow(data), ncol = ncol(data))
+    do.call(paste0, as.data.frame(m))
 }
 
 #' Warn on Incompatible Chromosome Naming Across Input Sets

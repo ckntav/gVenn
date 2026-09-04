@@ -32,6 +32,9 @@
 - The right-hand annotation of `plotUpSet()` is now labelled according to the
   type of the input: `"Region size"` for a `GenomicOverlapResult` and
   `"Set size"` for a `SetOverlapResult`.
+- `computeOverlaps()` labels overlap categories faster at large numbers of
+  regions (~10x at 10^5-10^6 regions), by vectorizing the internal
+  `defineCategories()` helper instead of looping row by row.
 
 # gVenn 1.3.2
 

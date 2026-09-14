@@ -364,6 +364,20 @@ computeSetOverlaps <- function(named_sets) {
 #' counts are counts of segments, not of input intervals, so a single long
 #' interval may contribute to several categories.
 #'
+#' ## Chromosome names and genome assemblies
+#'
+#' gVenn does not harmonize chromosome names or coordinate systems across input
+#' sets: genomic sets are expected to follow the same naming convention and to
+#' come from the same genome assembly. As a safeguard, `computeOverlaps()` warns
+#' whenever two input sets share no chromosome name at all, naming the offending
+#' pairs. Such a mismatch usually signals incompatible naming conventions (e.g.
+#' `"chr1"` vs `"1"`) or different assemblies, cases in which overlaps between
+#' those sets would otherwise be silently and permanently empty rather than
+#' raising an error. Only chromosomes actually present in each set are compared.
+#' Conflicting assemblies declared on a *shared* chromosome name (e.g. `"chr1"`
+#' tagged `hg38` in one set and `hg19` in another) already raise an error in
+#' `GenomicRanges::GRangesList()`, before any overlap is computed.
+#'
 #' @examples
 #' # Example with gene sets (built-in dataset)
 #' data(gene_list)

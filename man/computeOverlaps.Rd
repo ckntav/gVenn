@@ -111,6 +111,21 @@ is what an intersection is usually taken to mean. Note that the resulting
 counts are counts of segments, not of input intervals, so a single long
 interval may contribute to several categories.
 }
+
+\subsection{Chromosome names and genome assemblies}{
+
+gVenn does not harmonize chromosome names or coordinate systems across input
+sets: genomic sets are expected to follow the same naming convention and to
+come from the same genome assembly. As a safeguard, \code{computeOverlaps()} warns
+whenever two input sets share no chromosome name at all, naming the offending
+pairs. Such a mismatch usually signals incompatible naming conventions (e.g.
+\code{"chr1"} vs \code{"1"}) or different assemblies, cases in which overlaps between
+those sets would otherwise be silently and permanently empty rather than
+raising an error. Only chromosomes actually present in each set are compared.
+Conflicting assemblies declared on a \emph{shared} chromosome name (e.g. \code{"chr1"}
+tagged \code{hg38} in one set and \code{hg19} in another) already raise an error in
+\code{GenomicRanges::GRangesList()}, before any overlap is computed.
+}
 }
 \examples{
 # Example with gene sets (built-in dataset)

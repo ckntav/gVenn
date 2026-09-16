@@ -18,6 +18,7 @@ Roxygen: list(markdown = TRUE)
 URL: https://github.com/ckntav/gVenn, https://ckntav.github.io/gVenn/
 BugReports: https://github.com/ckntav/gVenn/issues
 Suggests: 
+    cli,
     testthat (>= 3.0.0),
     ggplot2,
     withr,

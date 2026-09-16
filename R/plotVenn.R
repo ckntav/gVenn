@@ -148,8 +148,15 @@ plotVenn <- function(overlap_object,
     # Extract matrix
     overlap_matrix <- overlap_object[["overlap_matrix"]]
 
-    # Compute Euler fit
-    fit <- eulerr::euler(overlap_matrix, shape = "ellipse")
+    # Compute Euler fit.
+    # Two sets are always represented exactly by two circles, and the two extra
+    # parameters an ellipse carries buy nothing there while opening local minima
+    # the optimizer can settle in, erasing the intersection outright. Ellipses
+    # are still needed from three sets on.
+    fit <- eulerr::euler(
+        overlap_matrix,
+        shape = if (ncol(overlap_matrix) == 2) "circle" else "ellipse"
+    )
 
     # Number of subsets as defined by eulerr: every region of the diagram
     # (2^n_sets - 1), regardless of whether each region is populated.

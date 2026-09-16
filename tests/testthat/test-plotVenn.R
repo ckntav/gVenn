@@ -126,3 +126,23 @@ test_that("plotVenn() silences fit diagnostics message when verbose = FALSE", {
     obj <- make_set_overlap()
     expect_no_message(plotVenn(obj, verbose = FALSE))
 })
+
+test_that("plotVenn() fits two sets with circles, exactly and reproducibly", {
+    skip_if_not_installed("eulerr")
+    # Two circles represent any two-set data exactly. Fitting ellipses here adds
+    # two free parameters that buy nothing and open local minima: seed 7 used to
+    # land in one, reporting diagError = 2.2e-01 and erasing A&B entirely, while
+    # neighbouring seeds fitted the same data to 1e-12.
+    two <- list(A = paste0("g", 1:500), B = paste0("g", 300:900))
+    obj <- computeOverlaps(two)
+
+    diag_errors <- vapply(1:12, function(s) {
+        set.seed(s)
+        attr(suppressMessages(plotVenn(obj)), "fit_diagnostics")$diagError
+    }, numeric(1))
+    expect_true(all(diag_errors <= 1e-6))
+
+    set.seed(7)
+    diag <- attr(suppressMessages(plotVenn(obj)), "fit_diagnostics")
+    expect_length(diag$undrawnRegions, 0)
+})

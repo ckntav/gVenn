@@ -1,4 +1,4 @@
-# gVenn 2.0.0
+# gVenn 1.99.0
 
 ## New features
 

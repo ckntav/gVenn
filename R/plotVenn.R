@@ -70,7 +70,7 @@
 #'   perfect fit and larger values indicate a greater geometric distortion;
 #'   `diagError` is the largest discrepancy, over all regions, between the
 #'   share of the total diagram area a region is given and the share the data
-#'   requires, a proportion in [0, 1]. Micallef and Rodgers (2014), who
+#'   requires, a proportion in \eqn{[0, 1]}. Micallef and Rodgers (2014), who
 #'   introduced it, call a diagram accurately proportional to its data when
 #'   `diagError` is at most 1e-6, the threshold this function reports against.
 #'   See

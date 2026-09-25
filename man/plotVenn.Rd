@@ -92,7 +92,7 @@ and \code{undrawnRegions}. For both \code{stress} and \code{diagError}, \code{0}
 perfect fit and larger values indicate a greater geometric distortion;
 \code{diagError} is the largest discrepancy, over all regions, between the
 share of the total diagram area a region is given and the share the data
-requires, a proportion in \link{0, 1}. Micallef and Rodgers (2014), who
+requires, a proportion in \eqn{[0, 1]}. Micallef and Rodgers (2014), who
 introduced it, call a diagram accurately proportional to its data when
 \code{diagError} is at most 1e-6, the threshold this function reports against.
 See
@@ -152,11 +152,6 @@ plotVenn(res_sets,
 # Inspect eulerr's fit diagnostics (stress, diagError, regionError)
 venn <- plotVenn(res_sets)
 attr(venn, "fit_diagnostics")
-}
-\references{
-Micallef, L. and Rodgers, P. (2014) eulerAPE: drawing
-area-proportional 3-Venn diagrams using ellipses. \emph{PLoS ONE},
-9(7), e101717. \doi{10.1371/journal.pone.0101717}
 }
 \seealso{
 \code{\link{plotVennError}} to see which regions the diagram

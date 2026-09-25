@@ -33,19 +33,10 @@ small towards the other, with its \code{regionError} printed inside it.
 
 It is worth reaching for whenever \code{diagError} is above the 1e-6 threshold
 \code{\link{plotVenn}} reports against, or whenever
-\code{attr(venn, "fit_diagnostics")$undrawnRegions} is not empty, since a region
-can be erased while \code{diagError} itself stays small.
+\code{attr(venn, "fit_diagnostics")$undrawnRegions} is not empty.
 
 It takes the plot returned by \code{\link{plotVenn}} rather than the overlap
 object, and reuses the fit stored on it instead of computing a new one.
-\code{eulerr::euler()} draws its optimiser seed from R's random number generator,
-so refitting the same data can settle on a different placement: repeated
-fits of one three-set input have been observed to differ in both ellipse
-centres and radii. An error plot built from such a refit would describe a
-diagram the user never saw, and its shaded regions would not line up with
-the ones in front of them, which is the only thing that makes the plot worth
-reading. Reusing the stored fit also avoids paying for the optimisation
-twice.
 }
 \examples{
 data(gene_list)

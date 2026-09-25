@@ -17,7 +17,7 @@ plotVenn(
 )
 }
 \arguments{
-\item{overlap_object}{A \code{GenomicOverlapsResult} or \code{SetOverlapsResult} object
+\item{overlap_object}{A \code{GenomicOverlapResult} or \code{SetOverlapResult} object
 returned by \code{\link{computeOverlaps}}.}
 
 \item{fills}{Controls the fill appearance of the diagram. Can be:
@@ -105,7 +105,7 @@ The \code{eulerr} fit itself is attached as an \code{"euler_fit"} attribute.
 \description{
 This function creates a Venn diagram using the \code{eulerr} package to visualize
 intersections across multiple sets. Supports both
-\code{GenomicOverlapsResult} and \code{SetOverlapsResult} objects.
+\code{GenomicOverlapResult} and \code{SetOverlapResult} objects.
 }
 \examples{
 # Example with gene sets

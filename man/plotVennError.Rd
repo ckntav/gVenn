@@ -28,8 +28,7 @@ statistic. This is a thin wrapper around \code{\link[eulerr]{error_plot}}.
 \details{
 Where \code{diagError} reports how far off the worst region is, this plot shows
 which regions are off and in which direction, with each region's
-\code{regionError} printed inside it. Use it when \code{diagError} exceeds 1e-6 or
-when \code{attr(venn, "fit_diagnostics")$undrawnRegions} is not empty.
+\code{regionError} printed inside it. Use it when \code{diagError} exceeds 1e-6.
 }
 \examples{
 data(gene_list)

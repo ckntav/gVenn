@@ -119,8 +119,7 @@ The result is a structured `GenomicOverlapResult` object that contains:
 
 - A GRanges object, where each region includes metadata describing its
 overlap pattern across the input sets.
-- An associated logical matrix (or data frame) indicating which regions
-overlap with which input sets.
+- An associated logical matrix indicating which regions overlap with which input sets.
 
 ## 3. Visualization
 
@@ -172,9 +171,9 @@ saveViz(venn,
         format = "pdf")
 ```
 
-By default, files are written to the current directory (".").
-If you enabled the date option (today), the current date will be prepended
-to the filename.
+By default:
+- files are written to the current directory (".").
+- with_date = TRUE, the current date is prepended to the filename. Set with_date = FALSE to disable it.
 
 You can also export to PNG or SVG:
 
@@ -185,7 +184,7 @@ saveViz(venn,
         output_file = "figure_gVenn",
         format = "png")
 
-# pdf
+# svg
 saveViz(venn,
         output_dir = ".",
         output_file = "figure_gVenn",
@@ -298,6 +297,7 @@ UCSC Genome Browser) or for downstream analyses requiring BED format input.
 # Export genomic overlaps to BED files
 exportOverlapsToBed(groups,
                     output_dir = ".",
+                    with_date = FALSE,
                     output_prefix = "overlaps")
 
 # This will create separate BED files such as:

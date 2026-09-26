@@ -13,7 +13,7 @@
 #' @param verbose Logical. If `TRUE`, print a message with the saved path.
 #' Default `TRUE`.
 #'
-#' @return Overlap groups are saved to a Excel file on disk. Invisibly returns
+#' @return Overlap groups are saved to an Excel file on disk. Invisibly returns
 #' the full path to the saved file.
 #'
 #' @export

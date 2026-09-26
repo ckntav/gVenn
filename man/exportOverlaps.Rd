@@ -27,7 +27,7 @@ date (from \code{today}) to the filename.}
 Default \code{TRUE}.}
 }
 \value{
-Overlap groups are saved to a Excel file on disk. Invisibly returns
+Overlap groups are saved to an Excel file on disk. Invisibly returns
 the full path to the saved file.
 }
 \description{

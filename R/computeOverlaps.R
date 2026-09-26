@@ -104,7 +104,7 @@ checkGenomicCompatibility <- function(genomic_regions) {
 #'   is disregarded throughout and regions on opposite strands can be merged
 #'   into a single, unstranded (`"*"`) region.
 #'
-#' @return An object of class `GenomicOverlapsResult`, which is a list with the
+#' @return An object of class `GenomicOverlapResult`, which is a list with the
 #' following components:
 #' \describe{
 #'   \item{regions}{A `GRanges` object containing the merged
@@ -207,7 +207,7 @@ computeGenomicOverlaps <- function(genomic_regions, mode = c("reduce", "disjoin"
 #' @param named_sets A named list of character vectors, where each vector
 #' contains identifiers (e.g., gene symbols) belonging to a set.
 #'
-#' @return An object of class `SetOverlapsResult`, a list with the following
+#' @return An object of class `SetOverlapResult`, a list with the following
 #' components:
 #' \describe{
 #'   \item{unique_elements}{A character vector of all unique elements across
@@ -384,7 +384,7 @@ computeSetOverlaps <- function(named_sets) {
 #' # "disjoin" keeps A-B and B-C as separate two-way intersections
 #' computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$regions
 #'
-#' # Chained overlaps on opposite strands: kept separate by default,
+#' #  Overlapping regions on opposite strands: kept separate by default,
 #' # merged when ignore.strand = TRUE
 #' D <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200), strand = "+")
 #' E <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250), strand = "-")

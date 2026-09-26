@@ -132,7 +132,7 @@ computeOverlaps(list(A = A, B = B, C = C))$regions
 # "disjoin" keeps A-B and B-C as separate two-way intersections
 computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$regions
 
-# Chained overlaps on opposite strands: kept separate by default,
+#  Overlapping regions on opposite strands: kept separate by default,
 # merged when ignore.strand = TRUE
 D <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200), strand = "+")
 E <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250), strand = "-")

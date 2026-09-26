@@ -12,7 +12,7 @@
 <img src="man/figures/gVenn_hex_sticker.png" width="175"/>
 </p>
 
-**gVenn** stands for **gene/genomic Venn**.  
+**gVenn** stands for **gene/genomic Venn**.\
 It provides tools to compute overlaps between genomic regions or sets of
 genes and visualize them as Venn diagrams with areas proportional to the
 number of overlapping elements. With seamless support for `GRanges` and
@@ -67,7 +67,7 @@ peaks and visualize them with both a Venn diagram and an UpSet plot.
 ``` r
 library(gVenn)
 
-# Example dataset of ChIP-seq peaks (A549 cell line, 3 set of genomic regions)
+# Example dataset of ChIP-seq peaks (A549 cell line, 3 sets of genomic regions)
 data(a549_chipseq_peaks)
 
 # Compute overlaps
@@ -80,6 +80,8 @@ ov <- computeOverlaps(a549_chipseq_peaks)
 ``` r
 # Draw Venn diagram
 plotVenn(ov)
+#> ✔ Venn diagError = 1.779e-13  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
 <img src="man/figures/README-example_venn-1.png" alt="" width="100%" />
@@ -106,7 +108,8 @@ sapply(groups, length)
 
 In this example:
 
-- 243 reduced regions are shared across all three factors (MED1, BRD4, and GR)
+- 243 reduced regions are shared across all three factors (MED1, BRD4,
+  and GR)
 - 267 reduced regions are unique to BRD4
 - 48 reduced regions are shared between MED1 and BRD4 only
 
@@ -120,7 +123,7 @@ to.
 - A 1 means the element is present in that set, while 0 means absent.
 - The group names in the output are prefixed with “group\_” for clarity.
 
-<div align="center">
+<div data-align="center">
 
 | Group name  | Meaning                       |
 |-------------|-------------------------------|

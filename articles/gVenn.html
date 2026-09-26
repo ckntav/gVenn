@@ -162,8 +162,8 @@ that contains:</p>
 <ul>
 <li>A GRanges object, where each region includes metadata describing its
 overlap pattern across the input sets.</li>
-<li>An associated logical matrix (or data frame) indicating which
-regions overlap with which input sets.</li>
+<li>An associated logical matrix indicating which regions overlap with
+which input sets.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -216,9 +216,9 @@ parameter accepts a single color or a vector of colors:</p>
 <span>        output_dir <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>        output_file <span class="op">=</span> <span class="st">"figure_gVenn"</span>,</span>
 <span>        format <span class="op">=</span> <span class="st">"pdf"</span><span class="op">)</span></span></code></pre></div>
-<p>By default, files are written to the current directory (“.”). If you
-enabled the date option (today), the current date will be prepended to
-the filename.</p>
+<p>By default: - files are written to the current directory (“.”). -
+with_date = TRUE, the current date is prepended to the filename. Set
+with_date = FALSE to disable it.</p>
 <p>You can also export to PNG or SVG:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># png</span></span>
@@ -227,7 +227,7 @@ the filename.</p>
 <span>        output_file <span class="op">=</span> <span class="st">"figure_gVenn"</span>,</span>
 <span>        format <span class="op">=</span> <span class="st">"png"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># pdf</span></span>
+<span><span class="co"># svg</span></span>
 <span><span class="fu"><a href="../reference/saveViz.html">saveViz</a></span><span class="op">(</span><span class="va">venn</span>,</span>
 <span>        output_dir <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>        output_file <span class="op">=</span> <span class="st">"figure_gVenn"</span>,</span>
@@ -393,6 +393,7 @@ downstream analyses requiring BED format input.</p>
 <code class="sourceCode R"><span><span class="co"># Export genomic overlaps to BED files</span></span>
 <span><span class="fu"><a href="../reference/exportOverlapsToBed.html">exportOverlapsToBed</a></span><span class="op">(</span><span class="va">groups</span>,</span>
 <span>                    output_dir <span class="op">=</span> <span class="st">"."</span>,</span>
+<span>                    with_date <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                    output_prefix <span class="op">=</span> <span class="st">"overlaps"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># This will create separate BED files such as:</span></span>

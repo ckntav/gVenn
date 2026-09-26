@@ -62,7 +62,7 @@ peaks and visualize them with both a Venn diagram and an UpSet plot.
 
 library(gVenn)
 
-# Example dataset of ChIP-seq peaks (A549 cell line, 3 set of genomic regions)
+# Example dataset of ChIP-seq peaks (A549 cell line, 3 sets of genomic regions)
 data(a549_chipseq_peaks)
 
 # Compute overlaps
@@ -76,6 +76,8 @@ ov <- computeOverlaps(a549_chipseq_peaks)
 
 # Draw Venn diagram
 plotVenn(ov)
+#> ✔ Venn diagError = 1.779e-13  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
 ![](reference/figures/README-example_venn-1.png)

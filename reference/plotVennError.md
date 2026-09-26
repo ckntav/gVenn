@@ -42,8 +42,7 @@ with [`saveViz`](https://ckntav.github.io/gVenn/reference/saveViz.md).
 
 Where `diagError` reports how far off the worst region is, this plot
 shows which regions are off and in which direction, with each region's
-`regionError` printed inside it. Use it when `diagError` exceeds 1e-6 or
-when `attr(venn, "fit_diagnostics")$undrawnRegions` is not empty.
+`regionError` printed inside it. Use it when `diagError` exceeds 1e-6.
 
 ## See also
 

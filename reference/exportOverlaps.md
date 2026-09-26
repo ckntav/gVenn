@@ -45,7 +45,7 @@ exportOverlaps(
 
 ## Value
 
-Overlap groups are saved to a Excel file on disk. Invisibly returns the
+Overlap groups are saved to an Excel file on disk. Invisibly returns the
 full path to the saved file.
 
 ## Examples
@@ -54,5 +54,5 @@ full path to the saved file.
 res <- computeOverlaps(list(A = letters[1:3], B = letters[2:4]))
 grouped <- extractOverlaps(res)
 exportOverlaps(grouped, output_dir = tempdir(), output_file = "overlap_groups")
-#>  > Overlap groups saved in /tmp/Rtmp9gRIxo/20260926_overlap_groups.xlsx
+#>  > Overlap groups saved in /tmp/RtmpkTs4PT/20260926_overlap_groups.xlsx
 ```

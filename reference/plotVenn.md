@@ -199,7 +199,7 @@ venn <- plotVenn(res_sets)
 #>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 attr(venn, "fit_diagnostics")
 #> $stress
-#> [1] 5.208696e-25
+#> [1] 5.208624e-25
 #> 
 #> $diagError
 #> [1] 2.820591e-13

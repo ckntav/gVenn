@@ -194,7 +194,7 @@ computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$regions
 #>   -------
 #>   seqinfo: 1 sequence from an unspecified genome; no seqlengths
 
-# Chained overlaps on opposite strands: kept separate by default,
+#  Overlapping regions on opposite strands: kept separate by default,
 # merged when ignore.strand = TRUE
 D <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200), strand = "+")
 E <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250), strand = "-")

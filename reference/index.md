@@ -18,6 +18,8 @@
   : Plot an UpSet Diagram from Genomic or Set Overlap Results
 - [`plotVenn()`](https://ckntav.github.io/gVenn/reference/plotVenn.md) :
   Plot a Venn Diagram from Genomic or Set Overlap Results
+- [`plotVennError()`](https://ckntav.github.io/gVenn/reference/plotVennError.md)
+  : Plot where a Venn diagram misrepresents the data
 - [`saveViz()`](https://ckntav.github.io/gVenn/reference/saveViz.md) :
   Save a Visualization to File (PDF, PNG, or SVG)
 - [`today`](https://ckntav.github.io/gVenn/reference/today.md) : Today's

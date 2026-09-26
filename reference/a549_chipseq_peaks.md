@@ -120,4 +120,6 @@ a549_chipseq_peaks
 # Compute overlaps and plot
 ov <- computeOverlaps(a549_chipseq_peaks)
 plotVenn(ov)
+#> ✔ Venn diagError = 2.229e-12  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```

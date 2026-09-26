@@ -82,19 +82,36 @@ data(a549_chipseq_peaks)
 ### 2. Compute overlaps between genomic regions
 
 We compute overlaps between the ChIP-seq peak sets using
-[`computeOverlaps()`](https://ckntav.github.io/gVenn/reference/computeOverlaps.md):
+[`computeOverlaps()`](https://ckntav.github.io/gVenn/reference/computeOverlaps.md).
+
+For genomic inputs, two modes are available through the `mode` argument.
+
+With `mode = "reduce"` (the default), all intervals from all sets are
+merged into connected regions, and each region is classified by the sets
+it overlaps: counts then correspond to shared loci.
+
+With `mode = "disjoin"`, each set is first reduced on its own, and the
+union of all intervals is then split at every set boundary into
+non-overlapping segments. Each segment is covered by exactly one
+combination of sets, so a single peak can be split across several
+categories, and counts correspond to genomic positions shared by exactly
+those sets.
+
+See
+[`?computeOverlaps`](https://ckntav.github.io/gVenn/reference/computeOverlaps.md)
+for more details.
 
 ``` r
 
-genomic_overlaps <- computeOverlaps(a549_chipseq_peaks)
+genomic_overlaps <- computeOverlaps(a549_chipseq_peaks, mode = "reduce")
 ```
 
 The result is a structured `GenomicOverlapResult` object that contains:
 
 - A GRanges object, where each region includes metadata describing its
   overlap pattern across the input sets.
-- An associated logical matrix (or data frame) indicating which reduced
-  regions overlap with which input sets.
+- An associated logical matrix (or data frame) indicating which regions
+  overlap with which input sets.
 
 ### 3. Visualization
 
@@ -106,6 +123,8 @@ draws proportional Venn diagrams from the overlap object.
 ``` r
 
 plotVenn(genomic_overlaps)
+#> ✔ Venn diagError = 2.229e-12  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
 ![](gVenn_files/figure-html/plot_venn-1.png)  
@@ -220,9 +239,10 @@ sapply(groups, length)
 
 In this example:
 
-- 243 peaks are shared across all three factors (MED1, BRD4, and GR)
-- 267 peaks are unique to BRD4
-- 48 peaks are shared between MED1 and BRD4 only
+- 243 reduced regions are shared across all three factors (MED1, BRD4,
+  and GR)
+- 267 reduced regions are unique to BRD4
+- 48 reduced regions are shared between MED1 and BRD4 only
 
   
 
@@ -350,6 +370,8 @@ res_sets <- computeOverlaps(gene_list)
 
 # basic default venn plot (uses package defaults)
 plotVenn(res_sets)
+#> ✔ Venn diagError = 8.693e-13  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
 ![](gVenn_files/figure-html/venn-custom-default-1.png)  
@@ -362,6 +384,8 @@ plotVenn(res_sets,
          fills = list(fill = c("#FF6B6B", "#4ECDC4", "#45B7D1"), alpha = 0.5),
          legend = "right",
          main = list(label = "Custom fills (transparent)", fontsize = 14))
+#> ✔ Venn diagError = 7.471e-13  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
 ![](gVenn_files/figure-html/venn-custom-fills-1.png)  
@@ -374,6 +398,8 @@ plotVenn(res_sets,
          fills = "transparent",
          edges = list(col = c("red", "blue", "darkgreen"), lwd = 2),
          main = list(label = "Colored borders only"))
+#> ✔ Venn diagError = 8.693e-13  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
 ![](gVenn_files/figure-html/venn-transparent-fills-1.png)  
@@ -387,6 +413,8 @@ plotVenn(res_sets,
          quantities = list(type = c("counts","percent"),
                            col = "black", fontsize = 10),
          main = list(label = "Counts + Percentages", fontsize = 14))
+#> ✔ Venn diagError = 8.693e-13  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
 ![](gVenn_files/figure-html/venn-labels-quantities-1.png)  
@@ -400,6 +428,8 @@ plotVenn(res_sets,
                        labels = c("Treatment A","Treatment B","Control"),
                        fontsize = 10),
          main = list(label = "Custom legend"))
+#> ✔ Venn diagError = 8.693e-13  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
 ![](gVenn_files/figure-html/venn-legend-bottom-1.png)  
@@ -415,6 +445,8 @@ plotVenn(res_sets,
          quantities = list(type = "counts", col = "black", fontsize = 10),
          main = list(label = "multiple custom options Venn", fontsize = 16, font = 2),
          legend = FALSE)
+#> ✔ Venn diagError = 2.510e-14  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
 ![](gVenn_files/figure-html/venn-multiple-custom-1.png)  
@@ -428,7 +460,7 @@ This vignette was built with the following R session:
 sessionInfo()
 #> R version 4.6.1 (2026-06-24)
 #> Platform: x86_64-pc-linux-gnu
-#> Running under: Ubuntu 24.04.4 LTS
+#> Running under: Ubuntu 24.04.5 LTS
 #> 
 #> Matrix products: default
 #> BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -448,29 +480,30 @@ sessionInfo()
 #> [8] base     
 #> 
 #> other attached packages:
-#> [1] gVenn_1.3.2          GenomicRanges_1.64.0 Seqinfo_1.2.0       
-#> [4] IRanges_2.46.0       S4Vectors_0.50.1     BiocGenerics_0.58.1 
+#> [1] gVenn_1.99.0         GenomicRanges_1.64.0 Seqinfo_1.2.0       
+#> [4] IRanges_2.46.0       S4Vectors_0.50.3     BiocGenerics_0.58.1 
 #> [7] generics_0.1.4      
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] eulerr_8.1.0          sass_0.4.10           shape_1.4.6.1        
-#>  [4] stringi_1.8.7         magrittr_2.0.5        digest_0.6.39        
+#>  [1] eulerr_8.3.1          sass_0.4.10           shape_1.4.6.1        
+#>  [4] stringi_1.8.9         magrittr_2.0.5        digest_0.6.39        
 #>  [7] evaluate_1.0.5        grid_4.6.1            timechange_0.4.0     
 #> [10] RColorBrewer_1.1-3    iterators_1.0.14      circlize_0.4.18      
 #> [13] fastmap_1.2.0         foreach_1.5.2         doParallel_1.0.17    
-#> [16] jsonlite_2.0.0        GlobalOptions_0.1.4   ComplexHeatmap_2.28.0
-#> [19] codetools_0.2-20      textshaping_1.0.5     jquerylib_0.1.4      
-#> [22] cli_3.6.6             rlang_1.3.0           crayon_1.5.3         
-#> [25] cachem_1.1.0          yaml_2.3.12           otel_0.2.0           
-#> [28] tools_4.6.1           parallel_4.6.1        colorspace_2.1-2     
-#> [31] GetoptLong_1.1.1      vctrs_0.7.3           R6_2.6.1             
-#> [34] png_0.1-9             matrixStats_1.5.0     lifecycle_1.0.5      
-#> [37] lubridate_1.9.5       stringr_1.6.0         fs_2.1.0             
-#> [40] clue_0.3-68           ragg_1.5.2            cluster_2.1.8.2      
-#> [43] desc_1.4.3            pkgdown_2.2.0         bslib_0.11.0         
-#> [46] glue_1.8.1            systemfonts_1.3.2     xfun_0.59            
-#> [49] knitr_1.51            rjson_0.2.23          htmltools_0.5.9      
-#> [52] rmarkdown_2.31        compiler_4.6.1
+#> [16] jsonlite_2.0.0        GenomeInfoDb_1.48.0   GlobalOptions_0.1.4  
+#> [19] httr_1.4.9            ComplexHeatmap_2.28.0 UCSC.utils_1.8.0     
+#> [22] codetools_0.2-20      textshaping_1.0.5     jquerylib_0.1.4      
+#> [25] cli_3.6.6             rlang_1.3.0           crayon_1.5.3         
+#> [28] cachem_1.1.0          yaml_2.3.12           otel_0.2.0           
+#> [31] tools_4.6.1           parallel_4.6.1        colorspace_2.1-3     
+#> [34] GetoptLong_1.1.1      vctrs_0.7.3           R6_2.6.1             
+#> [37] png_0.1-9             matrixStats_1.5.0     lifecycle_1.0.5      
+#> [40] lubridate_1.9.5       stringr_1.6.0         fs_2.1.0             
+#> [43] clue_0.3-68           cluster_2.1.8.2       ragg_1.5.2           
+#> [46] desc_1.4.3            pkgdown_2.2.1         bslib_0.12.0         
+#> [49] glue_1.8.1            systemfonts_1.3.2     xfun_0.61            
+#> [52] knitr_1.52            rjson_0.2.23          htmltools_0.5.9      
+#> [55] rmarkdown_2.32        compiler_4.6.1
 ```
 
 ## References

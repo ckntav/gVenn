@@ -105,9 +105,10 @@ sapply(groups, length)
 
 In this example:
 
-- 243 peaks are shared across all three factors (MED1, BRD4, and GR)
-- 267 peaks are unique to BRD4
-- 48 peaks are shared between MED1 and BRD4 only
+- 243 reduced regions are shared across all three factors (MED1, BRD4,
+  and GR)
+- 267 reduced regions are unique to BRD4
+- 48 reduced regions are shared between MED1 and BRD4 only
 
 #### Overlap group naming
 
@@ -189,6 +190,8 @@ like to change.
   : Plot an UpSet Diagram from Genomic or Set Overlap Results
 - [`plotVenn()`](https://ckntav.github.io/gVenn/reference/plotVenn.md) :
   Plot a Venn Diagram from Genomic or Set Overlap Results
+- [`plotVennError()`](https://ckntav.github.io/gVenn/reference/plotVennError.md)
+  : Plot where a Venn diagram misrepresents the data
 - [`saveViz()`](https://ckntav.github.io/gVenn/reference/saveViz.md) :
   Save a Visualization to File (PDF, PNG, or SVG)
 - [`today`](https://ckntav.github.io/gVenn/reference/today.md) : Today's

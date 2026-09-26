@@ -46,4 +46,6 @@ str(gene_list)
 # Compute overlaps and plot
 ov <- computeOverlaps(gene_list)
 plotVenn(ov)
+#> ✔ Venn diagError = 8.693e-13  (<= 1e-06)
+#>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```

@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gVenn</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.99.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,9 +65,9 @@
                         <h4 data-toc-skip class="author">Christophe
 Tav</h4>
             
-            <h4 data-toc-skip class="date">July 2026</h4>
+            <h4 data-toc-skip class="date">September 2026</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ckntav/gVenn/blob/v.1.3.2/vignettes/gVenn.Rmd" class="external-link"><code>vignettes/gVenn.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ckntav/gVenn/blob/master/vignettes/gVenn.Rmd" class="external-link"><code>vignettes/gVenn.Rmd</code></a></small>
       <div class="d-none name"><code>gVenn.Rmd</code></div>
     </div>
 
@@ -141,16 +141,29 @@ examples and tests, each set has been restricted to peaks located on
 <h3 id="compute-overlaps-between-genomic-regions">2. Compute overlaps between genomic regions<a class="anchor" aria-label="anchor" href="#compute-overlaps-between-genomic-regions"></a>
 </h3>
 <p>We compute overlaps between the ChIP-seq peak sets using
-<code><a href="../reference/computeOverlaps.html">computeOverlaps()</a></code>:</p>
+<code><a href="../reference/computeOverlaps.html">computeOverlaps()</a></code>.</p>
+<p>For genomic inputs, two modes are available through the
+<code>mode</code> argument.</p>
+<p>With <code>mode = "reduce"</code> (the default), all intervals from
+all sets are merged into connected regions, and each region is
+classified by the sets it overlaps: counts then correspond to shared
+loci.</p>
+<p>With <code>mode = "disjoin"</code>, each set is first reduced on its
+own, and the union of all intervals is then split at every set boundary
+into non-overlapping segments. Each segment is covered by exactly one
+combination of sets, so a single peak can be split across several
+categories, and counts correspond to genomic positions shared by exactly
+those sets.</p>
+<p>See <code><a href="../reference/computeOverlaps.html">?computeOverlaps</a></code> for more details.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">genomic_overlaps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computeOverlaps.html">computeOverlaps</a></span><span class="op">(</span><span class="va">a549_chipseq_peaks</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">genomic_overlaps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computeOverlaps.html">computeOverlaps</a></span><span class="op">(</span><span class="va">a549_chipseq_peaks</span>, mode <span class="op">=</span> <span class="st">"reduce"</span><span class="op">)</span></span></code></pre></div>
 <p>The result is a structured <code>GenomicOverlapResult</code> object
 that contains:</p>
 <ul>
 <li>A GRanges object, where each region includes metadata describing its
 overlap pattern across the input sets.</li>
 <li>An associated logical matrix (or data frame) indicating which
-reduced regions overlap with which input sets.</li>
+regions overlap with which input sets.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -162,7 +175,9 @@ reduced regions overlap with which input sets.</li>
 <p><code><a href="../reference/plotVenn.html">plotVenn()</a></code> draws proportional Venn diagrams from the
 overlap object.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">genomic_overlaps</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">genomic_overlaps</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔ Venn diagError = 2.229e-12  (&lt;= 1e-06)</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span>  Access fit diagnostics with attr(&lt;plotVenn output&gt;, "fit_diagnostics")</span></span></code></pre></div>
 <p><img src="gVenn_files/figure-html/plot_venn-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level4">
@@ -248,10 +263,10 @@ transparent background using <code>bg = "transparent"</code>:</p>
 <span><span class="co">#&gt;       267       125         4        48        46        16       243</span></span></code></pre></div>
 <p>In this example:</p>
 <ul>
-<li>243 peaks are shared across all three factors (MED1, BRD4, and
-GR)</li>
-<li>267 peaks are unique to BRD4</li>
-<li>48 peaks are shared between MED1 and BRD4 only</li>
+<li>243 reduced regions are shared across all three factors (MED1, BRD4,
+and GR)</li>
+<li>267 reduced regions are unique to BRD4</li>
+<li>48 reduced regions are shared between MED1 and BRD4 only</li>
 </ul>
 <p><br></p>
 <div class="section level4">
@@ -404,7 +419,9 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span><span class="va">res_sets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/computeOverlaps.html">computeOverlaps</a></span><span class="op">(</span><span class="va">gene_list</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># basic default venn plot (uses package defaults)</span></span>
-<span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔ Venn diagError = 8.693e-13  (&lt;= 1e-06)</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span>  Access fit diagnostics with attr(&lt;plotVenn output&gt;, "fit_diagnostics")</span></span></code></pre></div>
 <p><img src="gVenn_files/figure-html/venn-custom-default-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"><br></p>
 <div class="section level5">
 <h5 id="custom-fills-with-transparency">Custom fills with transparency<a class="anchor" aria-label="anchor" href="#custom-fills-with-transparency"></a>
@@ -413,7 +430,9 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span>,</span>
 <span>         fills <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#FF6B6B"</span>, <span class="st">"#4ECDC4"</span>, <span class="st">"#45B7D1"</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>         legend <span class="op">=</span> <span class="st">"right"</span>,</span>
-<span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Custom fills (transparent)"</span>, fontsize <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Custom fills (transparent)"</span>, fontsize <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔ Venn diagError = 7.471e-13  (&lt;= 1e-06)</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span>  Access fit diagnostics with attr(&lt;plotVenn output&gt;, "fit_diagnostics")</span></span></code></pre></div>
 <p><img src="gVenn_files/figure-html/venn-custom-fills-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level5">
@@ -423,7 +442,9 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">res_sets</span>,</span>
 <span>         fills <span class="op">=</span> <span class="st">"transparent"</span>,</span>
 <span>         edges <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"darkgreen"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Colored borders only"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Colored borders only"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔ Venn diagError = 8.693e-13  (&lt;= 1e-06)</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span>  Access fit diagnostics with attr(&lt;plotVenn output&gt;, "fit_diagnostics")</span></span></code></pre></div>
 <p><img src="gVenn_files/figure-html/venn-transparent-fills-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level5">
@@ -434,7 +455,9 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span>         labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, fontsize <span class="op">=</span> <span class="fl">12</span>, font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
 <span>         quantities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"counts"</span>,<span class="st">"percent"</span><span class="op">)</span>,</span>
 <span>                           col <span class="op">=</span> <span class="st">"black"</span>, fontsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
-<span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Counts + Percentages"</span>, fontsize <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Counts + Percentages"</span>, fontsize <span class="op">=</span> <span class="fl">14</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔ Venn diagError = 8.693e-13  (&lt;= 1e-06)</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span>  Access fit diagnostics with attr(&lt;plotVenn output&gt;, "fit_diagnostics")</span></span></code></pre></div>
 <p><img src="gVenn_files/figure-html/venn-labels-quantities-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level5">
@@ -445,7 +468,9 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span>         legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>side <span class="op">=</span> <span class="st">"bottom"</span>,</span>
 <span>                       labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Treatment A"</span>,<span class="st">"Treatment B"</span>,<span class="st">"Control"</span><span class="op">)</span>,</span>
 <span>                       fontsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
-<span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Custom legend"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Custom legend"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔ Venn diagError = 8.693e-13  (&lt;= 1e-06)</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span>  Access fit diagnostics with attr(&lt;plotVenn output&gt;, "fit_diagnostics")</span></span></code></pre></div>
 <p><img src="gVenn_files/figure-html/venn-legend-bottom-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"><br></p>
 </div>
 <div class="section level5">
@@ -458,7 +483,9 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span>         labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span>, fontsize <span class="op">=</span> <span class="fl">7</span>, font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
 <span>         quantities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"counts"</span>, col <span class="op">=</span> <span class="st">"black"</span>, fontsize <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>         main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>label <span class="op">=</span> <span class="st">"multiple custom options Venn"</span>, fontsize <span class="op">=</span> <span class="fl">16</span>, font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>         legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>         legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔ Venn diagError = 2.510e-14  (&lt;= 1e-06)</span></span></span>
+<span><span class="co"><span style="color: #00BB00;">#&gt; </span>  Access fit diagnostics with attr(&lt;plotVenn output&gt;, "fit_diagnostics")</span></span></code></pre></div>
 <p><img src="gVenn_files/figure-html/venn-multiple-custom-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"><br></p>
 </div>
 </div>
@@ -470,7 +497,7 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; R version 4.6.1 (2026-06-24)</span></span>
 <span><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
-<span><span class="co">#&gt; Running under: Ubuntu 24.04.4 LTS</span></span>
+<span><span class="co">#&gt; Running under: Ubuntu 24.04.5 LTS</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Matrix products: default</span></span>
 <span><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
@@ -490,29 +517,30 @@ by <code><a href="../reference/plotVenn.html">plotVenn()</a></code>. All example
 <span><span class="co">#&gt; [8] base     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; other attached packages:</span></span>
-<span><span class="co">#&gt; [1] gVenn_1.3.2          GenomicRanges_1.64.0 Seqinfo_1.2.0       </span></span>
-<span><span class="co">#&gt; [4] IRanges_2.46.0       S4Vectors_0.50.1     BiocGenerics_0.58.1 </span></span>
+<span><span class="co">#&gt; [1] gVenn_1.99.0         GenomicRanges_1.64.0 Seqinfo_1.2.0       </span></span>
+<span><span class="co">#&gt; [4] IRanges_2.46.0       S4Vectors_0.50.3     BiocGenerics_0.58.1 </span></span>
 <span><span class="co">#&gt; [7] generics_0.1.4      </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
-<span><span class="co">#&gt;  [1] eulerr_8.1.0          sass_0.4.10           shape_1.4.6.1        </span></span>
-<span><span class="co">#&gt;  [4] stringi_1.8.7         magrittr_2.0.5        digest_0.6.39        </span></span>
+<span><span class="co">#&gt;  [1] eulerr_8.3.1          sass_0.4.10           shape_1.4.6.1        </span></span>
+<span><span class="co">#&gt;  [4] stringi_1.8.9         magrittr_2.0.5        digest_0.6.39        </span></span>
 <span><span class="co">#&gt;  [7] evaluate_1.0.5        grid_4.6.1            timechange_0.4.0     </span></span>
 <span><span class="co">#&gt; [10] RColorBrewer_1.1-3    iterators_1.0.14      circlize_0.4.18      </span></span>
 <span><span class="co">#&gt; [13] fastmap_1.2.0         foreach_1.5.2         doParallel_1.0.17    </span></span>
-<span><span class="co">#&gt; [16] jsonlite_2.0.0        GlobalOptions_0.1.4   ComplexHeatmap_2.28.0</span></span>
-<span><span class="co">#&gt; [19] codetools_0.2-20      textshaping_1.0.5     jquerylib_0.1.4      </span></span>
-<span><span class="co">#&gt; [22] cli_3.6.6             rlang_1.3.0           crayon_1.5.3         </span></span>
-<span><span class="co">#&gt; [25] cachem_1.1.0          yaml_2.3.12           otel_0.2.0           </span></span>
-<span><span class="co">#&gt; [28] tools_4.6.1           parallel_4.6.1        colorspace_2.1-2     </span></span>
-<span><span class="co">#&gt; [31] GetoptLong_1.1.1      vctrs_0.7.3           R6_2.6.1             </span></span>
-<span><span class="co">#&gt; [34] png_0.1-9             matrixStats_1.5.0     lifecycle_1.0.5      </span></span>
-<span><span class="co">#&gt; [37] lubridate_1.9.5       stringr_1.6.0         fs_2.1.0             </span></span>
-<span><span class="co">#&gt; [40] clue_0.3-68           ragg_1.5.2            cluster_2.1.8.2      </span></span>
-<span><span class="co">#&gt; [43] desc_1.4.3            pkgdown_2.2.0         bslib_0.11.0         </span></span>
-<span><span class="co">#&gt; [46] glue_1.8.1            systemfonts_1.3.2     xfun_0.59            </span></span>
-<span><span class="co">#&gt; [49] knitr_1.51            rjson_0.2.23          htmltools_0.5.9      </span></span>
-<span><span class="co">#&gt; [52] rmarkdown_2.31        compiler_4.6.1</span></span></code></pre></div>
+<span><span class="co">#&gt; [16] jsonlite_2.0.0        GenomeInfoDb_1.48.0   GlobalOptions_0.1.4  </span></span>
+<span><span class="co">#&gt; [19] httr_1.4.9            ComplexHeatmap_2.28.0 UCSC.utils_1.8.0     </span></span>
+<span><span class="co">#&gt; [22] codetools_0.2-20      textshaping_1.0.5     jquerylib_0.1.4      </span></span>
+<span><span class="co">#&gt; [25] cli_3.6.6             rlang_1.3.0           crayon_1.5.3         </span></span>
+<span><span class="co">#&gt; [28] cachem_1.1.0          yaml_2.3.12           otel_0.2.0           </span></span>
+<span><span class="co">#&gt; [31] tools_4.6.1           parallel_4.6.1        colorspace_2.1-3     </span></span>
+<span><span class="co">#&gt; [34] GetoptLong_1.1.1      vctrs_0.7.3           R6_2.6.1             </span></span>
+<span><span class="co">#&gt; [37] png_0.1-9             matrixStats_1.5.0     lifecycle_1.0.5      </span></span>
+<span><span class="co">#&gt; [40] lubridate_1.9.5       stringr_1.6.0         fs_2.1.0             </span></span>
+<span><span class="co">#&gt; [43] clue_0.3-68           cluster_2.1.8.2       ragg_1.5.2           </span></span>
+<span><span class="co">#&gt; [46] desc_1.4.3            pkgdown_2.2.1         bslib_0.12.0         </span></span>
+<span><span class="co">#&gt; [49] glue_1.8.1            systemfonts_1.3.2     xfun_0.61            </span></span>
+<span><span class="co">#&gt; [52] knitr_1.52            rjson_0.2.23          htmltools_0.5.9      </span></span>
+<span><span class="co">#&gt; [55] rmarkdown_2.32        compiler_4.6.1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -559,7 +587,7 @@ doi:10.1093/bioinformatics/btw313 </a></p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

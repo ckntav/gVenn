@@ -1,7 +1,10 @@
 # Extract Overlap Groups from Genomic or Set Overlap Results
 
-This function extracts subsets of intersecting elements grouped by their
-overlap category (e.g., "110"). For genomic overlaps, it returns a
+This function extracts the elements of each overlap group, identified by
+its binary code (e.g., `"110"`). For genomic overlaps, the elements are
+the reduced or disjoint regions built by
+[`computeOverlaps`](https://ckntav.github.io/gVenn/reference/computeOverlaps.md),
+not the input intervals. For genomic overlaps, it returns a
 `GRangesList`; for set overlaps, it returns a named list of character
 vectors.
 
@@ -15,16 +18,18 @@ extractOverlaps(overlap_object)
 
 - overlap_object:
 
-  A `GenomicOverlapsResult` or `SetOverlapsResult` object.
+  A `GenomicOverlapResult` or `SetOverlapResult` object.
 
 ## Value
 
-A named list of grouped intersecting elements:
+A named list with one entry per overlap group, named by its binary code
+prefixed with `"group_"` (e.g., `"group_110"`) and ordered by the number
+of sets involved:
 
-- If input is a `GenomicOverlapsResult`, a `GRangesList` split by
+- If input is a `GenomicOverlapResult`, a `GRangesList` split by
   `intersect_category`.
 
-- If input is a `SetOverlapsResult`, a named `list` of character vectors
+- If input is a `SetOverlapResult`, a named `list` of character vectors
   grouped by `intersect_category`.
 
 ## Examples

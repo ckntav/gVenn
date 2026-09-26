@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gVenn</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.99.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,9 +36,32 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/ckntav/gVenn/blob/v.1.3.2/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/ckntav/gVenn/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.99.0" id="gvenn-1990">gVenn 1.99.0<a class="anchor" aria-label="anchor" href="#gvenn-1990"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-99-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-99-0"></a></h3>
+<ul><li>Add a <code>mode</code> argument to <code><a href="../reference/computeOverlaps.html">computeOverlaps()</a></code> controlling how genomic intervals are made non-redundant before they are classified. The default, <code>mode = "reduce"</code>, keeps the previous “reduce-then-classify” behavior. The new <code>mode = "disjoin"</code> reduces each set on its own, then partitions the union into non-overlapping segments with <code><a href="https://rdrr.io/pkg/IRanges/man/inter-range-methods.html" class="external-link">GenomicRanges::disjoin()</a></code>, so that every segment is covered by exactly one combination of sets. Because the resulting intervals are merged in one mode and disjoint in the other, the <code>reduced_regions</code> element of <code>GenomicOverlapResult</code> is renamed to <code>regions</code>.</li>
+<li>
+<code><a href="../reference/plotVenn.html">plotVenn()</a></code> now attaches <code>eulerr</code>’s goodness-of-fit diagnostics (<code>stress</code>, <code>diagError</code>, <code>regionError</code>, <code>undrawnRegions</code>) to the returned plot as a <code>"fit_diagnostics"</code> attribute, and the fit itself as <code>"euler_fit"</code>. A message reports <code>diagError</code> and whether it falls above or below the 1e-6 threshold of Micallef and Rodgers (2014), who introduced the measure, and names the populated regions the diagram gives no area to at all, which <code>undrawnRegions</code> records. Set the new <code>verbose = FALSE</code> to silence it.</li>
+<li>Add <code><a href="../reference/plotVennError.html">plotVennError()</a></code>, which redraws the diagram shaded by the signed error of each region, so the regions a diagram misrepresents can be read off the picture. A thin wrapper around <code><a href="https://jolars.github.io/eulerr/reference/error_plot.html" class="external-link">eulerr::error_plot()</a></code>. It takes the plot returned by <code><a href="../reference/plotVenn.html">plotVenn()</a></code> as input.</li>
+<li>Add an <code>ignore.strand</code> argument to <code><a href="../reference/computeOverlaps.html">computeOverlaps()</a></code>/<code>computeGenomicOverlaps()</code>, passed through to <code><a href="https://rdrr.io/pkg/IRanges/man/inter-range-methods.html" class="external-link">GenomicRanges::reduce()</a></code>, <code><a href="https://rdrr.io/pkg/IRanges/man/inter-range-methods.html" class="external-link">GenomicRanges::disjoin()</a></code>, and <code><a href="https://rdrr.io/pkg/IRanges/man/findOverlaps-methods.html" class="external-link">IRanges::overlapsAny()</a></code>. Defaults to <code>FALSE</code> (previous, strand-aware behavior is unchanged); set to <code>TRUE</code> to disregard strand when merging or partitioning regions and when determining overlaps.</li>
+<li>
+<code><a href="../reference/computeOverlaps.html">computeOverlaps()</a></code> now warns when two or more input genomic sets share no chromosome name at all, a common symptom of mismatched chromosome naming conventions (e.g. <code>"chr1"</code> vs <code>"1"</code>) or of comparing different genome assemblies, cases where overlaps would otherwise be silently and permanently empty. Genome-assembly conflicts on a <em>shared</em> chromosome name already error via <code><a href="https://rdrr.io/pkg/GenomicRanges/man/GRangesList-class.html" class="external-link">GenomicRanges::GRangesList()</a></code>, unchanged.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-updates-1-99-0">Minor updates<a class="anchor" aria-label="anchor" href="#minor-updates-1-99-0"></a></h3>
+<ul><li>The right-hand annotation of <code><a href="../reference/plotUpSet.html">plotUpSet()</a></code> is now labelled according to the type of the input: <code>"Region size"</code> for a <code>GenomicOverlapResult</code> and <code>"Set size"</code> for a <code>SetOverlapResult</code>.</li>
+<li>
+<code><a href="../reference/computeOverlaps.html">computeOverlaps()</a></code> labels overlap categories faster at large numbers of regions (~10x at 10<sup>5-10</sup>6 regions), by vectorizing the internal <code>defineCategories()</code> helper instead of looping row by row.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-99-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-99-0"></a></h3>
+<ul><li>Fix <code><a href="../reference/plotVenn.html">plotVenn()</a></code> painting different regions of a four-set diagram in the same color. Since 1.3.2 the palette has been recycled to the number of regions, but it held seven colors against the fifteen regions of a four-set diagram, so eight of them repeated a color. Eight colors were appended. Two- and three-set diagrams draw on the unchanged first seven, so their output is identical.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.3.2" id="gvenn-132">gVenn 1.3.2<a class="anchor" aria-label="anchor" href="#gvenn-132"></a></h2>
 <div class="section level3">
@@ -146,7 +169,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

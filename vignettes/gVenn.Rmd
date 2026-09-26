@@ -102,12 +102,18 @@ data(a549_chipseq_peaks)
 
 We compute overlaps between the ChIP-seq peak sets using `computeOverlaps()`.
 
-For genomic inputs, two modes are available through the `mode` argument.
+For genomic inputs, the `mode` argument selects where the boundaries of the
+partition fall:
 
+- With `mode = "reduce"` (the default), `GenomicRanges::reduce()` collapses the
+union of all intervals into a non-redundant collection of "reduced regions".
+- With `mode = "disjoin"`, each set's intervals are collapsed individually and
+the union is then cut at every set boundary with `GenomicRanges::disjoin()`,
+yielding a larger number of smaller, position-exact "disjoint regions".
 
-With `mode = "reduce"` (the default), all intervals from all sets are merged into connected regions, and each region is classified by the sets it overlaps: counts then correspond to shared loci.
-
-With `mode = "disjoin"`, each set is first reduced on its own, and the union of all intervals is then split at every set boundary into non-overlapping segments. Each segment is covered by exactly one combination of sets, so a single peak can be split across several categories, and counts correspond to genomic positions shared by exactly those sets.
+Each reduced or disjoint region is then assigned to an overlap group according
+to the input sets it overlaps. The counts reported below are therefore numbers
+of regions, not of input peaks.
 
 See `?computeOverlaps` for more details.
 
@@ -117,9 +123,24 @@ genomic_overlaps <- computeOverlaps(a549_chipseq_peaks, mode = "reduce")
 
 The result is a structured `GenomicOverlapResult` object that contains:
 
-- A GRanges object, where each region includes metadata describing its
-overlap pattern across the input sets.
-- An associated logical matrix indicating which regions overlap with which input sets.
+- `regions`: a `GRanges` object of the reduced (or disjoint) regions, each
+annotated with an `intersect_category` column giving the binary code of its
+overlap group.
+- `overlap_matrix`: a logical matrix indicating which regions overlap with
+which input sets (rows = regions, columns = sets).
+- `mode`: the `mode` used to build the regions.
+
+### Strand
+
+By default, regions on opposite strands are never merged or considered
+overlapping. Set `ignore.strand = TRUE` to disregard strand:
+
+```{r strand}
+D <- GRanges("chr1", IRanges(100, 200), strand = "+")
+E <- GRanges("chr1", IRanges(150, 250), strand = "-")
+computeOverlaps(list(D = D, E = E))$regions
+computeOverlaps(list(D = D, E = E), ignore.strand = TRUE)$regions
+```
 
 ## 3. Visualization
 
@@ -130,6 +151,25 @@ overlap pattern across the input sets.
 plotVenn(genomic_overlaps)
 ```
 <br>
+
+#### Fit diagnostics
+
+An area-proportional diagram is not always attainable. `plotVenn()` prints
+`diagError`, the largest difference between the share of the diagram's area a
+region receives and the share its count requires, and names any region left
+with no area. A diagram is considered accurate when `diagError` is at most
+1e-6 (Micallef and Rodgers, 2014). The diagnostics are attached to the plot:
+
+```{r fit_diagnostics}
+venn <- plotVenn(genomic_overlaps, verbose = FALSE)
+attr(venn, "fit_diagnostics")$diagError
+```
+
+When `diagError` exceeds 1e-6, `plotVennError()` shows which regions are
+misrepresented and in which direction.
+
+If some regions are left undrawn, or the fit is poor, use `plotUpSet()`,
+which represents every count exactly as a bar.
 
 ### UpSet plot
 
@@ -172,8 +212,9 @@ saveViz(venn,
 ```
 
 By default:
+
 - files are written to the current directory (".").
-- with_date = TRUE, the current date is prepended to the filename. Set with_date = FALSE to disable it.
+- the current date is prepended to the filename (set `with_date = FALSE` to disable it).
 
 You can also export to PNG or SVG:
 
@@ -253,14 +294,14 @@ Each overlap group can be accessed directly by name for downstream analyses,
 including motif enrichment, transcription factor (TF) enrichment, annotation of
 peaks to nearby genes, functional enrichment or visualization.
 
-For example, to extract all elements that are present in **A ∩ B ∩ C**:
+For example, to extract all regions that are present in **A ∩ B ∩ C**:
 
 ```{r, extractOverlaps_example3}
 # Extract elements in group_111 (present in all three sets: MED1, BRD4, and GR)
-peaks_in_all_sets <- groups[["group_111"]]
+regions_in_all_sets <- groups[["group_111"]]
 
 # Display the elements
-peaks_in_all_sets
+regions_in_all_sets
 ```
 <br>
 
@@ -397,10 +438,12 @@ doi:10.3389/fgene.2023.1237092
 ### Supporting packages
 
 - **eulerr** :
-Larsson, J. (2023).
-*eulerr: Area-Proportional Euler and Venn Diagrams with Ellipses.*
-<a href="https://CRAN.R-project.org/package=eulerr" target="_blank">
-CRAN package page
+Larsson, J., & Gustafsson, P. (2018).
+*A Case Study in Fitting Area-Proportional Euler Diagrams with Ellipses Using eulerr.*
+**Proceedings of International Workshop on Set Visualization and Reasoning**,
+CEUR Workshop Proceedings, 2116, 84–91.
+<a href="https://ceur-ws.org/Vol-2116/paper7.pdf" target="_blank">
+ceur-ws.org/Vol-2116/paper7.pdf
 </a>
 
 - **ComplexHeatmap** :

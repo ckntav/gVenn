@@ -28,6 +28,11 @@ date to filenames.}
 }
 \value{
 Invisibly returns a character vector of file paths created.
+
+#' @examples
+data(a549_chipseq_peaks)
+grouped <- extractOverlaps(computeOverlaps(a549_chipseq_peaks))
+exportOverlapsToBed(grouped, output_dir = tempdir())
 }
 \description{
 This function exports genomic overlap groups from \code{extractOverlaps()} to

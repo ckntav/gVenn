@@ -120,7 +120,7 @@ checkGenomicCompatibility <- function(genomic_regions) {
 #'
 #' @details With `mode = "reduce"`, the function uses `GenomicRanges::reduce()`
 #'   to merge overlapping or adjacent regions across all sets. With
-#'   `mode = "disjoin"`, each set is first reduced on its own (to drop
+#'   `mode = "disjoin"`, each set is first collapsed on its own (to drop
 #'   within-set redundancy), then `GenomicRanges::disjoin()` partitions the
 #'   union into non-overlapping segments delimited by every set boundary.
 #'   In both cases, overlaps between the resulting regions and the original
@@ -287,6 +287,7 @@ computeSetOverlaps <- function(named_sets) {
 #'     \item A named list of atomic vectors (character, numeric, factor, etc.),
 #'       all of the same type.
 #'   }
+#' If the list is unnamed, sets are named `set1`, `set2`, etc.
 #' @param mode Character string selecting where the boundaries of the
 #'   partition fall. One of:
 #'   \itemize{

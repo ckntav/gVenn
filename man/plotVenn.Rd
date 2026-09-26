@@ -93,7 +93,9 @@ when it is at most 1e-6.
 \description{
 This function creates a Venn diagram using the \code{eulerr} package to visualize
 intersections across multiple sets. Supports both
-\code{GenomicOverlapResult} and \code{SetOverlapResult} objects.
+\code{GenomicOverlapResult} and \code{SetOverlapResult} objects. Diagrams are
+recommended for two to four sets: beyond that, an area-proportional layout
+is rarely attainable, and \code{\link{plotUpSet}} is the better choice.
 }
 \examples{
 # Example with gene sets

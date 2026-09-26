@@ -83,6 +83,11 @@ exportOverlaps <- function(grouped,
 #'
 #' @return Invisibly returns a character vector of file paths created.
 #'
+#' @examples
+#' data(a549_chipseq_peaks)
+#' grouped <- extractOverlaps(computeOverlaps(a549_chipseq_peaks))
+#' exportOverlapsToBed(grouped, output_dir = tempdir())
+#'
 #' @export
 exportOverlapsToBed <- function(grouped,
                                 output_dir = ".",

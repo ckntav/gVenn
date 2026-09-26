@@ -2,7 +2,9 @@
 #'
 #' This function creates a Venn diagram using the `eulerr` package to visualize
 #' intersections across multiple sets. Supports both
-#' `GenomicOverlapResult` and `SetOverlapResult` objects.
+#' `GenomicOverlapResult` and `SetOverlapResult` objects. Diagrams are
+#' recommended for two to four sets: beyond that, an area-proportional layout
+#' is rarely attainable, and \code{\link{plotUpSet}} is the better choice.
 #'
 #' @param overlap_object A `GenomicOverlapResult` or `SetOverlapResult` object
 #'   returned by \code{\link{computeOverlaps}}.

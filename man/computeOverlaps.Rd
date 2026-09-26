@@ -13,7 +13,8 @@ computeOverlaps(x, mode = c("reduce", "disjoin"), ignore.strand = FALSE)
 \item A named list of \code{GRanges} objects.
 \item A named list of atomic vectors (character, numeric, factor, etc.),
 all of the same type.
-}}
+}
+#'   If the list is unnamed, sets are named \code{set1}, \code{set2}, etc.}
 
 \item{mode}{Character string selecting where the boundaries of the
 partition fall. One of:

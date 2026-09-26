@@ -5,7 +5,7 @@
 - Add a `mode` argument to `computeOverlaps()` controlling how genomic
   intervals are made non-redundant before they are classified. The default,
   `mode = "reduce"`, keeps the previous "reduce-then-classify" behavior.
-  The new `mode = "disjoin"` reduces each set on its own, then partitions the
+  The new `mode = "disjoin"` collapses each set on its own, then partitions the
   union into non-overlapping segments with `GenomicRanges::disjoin()`, so that
   every segment is covered by exactly one combination of sets. Because the 
   resulting intervals are merged in one mode and disjoint in the other, the
@@ -35,7 +35,7 @@
 
 ## Minor updates
 
-- The right-hand annotation of `plotUpSet()` is now labelled according to the
+- The right-hand annotation of `plotUpSet()` is now labeled according to the
   type of the input: `"Region size"` for a `GenomicOverlapResult` and
   `"Set size"` for a `SetOverlapResult`.
 - `computeOverlaps()` labels overlap categories faster at large numbers of

@@ -1,3 +1,55 @@
+# gVenn 1.99.0
+
+## New features
+
+- Add a `mode` argument to `computeOverlaps()` controlling how genomic
+  intervals are made non-redundant before they are classified. The default,
+  `mode = "reduce"`, keeps the previous "reduce-then-classify" behavior.
+  The new `mode = "disjoin"` reduces each set on its own, then partitions the
+  union into non-overlapping segments with `GenomicRanges::disjoin()`, so that
+  every segment is covered by exactly one combination of sets. Because the 
+  resulting intervals are merged in one mode and disjoint in the other, the
+  `reduced_regions` element of `GenomicOverlapResult` is renamed to `regions`.
+- `plotVenn()` now attaches `eulerr`'s goodness-of-fit diagnostics (`stress`,
+  `diagError`, `regionError`, `undrawnRegions`) to the returned plot as a
+  `"fit_diagnostics"` attribute, and the fit itself as `"euler_fit"`. A message
+  reports `diagError` and whether it falls above or below the 1e-6 threshold
+  of Micallef and Rodgers (2014), who introduced the measure,
+  and names the populated regions the diagram gives no area to at all, which
+  `undrawnRegions` records. Set the new `verbose = FALSE` to silence it.
+- Add `plotVennError()`, which redraws the diagram shaded by the signed error of
+  each region, so the regions a diagram misrepresents can be read off the picture.
+  A thin wrapper around  `eulerr::error_plot()`. It takes the plot returned
+  by `plotVenn()` as input.
+- Add an `ignore.strand` argument to `computeOverlaps()`/`computeGenomicOverlaps()`,
+  passed through to `GenomicRanges::reduce()`, `GenomicRanges::disjoin()`, and
+  `IRanges::overlapsAny()`. Defaults to `FALSE` (previous, strand-aware
+  behavior is unchanged); set to `TRUE` to disregard strand when merging or
+  partitioning regions and when determining overlaps.
+- `computeOverlaps()` now warns when two or more input genomic sets share no
+  chromosome name at all, a common symptom of mismatched chromosome naming
+  conventions (e.g. `"chr1"` vs `"1"`) or of comparing different genome
+  assemblies, cases where overlaps would otherwise be silently and
+  permanently empty. Genome-assembly conflicts on a *shared* chromosome name
+  already error via `GenomicRanges::GRangesList()`, unchanged.
+
+## Minor updates
+
+- The right-hand annotation of `plotUpSet()` is now labelled according to the
+  type of the input: `"Region size"` for a `GenomicOverlapResult` and
+  `"Set size"` for a `SetOverlapResult`.
+- `computeOverlaps()` labels overlap categories faster at large numbers of
+  regions (~10x at 10^5-10^6 regions), by vectorizing the internal
+  `defineCategories()` helper instead of looping row by row.
+
+## Bug fixes
+
+- Fix `plotVenn()` painting different regions of a four-set diagram in the same
+  color. Since 1.3.2 the palette has been recycled to the number of regions, but
+  it held seven colors against the fifteen regions of a four-set diagram, so
+  eight of them repeated a color. Eight colors were appended. Two- and three-set
+  diagrams draw on the unchanged first seven, so their output is identical.
+
 # gVenn 1.3.2
 
 ## Bug fixes

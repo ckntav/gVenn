@@ -4,7 +4,7 @@
 \alias{computeOverlaps}
 \title{Compute Overlaps Between Multiple Sets or Genomic Regions}
 \usage{
-computeOverlaps(x)
+computeOverlaps(x, mode = c("reduce", "disjoin"), ignore.strand = FALSE)
 }
 \arguments{
 \item{x}{Input sets. One of:
@@ -14,6 +14,29 @@ computeOverlaps(x)
 \item A named list of atomic vectors (character, numeric, factor, etc.),
 all of the same type.
 }}
+
+\item{mode}{Character string selecting where the boundaries of the
+partition fall. One of:
+\itemize{
+\item \code{"reduce"} (default): \code{GenomicRanges::reduce()} collapses the
+union of all intervals into a non-redundant collection of "reduced
+regions".
+\item \code{"disjoin"}: each set's intervals are collapsed individually and
+the union is then cut at every set boundary with
+\code{GenomicRanges::disjoin()}, yielding a larger number of smaller,
+position-exact "disjoint regions".
+}
+See Examples for a chained configuration under both modes.
+Ignored (with a warning) for non-genomic inputs.}
+
+\item{ignore.strand}{Logical, default \code{FALSE}. Controls whether strand is
+taken into account when regions are made non-redundant (\code{reduce()}/
+\code{disjoin()}) and when overlaps against the input sets are determined
+(\code{overlapsAny()}). With the default \code{FALSE}, regions on opposite strands
+are never merged or considered overlapping. With \code{TRUE}, strand is
+disregarded throughout, and regions on opposite strands can be merged
+into a single, unstranded (\code{"*"}) region. Ignored (with a warning) for
+non-genomic inputs.}
 }
 \value{
 An S3 object encoding the overlap result whose class depends on the input
@@ -23,12 +46,15 @@ type:
 \item{GenomicOverlapResult}{Returned when the input is genomic
 (\code{GRangesList} or list of \code{GRanges}). A list with:
 \itemize{
-\item \code{reduced_regions}: A \code{GRanges} object containing the
-merged (non-redundant) intervals. Each region is annotated with
-an \code{intersect_category} column.
+\item \code{regions}: A \code{GRanges} object containing the reduced
+regions (\code{mode = "reduce"}) or disjoint regions
+(\code{mode = "disjoin"}). Each region is annotated with an
+\code{intersect_category} column giving the binary code of its
+overlap group.
 \item \code{overlap_matrix}: A logical matrix indicating whether each
-reduced region overlaps each input set (rows = regions,
+region overlaps each input set (rows = regions,
 columns = sets).
+\item \code{mode}: The \code{mode} used to build the regions.
 }}
 \item{SetOverlapResult}{Returned when the input is a list of atomic
 vectors. A list with:
@@ -37,8 +63,9 @@ vectors. A list with:
 across the sets.
 \item \code{overlap_matrix}: A logical matrix indicating whether each
 element is present in each set (rows = elements, columns = sets).
-\item \code{intersect_category}: Character vector of category codes
-(e.g., \code{"110"}) for each element.
+\item \code{intersect_category}: Character vector giving the
+binary code of the overlap group (e.g., \code{"110"}) of each
+element.
 }}
 }
 }
@@ -50,8 +77,8 @@ the presence or absence of each element across sets.
 }
 \details{
 \itemize{
-\item When provided with genomic regions, the function merges all intervals into
-a non-redundant set (\code{reduce()}), then determines which original sets each
+\item When provided with genomic regions, the function builds a non-redundant
+set of intervals (see \code{mode}), then determines which original sets each
 region overlaps.
 \item When provided with ordinary sets (e.g., gene symbols), it collects all
 unique elements and records which sets contain them.
@@ -66,6 +93,20 @@ Internally, \code{computeOverlaps()} dispatches to either
 \code{computeGenomicOverlaps()} (for genomic inputs) or
 \code{computeSetOverlaps()} (for ordinary sets). Users are encouraged to call
 only \code{computeOverlaps()}.
+\subsection{Chromosome names and genome assemblies}{
+
+gVenn does not harmonize chromosome names or coordinate systems across input
+sets: genomic sets are expected to follow the same naming convention and to
+come from the same genome assembly. As a safeguard, \code{computeOverlaps()} warns
+whenever two input sets share no chromosome name at all, naming the offending
+pairs. Such a mismatch usually signals incompatible naming conventions (e.g.
+\code{"chr1"} vs \code{"1"}) or different assemblies, cases in which overlaps between
+those sets would otherwise be silently and permanently empty rather than
+raising an error. Only chromosomes actually present in each set are compared.
+Conflicting assemblies declared on a \emph{shared} chromosome name (e.g. \code{"chr1"}
+tagged \code{hg38} in one set and \code{hg19} in another) already raise an error in
+\code{GenomicRanges::GRangesList()}, before any overlap is computed.
+}
 }
 \examples{
 # Example with gene sets (built-in dataset)
@@ -80,8 +121,28 @@ ov_gr <- computeOverlaps(a549_chipseq_peaks)
 head(ov_gr$overlap_matrix)
 plotVenn(ov_gr)
 
+# Chained overlaps: A-B and B-C overlap, but A and C do not
+A <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200))
+B <- GenomicRanges::GRanges("chr1", IRanges::IRanges(180, 300))
+C <- GenomicRanges::GRanges("chr1", IRanges::IRanges(280, 400))
+
+# "reduce" merges the chain into a single "111" region
+computeOverlaps(list(A = A, B = B, C = C))$regions
+
+# "disjoin" keeps A-B and B-C as separate two-way intersections
+computeOverlaps(list(A = A, B = B, C = C), mode = "disjoin")$regions
+
+# Chained overlaps on opposite strands: kept separate by default,
+# merged when ignore.strand = TRUE
+D <- GenomicRanges::GRanges("chr1", IRanges::IRanges(100, 200), strand = "+")
+E <- GenomicRanges::GRanges("chr1", IRanges::IRanges(150, 250), strand = "-")
+computeOverlaps(list(D = D, E = E))$regions
+computeOverlaps(list(D = D, E = E), ignore.strand = TRUE)$regions
+
 }
 \seealso{
 \code{\link{plotVenn}}, \code{\link{plotUpSet}},
-\code{\link[GenomicRanges]{GRangesList}}, \code{\link[GenomicRanges]{reduce}}
+\code{\link[GenomicRanges]{GRangesList}},
+\code{\link[GenomicRanges]{reduce}},
+\code{\link[GenomicRanges]{disjoin}}
 }

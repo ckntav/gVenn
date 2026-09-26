@@ -100,17 +100,26 @@ data(a549_chipseq_peaks)
 ```
 ## 2. Compute overlaps between genomic regions
 
-We compute overlaps between the ChIP-seq peak sets using `computeOverlaps()`:
+We compute overlaps between the ChIP-seq peak sets using `computeOverlaps()`.
+
+For genomic inputs, two modes are available through the `mode` argument.
+
+
+With `mode = "reduce"` (the default), all intervals from all sets are merged into connected regions, and each region is classified by the sets it overlaps: counts then correspond to shared loci.
+
+With `mode = "disjoin"`, each set is first reduced on its own, and the union of all intervals is then split at every set boundary into non-overlapping segments. Each segment is covered by exactly one combination of sets, so a single peak can be split across several categories, and counts correspond to genomic positions shared by exactly those sets.
+
+See `?computeOverlaps` for more details.
 
 ```{r compute_overlaps}
-genomic_overlaps <- computeOverlaps(a549_chipseq_peaks)
+genomic_overlaps <- computeOverlaps(a549_chipseq_peaks, mode = "reduce")
 ```
 
 The result is a structured `GenomicOverlapResult` object that contains:
 
 - A GRanges object, where each region includes metadata describing its
 overlap pattern across the input sets.
-- An associated logical matrix (or data frame) indicating which reduced regions
+- An associated logical matrix (or data frame) indicating which regions
 overlap with which input sets.
 
 ## 3. Visualization
@@ -213,9 +222,9 @@ sapply(groups, length)
 
 In this example:
 
- - 243 peaks are shared across all three factors (MED1, BRD4, and GR)
- - 267 peaks are unique to BRD4
- - 48 peaks are shared between MED1 and BRD4 only
+ - 243 reduced regions are shared across all three factors (MED1, BRD4, and GR)
+ - 267 reduced regions are unique to BRD4
+ - 48 reduced regions are shared between MED1 and BRD4 only
  
  <br>
 

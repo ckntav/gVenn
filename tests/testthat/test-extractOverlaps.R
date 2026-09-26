@@ -40,7 +40,7 @@ test_that("extractOverlaps() groups and orders GenomicOverlapResult correctly", 
     # ordered by ones count => "001"(1), "010"(1), "110"(2)
 
     genomic_obj <- structure(
-        list(reduced_regions = gr),
+        list(regions = gr),
         class = "GenomicOverlapResult"
     )
 

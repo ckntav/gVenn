@@ -24,7 +24,7 @@ computeOverlaps(x, mode = c("reduce", "disjoin"), ignore.strand = FALSE)
   - A named list of atomic vectors (character, numeric, factor, etc.),
     all of the same type.
 
-  \#' If the list is unnamed, sets are named `set1`, `set2`, etc.
+  If the list is unnamed, sets are named `set1`, `set2`, etc.
 
 - mode:
 

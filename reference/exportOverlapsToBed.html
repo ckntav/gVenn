@@ -88,10 +88,6 @@ date to filenames.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Invisibly returns a character vector of file paths created.</p>
-<p>#' @examples
-data(a549_chipseq_peaks)
-grouped &lt;- extractOverlaps(computeOverlaps(a549_chipseq_peaks))
-exportOverlapsToBed(grouped, output_dir = tempdir())</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -102,6 +98,15 @@ Each overlap group will be saved as a separate BED file with the group
 identifier included in the filename.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">a549_chipseq_peaks</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">grouped</span> <span class="op">&lt;-</span> <span class="fu"><a href="extractOverlaps.html">extractOverlaps</a></span><span class="op">(</span><span class="fu"><a href="computeOverlaps.html">computeOverlaps</a></span><span class="op">(</span><span class="va">a549_chipseq_peaks</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">exportOverlapsToBed</span><span class="op">(</span><span class="va">grouped</span>, output_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  &gt; 7 BED files saved in /tmp/Rtmpmp0XDl</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

@@ -222,12 +222,12 @@ overlap object.</p>
 difference between the share of the diagram’s area a region receives and
 the share its count requires, and names any region left with no area. A
 diagram is considered accurate when <code>diagError</code> is at most
-1e-6 (Micallef and Rodgers, 2014). The diagnostics are attached to the
-plot:</p>
+1e-6 (<a href="https://doi.org/10.1371/journal.pone.0101717" class="external-link">Micallef
+and Rodgers, 2014</a>). The diagnostics are attached to the plot:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">venn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plotVenn.html">plotVenn</a></span><span class="op">(</span><span class="va">genomic_overlaps</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">venn</span>, <span class="st">"fit_diagnostics"</span><span class="op">)</span><span class="op">$</span><span class="va">diagError</span></span>
-<span><span class="co">#&gt; [1] 7.332685e-13</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 7.332676e-13</span></span></code></pre></div>
 <p>When <code>diagError</code> exceeds 1e-6,
 <code><a href="../reference/plotVennError.html">plotVennError()</a></code> shows which regions are misrepresented and
 in which direction.</p>

@@ -45,10 +45,6 @@ exportOverlapsToBed(
 
 Invisibly returns a character vector of file paths created.
 
-\#' @examples data(a549_chipseq_peaks) grouped \<-
-extractOverlaps(computeOverlaps(a549_chipseq_peaks))
-exportOverlapsToBed(grouped, output_dir = tempdir())
-
 ## Details
 
 This function only works with genomic overlaps (i.e., when the input to
@@ -57,3 +53,12 @@ was a `GenomicOverlapResult` object, resulting in a `GRangesList`). It
 does not work with set overlaps (character vectors). Each overlap group
 will be saved as a separate BED file with the group identifier included
 in the filename.
+
+## Examples
+
+``` r
+data(a549_chipseq_peaks)
+grouped <- extractOverlaps(computeOverlaps(a549_chipseq_peaks))
+exportOverlapsToBed(grouped, output_dir = tempdir())
+#>  > 7 BED files saved in /tmp/Rtmpmp0XDl
+```

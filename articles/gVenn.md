@@ -168,14 +168,15 @@ An area-proportional diagram is not always attainable.
 prints `diagError`, the largest difference between the share of the
 diagram’s area a region receives and the share its count requires, and
 names any region left with no area. A diagram is considered accurate
-when `diagError` is at most 1e-6 (Micallef and Rodgers, 2014). The
-diagnostics are attached to the plot:
+when `diagError` is at most 1e-6 ([Micallef and Rodgers,
+2014](https://doi.org/10.1371/journal.pone.0101717)). The diagnostics
+are attached to the plot:
 
 ``` r
 
 venn <- plotVenn(genomic_overlaps, verbose = FALSE)
 attr(venn, "fit_diagnostics")$diagError
-#> [1] 7.332685e-13
+#> [1] 7.332676e-13
 ```
 
 When `diagError` exceeds 1e-6,

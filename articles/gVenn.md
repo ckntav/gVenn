@@ -84,18 +84,22 @@ data(a549_chipseq_peaks)
 We compute overlaps between the ChIP-seq peak sets using
 [`computeOverlaps()`](https://ckntav.github.io/gVenn/reference/computeOverlaps.md).
 
-For genomic inputs, two modes are available through the `mode` argument.
+For genomic inputs, the `mode` argument selects where the boundaries of
+the partition fall:
 
-With `mode = "reduce"` (the default), all intervals from all sets are
-merged into connected regions, and each region is classified by the sets
-it overlaps: counts then correspond to shared loci.
+- With `mode = "reduce"` (the default),
+  [`GenomicRanges::reduce()`](https://rdrr.io/pkg/IRanges/man/inter-range-methods.html)
+  collapses the union of all intervals into a non-redundant collection
+  of “reduced regions”.
+- With `mode = "disjoin"`, each set’s intervals are collapsed
+  individually and the union is then cut at every set boundary with
+  [`GenomicRanges::disjoin()`](https://rdrr.io/pkg/IRanges/man/inter-range-methods.html),
+  yielding a larger number of smaller, position-exact “disjoint
+  regions”.
 
-With `mode = "disjoin"`, each set is first reduced on its own, and the
-union of all intervals is then split at every set boundary into
-non-overlapping segments. Each segment is covered by exactly one
-combination of sets, so a single peak can be split across several
-categories, and counts correspond to genomic positions shared by exactly
-those sets.
+Each reduced or disjoint region is then assigned to an overlap group
+according to the input sets it overlaps. The counts reported below are
+therefore numbers of regions, not of input peaks.
 
 See
 [`?computeOverlaps`](https://ckntav.github.io/gVenn/reference/computeOverlaps.md)
@@ -108,10 +112,38 @@ genomic_overlaps <- computeOverlaps(a549_chipseq_peaks, mode = "reduce")
 
 The result is a structured `GenomicOverlapResult` object that contains:
 
-- A GRanges object, where each region includes metadata describing its
-  overlap pattern across the input sets.
-- An associated logical matrix indicating which regions overlap with
-  which input sets.
+- `regions`: a `GRanges` object of the reduced (or disjoint) regions,
+  each annotated with an `intersect_category` column giving the binary
+  code of its overlap group.
+- `overlap_matrix`: a logical matrix indicating which regions overlap
+  with which input sets (rows = regions, columns = sets).
+- `mode`: the `mode` used to build the regions.
+
+#### Strand
+
+By default, regions on opposite strands are never merged or considered
+overlapping. Set `ignore.strand = TRUE` to disregard strand:
+
+``` r
+
+D <- GRanges("chr1", IRanges(100, 200), strand = "+")
+E <- GRanges("chr1", IRanges(150, 250), strand = "-")
+computeOverlaps(list(D = D, E = E))$regions
+#> GRanges object with 2 ranges and 1 metadata column:
+#>       seqnames    ranges strand | intersect_category
+#>          <Rle> <IRanges>  <Rle> |        <character>
+#>   [1]     chr1   100-200      + |                 10
+#>   [2]     chr1   150-250      - |                 01
+#>   -------
+#>   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+computeOverlaps(list(D = D, E = E), ignore.strand = TRUE)$regions
+#> GRanges object with 1 range and 1 metadata column:
+#>       seqnames    ranges strand | intersect_category
+#>          <Rle> <IRanges>  <Rle> |        <character>
+#>   [1]     chr1   100-250      * |                 11
+#>   -------
+#>   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
 
 ### 3. Visualization
 
@@ -128,6 +160,31 @@ plotVenn(genomic_overlaps)
 ```
 
 ![](gVenn_files/figure-html/plot_venn-1.png)  
+
+##### Fit diagnostics
+
+An area-proportional diagram is not always attainable.
+[`plotVenn()`](https://ckntav.github.io/gVenn/reference/plotVenn.md)
+prints `diagError`, the largest difference between the share of the
+diagram’s area a region receives and the share its count requires, and
+names any region left with no area. A diagram is considered accurate
+when `diagError` is at most 1e-6 (Micallef and Rodgers, 2014). The
+diagnostics are attached to the plot:
+
+``` r
+
+venn <- plotVenn(genomic_overlaps, verbose = FALSE)
+attr(venn, "fit_diagnostics")$diagError
+#> [1] 7.332685e-13
+```
+
+When `diagError` exceeds 1e-6,
+[`plotVennError()`](https://ckntav.github.io/gVenn/reference/plotVennError.md)
+shows which regions are misrepresented and in which direction.
+
+If some regions are left undrawn, or the fit is poor, use
+[`plotUpSet()`](https://ckntav.github.io/gVenn/reference/plotUpSet.md),
+which represents every count exactly as a bar.
 
 #### UpSet plot
 
@@ -180,9 +237,11 @@ saveViz(venn,
         format = "pdf")
 ```
 
-By default: - files are written to the current directory (“.”). -
-with_date = TRUE, the current date is prepended to the filename. Set
-with_date = FALSE to disable it.
+By default:
+
+- files are written to the current directory (“.”).
+- the current date is prepended to the filename (set `with_date = FALSE`
+  to disable it).
 
 You can also export to PNG or SVG:
 
@@ -275,15 +334,15 @@ analyses, including motif enrichment, transcription factor (TF)
 enrichment, annotation of peaks to nearby genes, functional enrichment
 or visualization.
 
-For example, to extract all elements that are present in **A ∩ B ∩ C**:
+For example, to extract all regions that are present in **A ∩ B ∩ C**:
 
 ``` r
 
 # Extract elements in group_111 (present in all three sets: MED1, BRD4, and GR)
-peaks_in_all_sets <- groups[["group_111"]]
+regions_in_all_sets <- groups[["group_111"]]
 
 # Display the elements
-peaks_in_all_sets
+regions_in_all_sets
 #> GRanges object with 243 ranges and 1 metadata column:
 #>         seqnames              ranges strand | intersect_category
 #>            <Rle>           <IRanges>  <Rle> |        <character>
@@ -371,7 +430,7 @@ res_sets <- computeOverlaps(gene_list)
 
 # basic default venn plot (uses package defaults)
 plotVenn(res_sets)
-#> ✔ Venn diagError = 8.693e-13  (<= 1e-06)
+#> ✔ Venn diagError = 7.471e-13  (<= 1e-06)
 #>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
@@ -385,7 +444,7 @@ plotVenn(res_sets,
          fills = list(fill = c("#FF6B6B", "#4ECDC4", "#45B7D1"), alpha = 0.5),
          legend = "right",
          main = list(label = "Custom fills (transparent)", fontsize = 14))
-#> ✔ Venn diagError = 7.471e-13  (<= 1e-06)
+#> ✔ Venn diagError = 8.693e-13  (<= 1e-06)
 #>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
@@ -429,7 +488,7 @@ plotVenn(res_sets,
                        labels = c("Treatment A","Treatment B","Control"),
                        fontsize = 10),
          main = list(label = "Custom legend"))
-#> ✔ Venn diagError = 8.693e-13  (<= 1e-06)
+#> ✔ Venn diagError = 2.510e-14  (<= 1e-06)
 #>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
@@ -446,7 +505,7 @@ plotVenn(res_sets,
          quantities = list(type = "counts", col = "black", fontsize = 10),
          main = list(label = "multiple custom options Venn", fontsize = 16, font = 2),
          legend = FALSE)
-#> ✔ Venn diagError = 2.510e-14  (<= 1e-06)
+#> ✔ Venn diagError = 8.693e-13  (<= 1e-06)
 #>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
@@ -520,9 +579,11 @@ sessionInfo()
 
 #### Supporting packages
 
-- **eulerr** : Larsson, J. (2023). *eulerr: Area-Proportional Euler and
-  Venn Diagrams with Ellipses.* [CRAN package
-  page](https://CRAN.R-project.org/package=eulerr)
+- **eulerr** : Larsson, J., & Gustafsson, P. (2018). *A Case Study in
+  Fitting Area-Proportional Euler Diagrams with Ellipses Using eulerr.*
+  **Proceedings of International Workshop on Set Visualization and
+  Reasoning**, CEUR Workshop Proceedings, 2116, 84–91.
+  [ceur-ws.org/Vol-2116/paper7.pdf](https://ceur-ws.org/Vol-2116/paper7.pdf)
 
 - **ComplexHeatmap** : Gu, Z., Eils, R., & Schlesner, M. (2016).
   *Complex heatmaps reveal patterns and correlations in multidimensional

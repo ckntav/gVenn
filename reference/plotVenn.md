@@ -2,7 +2,11 @@
 
 This function creates a Venn diagram using the `eulerr` package to
 visualize intersections across multiple sets. Supports both
-`GenomicOverlapResult` and `SetOverlapResult` objects.
+`GenomicOverlapResult` and `SetOverlapResult` objects. Diagrams are
+recommended for two to four sets: beyond that, an area-proportional
+layout is rarely attainable, and
+[`plotUpSet`](https://ckntav.github.io/gVenn/reference/plotUpSet.md) is
+the better choice.
 
 ## Usage
 
@@ -199,7 +203,7 @@ venn <- plotVenn(res_sets)
 #>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 attr(venn, "fit_diagnostics")
 #> $stress
-#> [1] 5.208624e-25
+#> [1] 5.208679e-25
 #> 
 #> $diagError
 #> [1] 2.820591e-13

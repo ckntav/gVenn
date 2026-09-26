@@ -8,7 +8,7 @@
   [`computeOverlaps()`](https://ckntav.github.io/gVenn/reference/computeOverlaps.md)
   controlling how genomic intervals are made non-redundant before they
   are classified. The default, `mode = "reduce"`, keeps the previous
-  “reduce-then-classify” behavior. The new `mode = "disjoin"` reduces
+  “reduce-then-classify” behavior. The new `mode = "disjoin"` collapses
   each set on its own, then partitions the union into non-overlapping
   segments with
   [`GenomicRanges::disjoin()`](https://rdrr.io/pkg/IRanges/man/inter-range-methods.html),
@@ -58,9 +58,8 @@
 
 - The right-hand annotation of
   [`plotUpSet()`](https://ckntav.github.io/gVenn/reference/plotUpSet.md)
-  is now labelled according to the type of the input: `"Region size"`
-  for a `GenomicOverlapResult` and `"Set size"` for a
-  `SetOverlapResult`.
+  is now labeled according to the type of the input: `"Region size"` for
+  a `GenomicOverlapResult` and `"Set size"` for a `SetOverlapResult`.
 - [`computeOverlaps()`](https://ckntav.github.io/gVenn/reference/computeOverlaps.md)
   labels overlap categories faster at large numbers of regions (~10x at
   10⁵⁻¹⁰6 regions), by vectorizing the internal `defineCategories()`

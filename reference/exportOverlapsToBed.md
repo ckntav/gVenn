@@ -45,6 +45,10 @@ exportOverlapsToBed(
 
 Invisibly returns a character vector of file paths created.
 
+\#' @examples data(a549_chipseq_peaks) grouped \<-
+extractOverlaps(computeOverlaps(a549_chipseq_peaks))
+exportOverlapsToBed(grouped, output_dir = tempdir())
+
 ## Details
 
 This function only works with genomic overlaps (i.e., when the input to

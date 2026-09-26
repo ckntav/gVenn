@@ -65,10 +65,16 @@ library(gVenn)
 # Example dataset of ChIP-seq peaks (A549 cell line, 3 sets of genomic regions)
 data(a549_chipseq_peaks)
 
-# Compute overlaps
+# Compute overlaps (mode = "reduce" by default; see ?computeOverlaps for mode = "disjoin")
 ov <- computeOverlaps(a549_chipseq_peaks)
 #> Loading required namespace: GenomicRanges
 ```
+
+Genomic regions are first made non-overlapping, either merged into
+“reduced regions” (`mode = "reduce"`, the default) or cut at every set
+boundary into “disjoint regions” (`mode = "disjoin"`), and each region
+is then assigned to an overlap group. Counts are therefore numbers of
+regions, not of input peaks.
 
 ### 2. Visualize
 
@@ -76,7 +82,7 @@ ov <- computeOverlaps(a549_chipseq_peaks)
 
 # Draw Venn diagram
 plotVenn(ov)
-#> ✔ Venn diagError = 1.779e-13  (<= 1e-06)
+#> ✔ Venn diagError = 2.229e-12  (<= 1e-06)
 #>   Access fit diagnostics with attr(<plotVenn output>, "fit_diagnostics")
 ```
 
@@ -90,7 +96,7 @@ plotUpSet(ov)
 
 ![](reference/figures/README-example_upset-1.png)
 
-### 3. Extract elements per overlap group
+### 3. Extract regions per overlap group
 
 ``` r
 
@@ -139,15 +145,15 @@ analyses, including motif enrichment, transcription factor (TF)
 enrichment, annotation of peaks to nearby genes, functional enrichment
 or visualization.
 
-For example, to extract all elements that are present in **A ∩ B ∩ C**:
+For example, to extract all regions that are present in **A ∩ B ∩ C**:
 
 ``` r
 
 # Extract elements in group_111 (present in all three sets: MED1_Dex_chr7, BRD4_Dex_chr7, GR_Dex_chr7)
-peaks_in_all_sets <- groups[["group_111"]]
+regions_in_all_sets <- groups[["group_111"]]
 
 # Display the elements
-peaks_in_all_sets
+regions_in_all_sets
 #> GRanges object with 243 ranges and 1 metadata column:
 #>         seqnames              ranges strand | intersect_category
 #>            <Rle>           <IRanges>  <Rle> |        <character>

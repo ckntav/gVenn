@@ -88,6 +88,10 @@ date to filenames.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Invisibly returns a character vector of file paths created.</p>
+<p>#' @examples
+data(a549_chipseq_peaks)
+grouped &lt;- extractOverlaps(computeOverlaps(a549_chipseq_peaks))
+exportOverlapsToBed(grouped, output_dir = tempdir())</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

@@ -15,18 +15,18 @@ computeOverlaps(x, mode = c("reduce", "disjoin"), ignore.strand = FALSE)
 all of the same type.
 }}
 
-\item{mode}{Character string controlling how genomic intervals are made
-non-redundant before they are classified. One of:
+\item{mode}{Character string selecting where the boundaries of the
+partition fall. One of:
 \itemize{
-\item \code{"reduce"} (default): all intervals from all sets are merged with
-\code{GenomicRanges::reduce()}, and each merged region is classified by the
-sets it overlaps. Region counts then correspond to merged loci.
-\item \code{"disjoin"}: each set is reduced on its own, and the union is then
-partitioned into non-overlapping segments with
-\code{GenomicRanges::disjoin()}. Every segment is covered by exactly one
-combination of sets, so a category such as \code{"111"} is reported only
-for positions genuinely shared by all three sets.
+\item \code{"reduce"} (default): \code{GenomicRanges::reduce()} collapses the
+union of all intervals into a non-redundant collection of "reduced
+regions".
+\item \code{"disjoin"}: each set's intervals are collapsed individually and
+the union is then cut at every set boundary with
+\code{GenomicRanges::disjoin()}, yielding a larger number of smaller,
+position-exact "disjoint regions".
 }
+See Examples for a chained configuration under both modes.
 Ignored (with a warning) for non-genomic inputs.}
 
 \item{ignore.strand}{Logical, default \code{FALSE}. Controls whether strand is
@@ -46,10 +46,11 @@ type:
 \item{GenomicOverlapResult}{Returned when the input is genomic
 (\code{GRangesList} or list of \code{GRanges}). A list with:
 \itemize{
-\item \code{regions}: A \code{GRanges} object containing the
-non-redundant intervals, merged when \code{mode = "reduce"} and
-disjoint when \code{mode = "disjoin"}. Each region is annotated with
-an \code{intersect_category} column.
+\item \code{regions}: A \code{GRanges} object containing the reduced
+regions (\code{mode = "reduce"}) or disjoint regions
+(\code{mode = "disjoin"}). Each region is annotated with an
+\code{intersect_category} column giving the binary code of its
+overlap group.
 \item \code{overlap_matrix}: A logical matrix indicating whether each
 region overlaps each input set (rows = regions,
 columns = sets).
@@ -62,8 +63,9 @@ vectors. A list with:
 across the sets.
 \item \code{overlap_matrix}: A logical matrix indicating whether each
 element is present in each set (rows = elements, columns = sets).
-\item \code{intersect_category}: Character vector of category codes
-(e.g., \code{"110"}) for each element.
+\item \code{intersect_category}: Character vector giving the
+binary code of the overlap group (e.g., \code{"110"}) of each
+element.
 }}
 }
 }
@@ -91,27 +93,6 @@ Internally, \code{computeOverlaps()} dispatches to either
 \code{computeGenomicOverlaps()} (for genomic inputs) or
 \code{computeSetOverlaps()} (for ordinary sets). Users are encouraged to call
 only \code{computeOverlaps()}.
-\subsection{Choosing between \code{"reduce"} and \code{"disjoin"}}{
-
-The two modes answer different questions, and they differ whenever
-overlaps are chained: an interval of A overlapping an interval of B, which
-in turn overlaps an interval of C, without A and C sharing any position.
-
-\code{mode = "reduce"} merges such a chain into a single connected region and
-labels it \code{"111"}, reporting a three-way intersection even though no base
-pair is common to the three sets. This is the historical behavior, and it
-is the natural one when the sets describe the same underlying features
-(e.g., peaks called on replicates of the same experiment) and the question
-is "which loci are shared?".
-
-\code{mode = "disjoin"} splits the chain at every set boundary, yielding one
-\code{"110"} segment, one \code{"011"} segment, and the set-specific remainders. Use
-it when categories must reflect genuinely shared genomic positions, which
-is what an intersection is usually taken to mean. Note that the resulting
-counts are counts of segments, not of input intervals, so a single long
-interval may contribute to several categories.
-}
-
 \subsection{Chromosome names and genome assemblies}{
 
 gVenn does not harmonize chromosome names or coordinate systems across input

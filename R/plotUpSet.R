@@ -2,9 +2,9 @@
 #'
 #' This function creates an UpSet plot using the `ComplexHeatmap` package to
 #' visualize intersections across multiple sets.
-#' Supports both `GenomicOverlapsResult` and `SetOverlapsResult` objects.
+#' Supports both `GenomicOverlapResult` and `SetOverlapResult` objects.
 #'
-#' @param overlap_object A `GenomicOverlapsResult` or `SetOverlapsResult` object
+#' @param overlap_object A `GenomicOverlapResult` or `SetOverlapResult` object
 #' returned by \code{\link{computeOverlaps}}.
 #' @param customSetOrder Optional. A vector specifying the order of sets to
 #'   display on the UpSet diagram. The vector should contain either numeric

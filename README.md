@@ -106,9 +106,9 @@ sapply(groups, length)
 
 In this example:
 
-- 243 peaks are shared across all three factors (MED1, BRD4, and GR)
-- 267 peaks are unique to BRD4
-- 48 peaks are shared between MED1 and BRD4 only
+- 243 reduced regions are shared across all three factors (MED1, BRD4, and GR)
+- 267 reduced regions are unique to BRD4
+- 48 reduced regions are shared between MED1 and BRD4 only
 
 #### Overlap group naming
 

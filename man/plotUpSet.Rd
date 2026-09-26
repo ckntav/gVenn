@@ -7,7 +7,7 @@
 plotUpSet(overlap_object, customSetOrder = NULL, comb_col = "black")
 }
 \arguments{
-\item{overlap_object}{A \code{GenomicOverlapsResult} or \code{SetOverlapsResult} object
+\item{overlap_object}{A \code{GenomicOverlapResult} or \code{SetOverlapResult} object
 returned by \code{\link{computeOverlaps}}.}
 
 \item{customSetOrder}{Optional. A vector specifying the order of sets to
@@ -31,7 +31,7 @@ sets).
 \description{
 This function creates an UpSet plot using the \code{ComplexHeatmap} package to
 visualize intersections across multiple sets.
-Supports both \code{GenomicOverlapsResult} and \code{SetOverlapsResult} objects.
+Supports both \code{GenomicOverlapResult} and \code{SetOverlapResult} objects.
 }
 \examples{
 # Example with gene sets (built-in dataset)

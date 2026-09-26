@@ -26,17 +26,10 @@ be read off the picture rather than inferred from a single summary
 statistic. This is a thin wrapper around \code{\link[eulerr]{error_plot}}.
 }
 \details{
-Where \code{\link{plotVenn}}'s \code{diagError} answers "how far off is the worst
-region", this answers "which regions, and in which direction". A region
-drawn too large is shaded towards one end of the scale and one drawn too
-small towards the other, with its \code{regionError} printed inside it.
-
-It is worth reaching for whenever \code{diagError} is above the 1e-6 threshold
-\code{\link{plotVenn}} reports against, or whenever
-\code{attr(venn, "fit_diagnostics")$undrawnRegions} is not empty.
-
-It takes the plot returned by \code{\link{plotVenn}} rather than the overlap
-object, and reuses the fit stored on it instead of computing a new one.
+Where \code{diagError} reports how far off the worst region is, this plot shows
+which regions are off and in which direction, with each region's
+\code{regionError} printed inside it. Use it when \code{diagError} exceeds 1e-6 or
+when \code{attr(venn, "fit_diagnostics")$undrawnRegions} is not empty.
 }
 \examples{
 data(gene_list)

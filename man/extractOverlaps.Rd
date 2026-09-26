@@ -7,21 +7,25 @@
 extractOverlaps(overlap_object)
 }
 \arguments{
-\item{overlap_object}{A \code{GenomicOverlapsResult} or \code{SetOverlapsResult}
+\item{overlap_object}{A \code{GenomicOverlapResult} or \code{SetOverlapResult}
 object.}
 }
 \value{
-A named list of grouped intersecting elements:
+A named list with one entry per overlap group, named by its binary
+code prefixed with \code{"group_"} (e.g., \code{"group_110"}) and ordered by the
+number of sets involved:
 \itemize{
-\item If input is a \code{GenomicOverlapsResult}, a \code{GRangesList} split
+\item If input is a \code{GenomicOverlapResult}, a \code{GRangesList} split
 by \code{intersect_category}.
-\item If input is a \code{SetOverlapsResult}, a named \code{list} of character vectors
+\item If input is a \code{SetOverlapResult}, a named \code{list} of character vectors
 grouped by \code{intersect_category}.
 }
 }
 \description{
-This function extracts subsets of intersecting elements grouped by their
-overlap category (e.g., "110").
+This function extracts the elements of each overlap group, identified by
+its binary code (e.g., \code{"110"}). For genomic overlaps, the elements are the
+reduced or disjoint regions built by \code{\link{computeOverlaps}}, not the
+input intervals.
 For genomic overlaps, it returns a \code{GRangesList}; for set overlaps, it
 returns a named list of character vectors.
 }

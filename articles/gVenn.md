@@ -176,7 +176,7 @@ are attached to the plot:
 
 venn <- plotVenn(genomic_overlaps, verbose = FALSE)
 attr(venn, "fit_diagnostics")$diagError
-#> [1] 7.332676e-13
+#> [1] 7.332667e-13
 ```
 
 When `diagError` exceeds 1e-6,

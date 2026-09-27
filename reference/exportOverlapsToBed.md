@@ -60,5 +60,5 @@ in the filename.
 data(a549_chipseq_peaks)
 grouped <- extractOverlaps(computeOverlaps(a549_chipseq_peaks))
 exportOverlapsToBed(grouped, output_dir = tempdir())
-#>  > 7 BED files saved in /tmp/Rtmpmp0XDl
+#>  > 7 BED files saved in /tmp/RtmpGxaVyU
 ```
